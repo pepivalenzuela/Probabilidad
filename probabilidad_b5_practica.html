@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B5 Práctica — Probabilidad · Las Chapas ECOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<style>
+  :root{
+    --navy:#1a2e4a; --navy-light:#2a4468; --teal:#1d7a6b; --teal-light:#e4f2ef;
+    --orange:#e07b3a; --orange-light:#fdeee0; --cream:#f5f2eb; --ink:#2b2b2b;
+    --muted:#6b6f76; --white:#ffffff; --line:#e4e0d6;
+    --red:#c65b4a; --red-light:#fbeae7;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Nunito Sans',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6}
+  h1,h2,h3,.brand{font-family:'Nunito',sans-serif}
+  a{color:inherit;text-decoration:none}
+
+  header.top{background:var(--navy);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:8px;font-size:.88rem;font-weight:600;flex-wrap:wrap}
+  header.top a{color:#cfd8e6}
+  header.top a:hover{color:#fff}
+  header.top .sep{color:#5c6b82}
+  header.top .current{color:#fff;font-weight:800}
+
+  .wrap{max-width:720px;margin:0 auto;padding:30px 24px 60px}
+
+  .titlebar{text-align:center;margin-bottom:22px}
+  .titlebar .kicker{display:inline-block;background:var(--teal-light);color:var(--teal);font-weight:800;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:12px}
+  .titlebar h1{font-size:1.6rem;color:var(--navy);margin:0 0 6px;font-weight:900}
+  .titlebar p{color:var(--muted);margin:0;font-size:.95rem}
+
+  #gate{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;text-align:center}
+  #gate input{width:100%;max-width:340px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-size:1rem;font-family:inherit;margin:14px 0}
+  .btn{display:inline-block;padding:13px 26px;border-radius:10px;font-weight:800;font-size:.95rem;border:none;cursor:pointer;font-family:inherit}
+  .btn.on{background:var(--teal);color:#fff}
+  .btn.on:hover{background:#166357}
+  .btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+  .btn.ghost:hover{background:#f0ede4}
+  .btn:disabled{opacity:.5;cursor:default}
+
+  #quiz{display:none}
+  .scoreboard{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 20px;margin-bottom:18px;font-weight:700;color:var(--navy);font-size:.9rem}
+  .scoreboard .ok{color:var(--teal)}
+  .scoreboard .bad{color:var(--red)}
+
+  .qcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px}
+  .qtag{display:inline-block;font-weight:800;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:100px;margin-bottom:14px}
+  .qtag.teoria{background:var(--teal-light);color:var(--teal)}
+  .qtag.aplicacion{background:var(--orange-light);color:var(--orange)}
+  .qtext{font-size:1.15rem;color:var(--navy);font-weight:700;margin-bottom:20px}
+
+  .opt{display:block;width:100%;text-align:left;background:#fbfbf9;border:1.5px solid var(--line);border-radius:10px;padding:13px 16px;margin-bottom:10px;font-family:inherit;font-size:1rem;cursor:pointer;color:var(--ink)}
+  .opt:hover{border-color:var(--teal)}
+  .opt.correcta{background:var(--teal-light);border-color:var(--teal);color:var(--navy);font-weight:700}
+  .opt.incorrecta{background:var(--red-light);border-color:var(--red);color:#8a3a2e;font-weight:700}
+  .opt:disabled{cursor:default}
+
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:.92rem;display:none}
+  .feedback.show{display:block}
+  .feedback.ok{background:var(--teal-light);color:#12574c}
+  .feedback.bad{background:var(--red-light);color:#8a3a2e}
+
+  .controls{display:flex;justify-content:flex-end;margin-top:20px}
+
+  .nav-bottom{display:flex;justify-content:space-between;margin-top:28px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html">Portal de Probabilidad</a>
+  <span class="sep">·</span>
+  <a href="probabilidad_b5_intro.html">Bloque 5</a>
+  <span class="sep">·</span>
+  <span class="current">Práctica libre</span>
+</header>
+
+<div class="wrap">
+  <div class="titlebar">
+    <span class="kicker">Bloque 5 · Práctica libre</span>
+    <h1>Probabilidad total y Teorema de Bayes</h1>
+    <p>Ejercicios aleatorios de teoría (sistema completo, árbol, fórmulas) y de aplicación (probabilidad total y Bayes en contextos distintos). Cada vez que entras, el orden cambia.</p>
+  </div>
+
+  <div id="gate">
+    <p style="margin:0;color:var(--muted)">Escribe tu nombre para empezar (no hay límite de tiempo ni de intentos):</p>
+    <input type="text" id="nombre" placeholder="Nombre y apellidos">
+    <br>
+    <button class="btn on" onclick="empezar()">Empezar a practicar →</button>
+  </div>
+
+  <div id="quiz">
+    <div class="scoreboard">
+      <span id="contador">Pregunta 1</span>
+      <span><span class="ok" id="okcount">0</span> correctas · <span class="bad" id="badcount">0</span> incorrectas</span>
+    </div>
+
+    <div class="qcard">
+      <span class="qtag" id="qtag">Teoría</span>
+      <div class="qtext" id="qtext">—</div>
+      <div id="opciones"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="controls">
+        <button class="btn on" id="btnSiguiente" onclick="siguiente()" disabled>Siguiente pregunta →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom" style="flex-wrap:wrap;gap:12px">
+    <a class="btn ghost" href="probabilidad_b5_intro.html">← Volver a la teoría</a>
+    <a class="btn on" href="https://pepivalenzuela.github.io/panel-matematicas/">Formativas en mi panel →</a>
+    <a class="btn ghost" href="probabilidad_repaso_general.html">🎴 Repaso general →</a>
+  </div>
+</div>
+
+<script>
+// ---------- Banco de preguntas: Bloque 5 · Probabilidad total y Bayes ----------
+const BANCO_TEORIA = [
+  {q:"¿Qué condiciones debe cumplir un sistema completo de sucesos {A₁,...,Aₙ}?", o:["Ser incompatibles dos a dos y que su unión sea todo el espacio muestral E", "Solo que sean incompatibles dos a dos", "Solo que su unión sea E", "Que todos tengan la misma probabilidad"], c:0},
+  {q:"El teorema de la probabilidad total permite calcular...", o:["P(B) cuando B solo puede ocurrir a través de varios caminos A₁,...,Aₙ", "P(A/B) directamente sin más datos", "P(A) cuando A es independiente de todo", "La probabilidad de un suceso imposible"], c:0},
+  {q:"¿Cuál es la fórmula del teorema de la probabilidad total?", o:["P(B) = ΣP(Aᵢ)·P(B/Aᵢ)", "P(B) = ΣP(Aᵢ)+P(B/Aᵢ)", "P(B) = P(A₁)·P(A₂)·...·P(Aₙ)", "P(B) = ΣP(Aᵢ)/P(B/Aᵢ)"], c:0},
+  {q:"¿De dónde sale cada término P(Aᵢ)·P(B/Aᵢ) de la fórmula de la probabilidad total?", o:["Es la fórmula de la intersección, P(Aᵢ∩B)", "Es una suposición sin justificación", "Es la fórmula de Bayes ya aplicada", "Es el complementario de P(B)"], c:0},
+  {q:"¿Por qué se pueden sumar directamente los términos P(Aᵢ∩B) en la fórmula de la probabilidad total?", o:["Porque son incompatibles entre sí, al ser los Aᵢ un sistema completo", "Porque siempre se pueden sumar probabilidades", "Porque son independientes entre sí", "Porque su suma siempre da 1"], c:0},
+  {q:"El teorema de Bayes responde a la pregunta...", o:["Sabiendo que ha ocurrido B, ¿cuál es la probabilidad de que haya sido por el camino Aᵢ?", "¿Cuál es la probabilidad total de B?", "¿Son A y B independientes?", "¿Cuántos caminos lleva a B?"], c:0},
+  {q:"¿Cuál es la fórmula del teorema de Bayes?", o:["P(Aᵢ/B) = P(Aᵢ)·P(B/Aᵢ) / P(B)", "P(Aᵢ/B) = P(B)/[P(Aᵢ)·P(B/Aᵢ)]", "P(Aᵢ/B) = P(Aᵢ)+P(B/Aᵢ)", "P(Aᵢ/B) = P(B/Aᵢ)"], c:0},
+  {q:"¿Qué representa el denominador de la fórmula de Bayes?", o:["La probabilidad total, P(B)", "La probabilidad de Aᵢ únicamente", "Siempre el número 1", "La suma de todas las P(Aᵢ)"], c:0},
+  {q:"¿Por qué siempre se calcula primero la probabilidad total al resolver un problema de Bayes?", o:["Porque el denominador de Bayes es exactamente esa probabilidad total", "Porque no influye en el resultado final", "Porque Bayes no necesita la probabilidad total en realidad", "Es solo una costumbre, no una necesidad matemática"], c:0},
+  {q:"En un diagrama de árbol para probabilidad total, ¿qué debe llevar cada rama de primer nivel?", o:["La probabilidad P(Aᵢ)", "La probabilidad condicionada P(B/Aᵢ)", "La probabilidad total P(B)", "El resultado de Bayes ya calculado"], c:0},
+  {q:"¿Qué debe llevar cada rama de segundo nivel del árbol?", o:["La probabilidad condicionada P(B/Aᵢ), nunca la probabilidad suelta de B", "La probabilidad P(Aᵢ) otra vez", "La probabilidad P(B) sin condicionar", "El producto ya calculado P(Aᵢ)·P(B/Aᵢ)"], c:0},
+  {q:"Multiplicar las probabilidades a lo largo de un camino del árbol da como resultado...", o:["La probabilidad de la intersección de ese camino, P(Aᵢ∩B)", "La probabilidad total P(B) directamente", "La probabilidad condicionada P(Aᵢ/B)", "Siempre 0"], c:0},
+  {q:"Si antes del experimento P(A₂)=0'45 y, tras conocer un resultado B, P(A₂/B)=0'6, ¿qué ha ocurrido?", o:["La evidencia B ha hecho más probable que el suceso proceda de A₂", "Se ha cometido un error de cálculo, es imposible que cambie", "A₂ y B son incompatibles", "P(A₂) ha bajado en realidad"], c:0},
+  {q:"¿Es siempre cierto que la suma de todas las P(Aᵢ/B), para i=1,...,n, vale 1?", o:["Sí, porque {A₁,...,Aₙ} sigue siendo una partición, ahora condicionada a B", "No, depende de los valores de P(B/Aᵢ)", "Solo si los Aᵢ son independientes de B", "No, la suma siempre es menor que 1"], c:0},
+  {q:"¿Qué error se comete si en el árbol se pone P(B) en vez de P(B/Aᵢ) en las ramas de segundo nivel?", o:["Se pierde que cada rama ya está condicionada por el camino Aᵢ tomado, y el cálculo sale mal", "Ningún error, es lo mismo", "El árbol queda incompleto pero el resultado es correcto igualmente", "Solo afecta al cálculo de Bayes, no al de la probabilidad total"], c:0},
+  {q:"Si un suceso B solo puede darse a través de un único camino A₁ (P(A₁)=1), ¿en qué se convierte la probabilidad total?", o:["En la propia P(B/A₁), ya que no hay otros caminos que sumar", "En 0 siempre", "En P(A₁) sin más", "En 1 siempre, sin importar P(B/A₁)"], c:0}
+];
+
+const BANCO_APLICACION = [
+  {q:"Una fábrica tiene 2 máquinas: M1 produce el 40% de las piezas y M2 el 60%. Las tasas de defectos son 5% en M1 y 2% en M2. Calcula P(pieza defectuosa)", o:["0'032", "0'07", "0'02", "0'05"], c:0},
+  {q:"Con los mismos datos (M1: 40% con 5% defectos; M2: 60% con 2% defectos), si una pieza es defectuosa, calcula la probabilidad de que sea de M1", o:["0'625", "0'4", "0'2", "0'375"], c:0},
+  {q:"En una ciudad, el 55% son mujeres y el 45% hombres. Fuma el 8% de las mujeres y el 12% de los hombres. Calcula P(fumar)", o:["0'098", "0'2", "0'044", "0'054"], c:0},
+  {q:"Con los mismos datos (55% mujeres fuman 8%, 45% hombres fuman 12%), si una persona elegida al azar fuma, calcula la probabilidad de que sea hombre", o:["0'551", "0'449", "0'12", "0'6"], c:0},
+  {q:"Una caja A tiene 3 bolas blancas y 7 negras; una caja B tiene 6 blancas y 4 negras. Se elige una caja al azar (probabilidad 1/2 cada una) y se extrae una bola. Calcula P(bola blanca)", o:["0'45", "0'3", "0'6", "0'9"], c:0},
+  {q:"Con las mismas cajas (A: 3B/7N, B: 6B/4N, cada una con probabilidad 1/2), si la bola es blanca, calcula la probabilidad de que proceda de la caja B", o:["0'667", "0'333", "0'5", "0'6"], c:0},
+  {q:"Un examen tiene temas tipo I (30% de probabilidad, se aprueba con 0'9), tipo II (50%, se aprueba con 0'7) y tipo III (20%, se aprueba con 0'4). Calcula P(aprobar)", o:["0'7", "0'67", "0'6", "2"], c:0},
+  {q:"Con los mismos datos del examen (tipo I: 30% aprueba 0'9; tipo II: 50% aprueba 0'7; tipo III: 20% aprueba 0'4), si un alumno aprueba, calcula la probabilidad de que le tocara el tipo III", o:["0'114", "0'2", "0'08", "0'4"], c:0},
+  {q:"En una empresa: 20% en producción (10% de bajas), 50% en ventas (4% de bajas), 30% en administración (6% de bajas). Calcula P(baja laboral)", o:["0'058", "0'2", "0'02", "0'1"], c:0},
+  {q:"Con los mismos datos de la empresa (producción 20% con 10% bajas; ventas 50% con 4%; administración 30% con 6%), si hay una baja, calcula la probabilidad de que sea de producción", o:["0'345", "0'2", "0'5", "0'02"], c:0},
+  {q:"Tres proveedores: P1 suministra el 25% (2% defectuosos), P2 el 45% (3% defectuosos), P3 el 30% (1% defectuoso). Calcula P(tornillo defectuoso)", o:["0'0215", "0'06", "0'005", "0'02"], c:0},
+  {q:"Con los mismos datos de los tornillos (P1: 25% con 2%; P2: 45% con 3%; P3: 30% con 1%), si uno es defectuoso, calcula la probabilidad de que sea del proveedor P2", o:["0'628", "0'45", "0'233", "0'14"], c:0},
+  {q:"En un hospital, el 60% de los pacientes de una prueba son del grupo A y el 40% del grupo B. La prueba da positivo en el 15% del grupo A y en el 25% del grupo B. Calcula P(positivo)", o:["0'19", "0'4", "0'09", "0'1"], c:0},
+  {q:"Con los mismos datos del hospital (grupo A: 60% con 15% positivo; grupo B: 40% con 25% positivo), si un paciente da positivo, calcula la probabilidad de que sea del grupo B", o:["0'526", "0'474", "0'25", "0'4"], c:0},
+  {q:"Sean A₁, A₂ un sistema completo con P(A₁)=0'35 y P(A₂)=0'65, y P(B/A₁)=0'2, P(B/A₂)=0'5. Calcula P(A₁/B)", o:["0'177", "0'35", "0'2", "0'823"], c:0},
+  {q:"Con los mismos datos (P(A₁)=0'35, P(A₂)=0'65, P(B/A₁)=0'2, P(B/A₂)=0'5), calcula P(A₂/B)", o:["0'823", "0'65", "0'5", "0'177"], c:0}
+];
+
+let orden = [];
+let idx = 0;
+let ok = 0, bad = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function empezar(){
+  const nombre = document.getElementById('nombre').value.trim();
+  if(!nombre){ alert('Escribe tu nombre para empezar.'); return; }
+  document.getElementById('gate').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  generarSecuencia();
+  mostrarPregunta();
+}
+
+function generarSecuencia(){
+  const todas = shuffle(
+    BANCO_TEORIA.map(x=>({...x,tipo:'teoria'})).concat(
+    BANCO_APLICACION.map(x=>({...x,tipo:'aplicacion'})))
+  );
+  orden = todas;
+  idx = 0; ok = 0; bad = 0;
+}
+
+function mostrarPregunta(){
+  if(idx >= orden.length){ generarSecuencia(); }
+  const item = orden[idx];
+  document.getElementById('contador').textContent = `Pregunta ${idx+1}`;
+  document.getElementById('okcount').textContent = ok;
+  document.getElementById('badcount').textContent = bad;
+  const tag = document.getElementById('qtag');
+  tag.textContent = item.tipo === 'teoria' ? 'Teoría' : 'Aplicación';
+  tag.className = 'qtag ' + item.tipo;
+  document.getElementById('qtext').innerHTML = item.q;
+
+  const opciones = shuffle(item.o.map((texto,i)=>({texto, esCorrecta:i===item.c})));
+  const cont = document.getElementById('opciones');
+  cont.innerHTML='';
+  opciones.forEach(op=>{
+    const btn = document.createElement('button');
+    btn.className='opt';
+    btn.innerHTML = op.texto;
+    btn.onclick = ()=>responder(btn, op.esCorrecta, opciones, cont);
+    cont.appendChild(btn);
+  });
+
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('btnSiguiente').disabled = true;
+  if(window.MathJax){ MathJax.typesetClear([cont, document.getElementById('qtext')]); MathJax.typesetPromise([cont, document.getElementById('qtext')]); }
+}
+
+function responder(btnPulsado, esCorrecta, opciones, cont){
+  const botones = cont.querySelectorAll('.opt');
+  botones.forEach(b=>b.disabled=true);
+  botones.forEach((b,i)=>{
+    if(opciones[i].esCorrecta) b.classList.add('correcta');
+  });
+  if(!esCorrecta) btnPulsado.classList.add('incorrecta');
+
+  const fb = document.getElementById('feedback');
+  if(esCorrecta){
+    ok++;
+    fb.textContent = '✓ Correcto.';
+    fb.className = 'feedback show ok';
+  } else {
+    bad++;
+    fb.textContent = '✗ No es correcto. La respuesta correcta está marcada en verde.';
+    fb.className = 'feedback show bad';
+  }
+  document.getElementById('okcount').textContent = ok;
+  document.getElementById('badcount').textContent = bad;
+  document.getElementById('btnSiguiente').disabled = false;
+}
+
+function siguiente(){
+  idx++;
+  mostrarPregunta();
+}
+</script>
+
+</body>
+</html>

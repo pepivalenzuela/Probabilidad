@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2 Práctica — Probabilidad · Las Chapas ECOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<style>
+  :root{
+    --navy:#1a2e4a; --navy-light:#2a4468; --teal:#1d7a6b; --teal-light:#e4f2ef;
+    --orange:#e07b3a; --orange-light:#fdeee0; --cream:#f5f2eb; --ink:#2b2b2b;
+    --muted:#6b6f76; --white:#ffffff; --line:#e4e0d6;
+    --red:#c65b4a; --red-light:#fbeae7;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Nunito Sans',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6}
+  h1,h2,h3,.brand{font-family:'Nunito',sans-serif}
+  a{color:inherit;text-decoration:none}
+
+  header.top{background:var(--navy);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:8px;font-size:.88rem;font-weight:600;flex-wrap:wrap}
+  header.top a{color:#cfd8e6}
+  header.top a:hover{color:#fff}
+  header.top .sep{color:#5c6b82}
+  header.top .current{color:#fff;font-weight:800}
+
+  .wrap{max-width:720px;margin:0 auto;padding:30px 24px 60px}
+
+  .titlebar{text-align:center;margin-bottom:22px}
+  .titlebar .kicker{display:inline-block;background:var(--teal-light);color:var(--teal);font-weight:800;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:12px}
+  .titlebar h1{font-size:1.6rem;color:var(--navy);margin:0 0 6px;font-weight:900}
+  .titlebar p{color:var(--muted);margin:0;font-size:.95rem}
+
+  #gate{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;text-align:center}
+  #gate input{width:100%;max-width:340px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-size:1rem;font-family:inherit;margin:14px 0}
+  .btn{display:inline-block;padding:13px 26px;border-radius:10px;font-weight:800;font-size:.95rem;border:none;cursor:pointer;font-family:inherit}
+  .btn.on{background:var(--teal);color:#fff}
+  .btn.on:hover{background:#166357}
+  .btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+  .btn.ghost:hover{background:#f0ede4}
+  .btn:disabled{opacity:.5;cursor:default}
+
+  #quiz{display:none}
+  .scoreboard{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 20px;margin-bottom:18px;font-weight:700;color:var(--navy);font-size:.9rem}
+  .scoreboard .ok{color:var(--teal)}
+  .scoreboard .bad{color:var(--red)}
+
+  .qcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px}
+  .qtag{display:inline-block;font-weight:800;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:100px;margin-bottom:14px}
+  .qtag.teoria{background:var(--teal-light);color:var(--teal)}
+  .qtag.aplicacion{background:var(--orange-light);color:var(--orange)}
+  .qtext{font-size:1.15rem;color:var(--navy);font-weight:700;margin-bottom:20px}
+
+  .opt{display:block;width:100%;text-align:left;background:#fbfbf9;border:1.5px solid var(--line);border-radius:10px;padding:13px 16px;margin-bottom:10px;font-family:inherit;font-size:1rem;cursor:pointer;color:var(--ink)}
+  .opt:hover{border-color:var(--teal)}
+  .opt.correcta{background:var(--teal-light);border-color:var(--teal);color:var(--navy);font-weight:700}
+  .opt.incorrecta{background:var(--red-light);border-color:var(--red);color:#8a3a2e;font-weight:700}
+  .opt:disabled{cursor:default}
+
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:.92rem;display:none}
+  .feedback.show{display:block}
+  .feedback.ok{background:var(--teal-light);color:#12574c}
+  .feedback.bad{background:var(--red-light);color:#8a3a2e}
+
+  .controls{display:flex;justify-content:flex-end;margin-top:20px}
+
+  .nav-bottom{display:flex;justify-content:space-between;margin-top:28px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html">Portal de Probabilidad</a>
+  <span class="sep">·</span>
+  <a href="probabilidad_b2_intro.html">Bloque 2</a>
+  <span class="sep">·</span>
+  <span class="current">Práctica libre</span>
+</header>
+
+<div class="wrap">
+  <div class="titlebar">
+    <span class="kicker">Bloque 2 · Práctica libre</span>
+    <h1>Concepto de probabilidad</h1>
+    <p>Ejercicios aleatorios de teoría (Laplace, axiomas, propiedades) y de aplicación (cálculo de probabilidades con las propiedades). Cada vez que entras, el orden cambia.</p>
+  </div>
+
+  <div id="gate">
+    <p style="margin:0;color:var(--muted)">Escribe tu nombre para empezar (no hay límite de tiempo ni de intentos):</p>
+    <input type="text" id="nombre" placeholder="Nombre y apellidos">
+    <br>
+    <button class="btn on" onclick="empezar()">Empezar a practicar →</button>
+  </div>
+
+  <div id="quiz">
+    <div class="scoreboard">
+      <span id="contador">Pregunta 1</span>
+      <span><span class="ok" id="okcount">0</span> correctas · <span class="bad" id="badcount">0</span> incorrectas</span>
+    </div>
+
+    <div class="qcard">
+      <span class="qtag" id="qtag">Teoría</span>
+      <div class="qtext" id="qtext">—</div>
+      <div id="opciones"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="controls">
+        <button class="btn on" id="btnSiguiente" onclick="siguiente()" disabled>Siguiente pregunta →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom" style="flex-wrap:wrap;gap:12px">
+    <a class="btn ghost" href="probabilidad_b2_intro.html">← Volver a la teoría</a>
+    <a class="btn on" href="https://pepivalenzuela.github.io/panel-matematicas/">Formativas en mi panel →</a>
+    <a class="btn ghost" href="probabilidad_b3_intro.html">Bloque 3 →</a>
+  </div>
+</div>
+
+<script>
+// ---------- Banco de preguntas: Bloque 2 · Concepto de probabilidad ----------
+const BANCO_TEORIA = [
+  {q:"¿Qué exige la regla de Laplace para poder aplicarse?", o:["Que los resultados del espacio muestral sean equiprobables", "Que el espacio muestral sea finito únicamente", "Que el suceso sea elemental", "Que la probabilidad sea mayor que 0'5"], c:0},
+  {q:"¿Por qué la regla de Laplace no sirve para un dado trucado?", o:["Porque los resultados no son equiprobables, y Laplace exige que lo sean", "Porque el dado deja de ser un experimento aleatorio", "Porque el espacio muestral cambia de tamaño", "Porque no se puede calcular ninguna probabilidad"], c:0},
+  {q:"¿Qué axioma de Kolmogórov garantiza P(E)=1?", o:["El segundo axioma", "El primero", "El tercero", "Ninguno, es una propiedad derivada"], c:0},
+  {q:"Si A y B son incompatibles, ¿qué axioma permite calcular P(A∪B) como P(A)+P(B) directamente?", o:["El tercer axioma", "El primero", "El segundo", "La regla de Laplace únicamente"], c:0},
+  {q:"¿La definición axiomática de probabilidad sustituye a la regla de Laplace?", o:["No, la generaliza: Laplace es un caso particular cuando hay equiprobabilidad", "Sí, Laplace ya no es válida nunca", "Sí, son completamente independientes entre sí", "No tienen relación entre sí"], c:0},
+  {q:"¿Cuál de estas NO es una propiedad derivada de los axiomas?", o:["P(A)=P(Ā) siempre", "P(∅)=0", "P(Ā)=1-P(A)", "P(A∪B)=P(A)+P(B)-P(A∩B)"], c:0},
+  {q:"¿Qué relación hay entre P(A∪B) y P(A)+P(B) cuando A y B NO son incompatibles?", o:["P(A∪B) es menor que P(A)+P(B), porque se resta P(A∩B)", "P(A∪B) es siempre mayor que P(A)+P(B)", "Son siempre iguales", "No se puede calcular P(A∪B)"], c:0},
+  {q:"Según las Leyes de De Morgan aplicadas a probabilidad, P(Ā∩B̄) es igual a...", o:["1-P(A∪B)", "P(A∪B)", "1-P(A∩B)", "P(A)+P(B)"], c:0},
+  {q:"Según De Morgan, P(Ā∪B̄) es igual a...", o:["1-P(A∩B)", "1-P(A∪B)", "P(A∩B)", "P(A)-P(B)"], c:0},
+  {q:"Si P(A)=0'4 y P(B)=0'9, ¿pueden ser A y B incompatibles?", o:["No, porque P(A)+P(B)=1'3>1, lo que es imposible si fueran incompatibles", "Sí, siempre pueden serlo", "Depende del espacio muestral", "Sí, porque ambas probabilidades son válidas por separado"], c:0},
+  {q:"¿Es posible que P(A∩B) sea mayor que P(A)?", o:["No, porque A∩B⊆A, y por tanto P(A∩B)≤P(A) siempre", "Sí, si B tiene mayor probabilidad que A", "Sí, siempre que A y B sean compatibles", "Depende de si son independientes"], c:0},
+  {q:"¿Qué le pasa a P(A∪B) si A⊆B?", o:["P(A∪B)=P(B)", "P(A∪B)=P(A)", "P(A∪B)=P(A)+P(B)", "P(A∪B)=0"], c:0},
+  {q:"¿Qué le pasa a P(A∩B) si A⊆B?", o:["P(A∩B)=P(A)", "P(A∩B)=P(B)", "P(A∩B)=0", "P(A∩B)=1"], c:0},
+  {q:"Un experimento tiene un espacio muestral con resultados NO equiprobables. ¿Qué se necesita para calcular probabilidades?", o:["Conocer o poder deducir la probabilidad de cada resultado, ya que Laplace no aplica", "Aplicar directamente Laplace igualmente", "Suponer que sí son equiprobables", "No se puede calcular ninguna probabilidad"], c:0},
+  {q:"¿Por qué P(A) siempre está entre 0 y 1?", o:["Por el primer axioma de Kolmogórov", "Por la regla de Laplace únicamente", "Porque A siempre es un suceso elemental", "Es una convención sin justificación matemática"], c:0},
+  {q:"Si P(A)=0, ¿implica necesariamente que A=∅?", o:["No necesariamente en general (aunque en experimentos finitos con Laplace sí ocurre)", "Sí, siempre A=∅", "No, P(A)=0 es imposible", "Sí, porque lo exige el axioma 1"], c:0}
+];
+
+const BANCO_APLICACION = [
+  {q:"Una urna tiene 5 bolas rojas, 3 azules y 2 verdes. Calcula P(roja)", o:["0'5", "0'3", "0'2", "0'1"], c:0},
+  {q:"Con la urna anterior (5 rojas, 3 azules, 2 verdes de 10), calcula P(no roja)", o:["0'5", "0'3", "0'2", "0'7"], c:0},
+  {q:"Si P(A)=0'35, calcula P(Ā)", o:["0'65", "0'35", "-0'35", "1'35"], c:0},
+  {q:"Sean A,B con P(A)=0'5, P(B)=0'3, P(A∩B)=0'1. Calcula P(A∪B)", o:["0'7", "0'8", "0'9", "0'6"], c:0},
+  {q:"Con los mismos datos (P(A)=0'5, P(B)=0'3, P(A∩B)=0'1), ¿son A y B incompatibles?", o:["No, porque P(A∩B)=0'1≠0", "Sí, porque P(A∩B) es pequeño", "Sí, siempre que P(A∪B)<1", "No se puede saber"], c:0},
+  {q:"Sean A y B con P(A∪B)=0'8, P(A)=0'5, P(B)=0'4. Calcula P(A∩B)", o:["0'1", "0'9", "0'3", "-0'1"], c:0},
+  {q:"Sean A,B,C incompatibles dos a dos con P(A)=0'2, P(B)=0'3, P(C)=0'15. Calcula P(A∪B∪C)", o:["0'65", "0'35", "1", "0'15"], c:0},
+  {q:"Si P(A)=0'6 y P(B)=0'5, ¿por qué A y B NO pueden ser incompatibles?", o:["Porque P(A)+P(B)=1'1>1, y para incompatibles se necesitaría P(A)+P(B)≤1", "Porque ambas probabilidades son mayores que 0'5", "Porque el espacio muestral es finito", "No hay ninguna razón matemática"], c:0},
+  {q:"Si P(A)=0'7, calcula P(A∩A)", o:["0'7", "0'49", "1'4", "0"], c:0},
+  {q:"Sean A y B con P(A)=0'4, P(A∩B)=0'15. Calcula P(A-B) (ocurre A pero no B)", o:["0'25", "0'55", "0'15", "0'4"], c:0},
+  {q:"Sean A y B con P(A∪B)=0'75 y P(A∩B)=0'2. Si P(A)=0'45, calcula P(B)", o:["0'5", "0'55", "0'3", "0'95"], c:0},
+  {q:"Si P(Ā)=0'35, calcula P(A∪Ā)", o:["1", "0'65", "0'35", "0"], c:0},
+  {q:"Si P(A)=0'6 y P(B)=0'25 con A y B incompatibles, calcula P(A∪B)", o:["0'85", "0'75", "0'15", "1"], c:0},
+  {q:"Se sabe que P(Ā∩B̄)=0'3. Calcula P(A∪B)", o:["0'7", "0'3", "-0'7", "1'3"], c:0},
+  {q:"Se sabe que P(Ā∪B̄)=0'85. Calcula P(A∩B)", o:["0'15", "0'85", "-0'15", "1'85"], c:0},
+  {q:"Sean A,B con P(A)=0'3, P(B)=0'4 y P(A∩B)=0'12. Calcula P(A∪B)", o:["0'58", "0'7", "0'46", "0'82"], c:0}
+];
+
+let orden = [];
+let idx = 0;
+let ok = 0, bad = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function empezar(){
+  const nombre = document.getElementById('nombre').value.trim();
+  if(!nombre){ alert('Escribe tu nombre para empezar.'); return; }
+  document.getElementById('gate').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  generarSecuencia();
+  mostrarPregunta();
+}
+
+function generarSecuencia(){
+  const todas = shuffle(
+    BANCO_TEORIA.map(x=>({...x,tipo:'teoria'})).concat(
+    BANCO_APLICACION.map(x=>({...x,tipo:'aplicacion'})))
+  );
+  orden = todas;
+  idx = 0; ok = 0; bad = 0;
+}
+
+function mostrarPregunta(){
+  if(idx >= orden.length){ generarSecuencia(); }
+  const item = orden[idx];
+  document.getElementById('contador').textContent = `Pregunta ${idx+1}`;
+  document.getElementById('okcount').textContent = ok;
+  document.getElementById('badcount').textContent = bad;
+  const tag = document.getElementById('qtag');
+  tag.textContent = item.tipo === 'teoria' ? 'Teoría' : 'Aplicación';
+  tag.className = 'qtag ' + item.tipo;
+  document.getElementById('qtext').innerHTML = item.q;
+
+  const opciones = shuffle(item.o.map((texto,i)=>({texto, esCorrecta:i===item.c})));
+  const cont = document.getElementById('opciones');
+  cont.innerHTML='';
+  opciones.forEach(op=>{
+    const btn = document.createElement('button');
+    btn.className='opt';
+    btn.innerHTML = op.texto;
+    btn.onclick = ()=>responder(btn, op.esCorrecta, opciones, cont);
+    cont.appendChild(btn);
+  });
+
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('btnSiguiente').disabled = true;
+  if(window.MathJax){ MathJax.typesetClear([cont, document.getElementById('qtext')]); MathJax.typesetPromise([cont, document.getElementById('qtext')]); }
+}
+
+function responder(btnPulsado, esCorrecta, opciones, cont){
+  const botones = cont.querySelectorAll('.opt');
+  botones.forEach(b=>b.disabled=true);
+  botones.forEach((b,i)=>{
+    if(opciones[i].esCorrecta) b.classList.add('correcta');
+  });
+  if(!esCorrecta) btnPulsado.classList.add('incorrecta');
+
+  const fb = document.getElementById('feedback');
+  if(esCorrecta){
+    ok++;
+    fb.textContent = '✓ Correcto.';
+    fb.className = 'feedback show ok';
+  } else {
+    bad++;
+    fb.textContent = '✗ No es correcto. La respuesta correcta está marcada en verde.';
+    fb.className = 'feedback show bad';
+  }
+  document.getElementById('okcount').textContent = ok;
+  document.getElementById('badcount').textContent = bad;
+  document.getElementById('btnSiguiente').disabled = false;
+}
+
+function siguiente(){
+  idx++;
+  mostrarPregunta();
+}
+</script>
+
+</body>
+</html>

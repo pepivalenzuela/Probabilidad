@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B1 — Conceptos fundamentales · Las Chapas ECOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<style>
+  :root{
+    --navy:#1a2e4a;
+    --navy-light:#2a4468;
+    --teal:#1d7a6b;
+    --teal-light:#e4f2ef;
+    --orange:#e07b3a;
+    --orange-light:#fdeee0;
+    --cream:#f5f2eb;
+    --ink:#2b2b2b;
+    --muted:#6b6f76;
+    --white:#ffffff;
+    --line:#e4e0d6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:'Nunito Sans',sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.7;
+  }
+  h1,h2,h3,.brand{font-family:'Nunito',sans-serif}
+  a{color:inherit;text-decoration:none}
+
+  header.top{
+    background:var(--navy);
+    color:#fff;
+    padding:14px 24px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:.88rem;
+    font-weight:600;
+    flex-wrap:wrap;
+  }
+  header.top a{color:#cfd8e6}
+  header.top a:hover{color:#fff}
+  header.top .sep{color:#5c6b82}
+  header.top .current{color:#fff;font-weight:800}
+
+  .wrap{max-width:800px;margin:0 auto;padding:0 24px}
+
+  .hero{padding:44px 0 8px;text-align:center}
+  .hero .kicker{
+    display:inline-block;
+    background:var(--orange-light);
+    color:var(--orange);
+    font-weight:800;
+    font-size:.76rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:6px 14px;
+    border-radius:100px;
+    margin-bottom:16px;
+  }
+  .hero h1{
+    font-size:2.15rem;
+    font-weight:900;
+    color:var(--navy);
+    margin:0 0 16px;
+    letter-spacing:-.01em;
+  }
+  .hero h1 em{font-style:normal;color:var(--teal)}
+  .hero p.lead{color:var(--muted);font-size:1.05rem;max-width:620px;margin:0 auto}
+
+  section{padding:34px 0}
+  section h2{
+    color:var(--navy);
+    font-size:1.35rem;
+    margin:0 0 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  section h2 .n{
+    background:var(--teal);
+    color:#fff;
+    width:30px;height:30px;
+    border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.9rem;font-weight:800;
+    flex-shrink:0;
+  }
+  p{margin:0 0 14px}
+
+  .box{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px 24px;
+    margin:16px 0;
+  }
+  .box.definicion{
+    border-left:6px solid var(--navy);
+    background:linear-gradient(180deg,#fff,#fbfbf9);
+  }
+  .box.definicion .tag{
+    font-weight:800;color:var(--navy);font-size:.82rem;
+    text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;
+  }
+  .box.ejemplo{border-left:6px solid var(--orange)}
+  .box.ejemplo .tag{color:var(--orange);font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+
+  .verif{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:var(--teal-light);
+    border-radius:10px;
+    padding:14px 18px;
+    margin:14px 0;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .verif .flecha{color:var(--teal);font-size:1.3rem}
+
+  .familia{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:10px;
+    margin:16px 0;
+  }
+  .familia .item{
+    background:var(--navy);
+    color:#fff;
+    text-align:center;
+    padding:12px 8px;
+    border-radius:10px;
+    font-size:.95rem;
+  }
+  .familia .item.destacado{background:var(--orange)}
+
+  table.props{width:100%;border-collapse:collapse;margin:16px 0}
+  table.props td{
+    border:1px solid var(--line);
+    padding:12px 14px;
+    background:#fff;
+  }
+  table.props tr td:first-child{
+    font-weight:700;color:var(--navy);width:38%;
+  }
+
+  .mundo{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;
+    margin:16px 0;
+  }
+  .mundo .item{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 18px;
+  }
+  .mundo .item .k{
+    color:var(--teal);
+    font-weight:800;
+    font-size:.75rem;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:4px;
+  }
+  .mundo .item h4{margin:0 0 6px;color:var(--navy);font-size:1rem}
+  .mundo .item p{margin:0;color:var(--muted);font-size:.92rem}
+
+  .ib{
+    background:var(--navy);
+    color:#fff;
+    border-radius:16px;
+    padding:28px 26px;
+    margin:38px 0;
+  }
+  .ib h3{margin:0 0 16px;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+  .ib .grid2{display:grid;grid-template-columns:1fr;gap:16px}
+  .ib .card{background:rgba(255,255,255,.08);border-radius:10px;padding:16px 18px}
+  .ib .card .t{font-weight:800;font-size:.82rem;color:#ffd4ae;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+  .ib .card p{margin:0;color:#e6ebf2;font-size:.95rem}
+  .ib .indagacion{
+    background:rgba(224,123,58,.18);
+    border:1px solid rgba(224,123,58,.4);
+    border-radius:10px;
+    padding:18px 20px;
+    margin-bottom:16px;
+  }
+  .ib .indagacion .t{color:var(--orange);font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .ib .indagacion p{margin:0;font-weight:600}
+
+  .nav-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:30px 0 60px;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-block;
+    padding:13px 22px;
+    border-radius:10px;
+    font-weight:800;
+    font-size:.95rem;
+  }
+  .btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+  .btn.ghost:hover{background:#f0ede4}
+  .btn.on{background:var(--teal);color:#fff}
+  .btn.on:hover{background:#166357}
+  .btn.off{background:#ece9df;color:#a6a196;cursor:default}
+
+  .video-box{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px;
+    margin:18px 0;
+  }
+  .video-box .vt{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:800;
+    color:var(--navy);
+    font-size:.9rem;
+    margin:2px 6px 12px;
+  }
+  .video-box .vt .dot{
+    width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0;
+  }
+  .video-box .frame{
+    position:relative;
+    width:100%;
+    padding-top:56.25%;
+    border-radius:10px;
+    overflow:hidden;
+    background:#0d1622;
+  }
+  .video-box .frame iframe{
+    position:absolute;top:0;left:0;width:100%;height:100%;border:0;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html">Portal de Probabilidad</a>
+  <span class="sep">·</span>
+  <span class="current">Bloque 1</span>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <span class="kicker">Bloque 1 · Introducción</span>
+    <h1>Conceptos <em>fundamentales</em></h1>
+    <p class="lead">Antes de calcular ninguna probabilidad, necesitamos un lenguaje común: qué es un experimento aleatorio, qué es el espacio muestral, y qué es exactamente un suceso. Todo lo que viene después se construye sobre estas cuatro ideas.</p>
+  </div>
+
+  <section>
+    <h2><span class="n">1</span> Experimento aleatorio</h2>
+    <div class="box definicion">
+      <div class="tag">Definición</div>
+      <p style="margin-bottom:0">Un <strong>experimento aleatorio</strong> es un proceso o acción cuyo resultado <strong>no se puede predecir con certeza</strong> antes de realizarlo, aunque se repita siempre en las mismas condiciones.</p>
+    </div>
+    <p>Se distingue del experimento <strong>determinista</strong>, donde el resultado sí está garantizado de antemano (por ejemplo, calentar agua a presión normal siempre hierve a 100°C).</p>
+
+    <div class="mundo">
+      <div class="item"><div class="k">Ejemplo</div><h4>Lanzar una moneda</h4><p>No sabes si saldrá cara o cruz, aunque la lances siempre del mismo modo.</p></div>
+      <div class="item"><div class="k">Ejemplo</div><h4>Lanzar un dado</h4><p>No sabes qué número saldrá, aunque el dado y el lanzamiento sean siempre iguales.</p></div>
+      <div class="item"><div class="k">Ejemplo</div><h4>Extraer una carta</h4><p>No sabes qué carta saldrá de una baraja bien mezclada.</p></div>
+      <div class="item"><div class="k">No es aleatorio</div><h4>Calentar agua a 100°C</h4><p>A presión normal, el resultado (que hierva) está garantizado: es determinista.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span> Espacio muestral</h2>
+    <div class="box definicion">
+      <div class="tag">Definición</div>
+      <p style="margin-bottom:0">El <strong>espacio muestral</strong>, que representamos como \(E\) o \(\Omega\), es el <strong>conjunto de todos los resultados posibles</strong> de un experimento aleatorio.</p>
+    </div>
+
+    <div class="box ejemplo">
+      <div class="tag">Ejemplos</div>
+      <p>Lanzar una moneda: \(E=\{C,X\}\)</p>
+      <p>Lanzar un dado: \(E=\{1,2,3,4,5,6\}\)</p>
+      <p style="margin-bottom:0">Lanzar dos monedas: \(E=\{CC,CX,XC,XX\}\)</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span> Sucesos</h2>
+    <div class="box definicion">
+      <div class="tag">Definición</div>
+      <p style="margin-bottom:0">Un <strong>suceso</strong> es cualquier <strong>subconjunto del espacio muestral</strong>. Representa "que ocurra tal cosa" al realizar el experimento.</p>
+    </div>
+
+    <div class="box ejemplo">
+      <div class="tag">Ejemplo</div>
+      <p>En el lanzamiento de un dado, \(E=\{1,2,3,4,5,6\}\). El suceso "sacar un número par" es:</p>
+      <p style="margin-bottom:0">\[A = \{2,4,6\} \subseteq E\]</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span> Tipos de sucesos</h2>
+    <table class="props">
+      <tr><td>Suceso elemental</td><td>Formado por un único resultado del espacio muestral. Ej: "sacar un 3" = \(\{3\}\)</td></tr>
+      <tr><td>Suceso compuesto</td><td>Formado por varios resultados. Ej: "sacar par" = \(\{2,4,6\}\)</td></tr>
+      <tr><td>Suceso seguro</td><td>Coincide con todo el espacio muestral, \(E\). Siempre ocurre. Ej: "sacar un número del 1 al 6"</td></tr>
+      <tr><td>Suceso imposible</td><td>El conjunto vacío, \(\varnothing\). Nunca ocurre. Ej: "sacar un 7" al lanzar un dado</td></tr>
+      <tr><td>Suceso contrario (o complementario)</td><td>De un suceso \(A\), es el que ocurre cuando \(A\) NO ocurre. Se escribe \(\bar{A}\) o \(A^c\). Ej: si \(A=\{2,4,6\}\), entonces \(\bar{A}=\{1,3,5\}\)</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="n">5</span> Ejercicios: indicar el espacio muestral</h2>
+    <div class="box ejemplo">
+      <div class="tag">Ejercicio resuelto</div>
+      <p>Escribe el espacio muestral de: <em>lanzar una moneda tres veces seguidas.</em></p>
+      <p style="margin-bottom:0">\[E=\{CCC,CCX,CXC,XCC,CXX,XCX,XXC,XXX\}\]</p>
+    </div>
+    <div class="box ejemplo">
+      <div class="tag">Ejercicio resuelto</div>
+      <p>Escribe el espacio muestral de: <em>extraer una bola de una urna con 3 bolas rojas y 2 verdes, fijándonos solo en el color.</em></p>
+      <p style="margin-bottom:0">\[E=\{R,V\}\]</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">6</span> Operaciones con sucesos</h2>
+    <p>Como los sucesos son conjuntos, podemos combinarlos con las operaciones habituales de conjuntos:</p>
+    <table class="props">
+      <tr><td>Unión, \(A\cup B\)</td><td>Ocurre \(A\), o \(B\), o ambos.</td></tr>
+      <tr><td>Intersección, \(A\cap B\)</td><td>Ocurren \(A\) y \(B\) a la vez.</td></tr>
+      <tr><td>Complementario, \(\bar{A}\)</td><td>No ocurre \(A\).</td></tr>
+      <tr><td>Diferencia, \(A-B\)</td><td>Ocurre \(A\) pero no \(B\). Equivale a \(A\cap\bar{B}\).</td></tr>
+      <tr><td>Sucesos incompatibles</td><td>No pueden ocurrir a la vez: \(A\cap B=\varnothing\).</td></tr>
+      <tr><td>Sucesos compatibles</td><td>Sí pueden ocurrir a la vez: \(A\cap B\neq\varnothing\).</td></tr>
+    </table>
+
+    <p>Estas operaciones cumplen las mismas propiedades que las operaciones de conjuntos:</p>
+    <table class="props">
+      <tr><td></td><td style="font-weight:800;color:var(--navy)">Unión</td><td style="font-weight:800;color:var(--navy)">Intersección</td></tr>
+      <tr><td>Conmutativa</td><td>\(A\cup B = B\cup A\)</td><td>\(A\cap B = B\cap A\)</td></tr>
+      <tr><td>Asociativa</td><td>\((A\cup B)\cup C = A\cup(B\cup C)\)</td><td>\((A\cap B)\cap C = A\cap(B\cap C)\)</td></tr>
+      <tr><td>Idempotente</td><td>\(A\cup A = A\)</td><td>\(A\cap A = A\)</td></tr>
+      <tr><td>Simplificativa</td><td>\(A\cup(A\cap B) = A\)</td><td>\(A\cap(A\cup B) = A\)</td></tr>
+      <tr><td>Distributiva</td><td>\(A\cup(B\cap C) = (A\cup B)\cap(A\cup C)\)</td><td>\(A\cap(B\cup C) = (A\cap B)\cup(A\cap C)\)</td></tr>
+      <tr><td>Elemento neutro</td><td>\(A\cup\varnothing = A\)</td><td>\(A\cap\Omega = A\)</td></tr>
+      <tr><td>Complementación</td><td>\(A\cup\bar{A} = \Omega\)</td><td>\(A\cap\bar{A} = \varnothing\)</td></tr>
+      <tr><td>Leyes de De Morgan</td><td>\(\overline{A\cup B} = \bar{A}\cap\bar{B}\)</td><td>\(\overline{A\cap B} = \bar{A}\cup\bar{B}\)</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="n">7</span> Ejercicios con operaciones de sucesos</h2>
+    <div class="box ejemplo">
+      <div class="tag">Ejercicio resuelto</div>
+      <p>En el lanzamiento de un dado, \(E=\{1,2,3,4,5,6\}\). Sean \(A=\{1,2,3\}\) (sacar 3 o menos) y \(B=\{2,4,6\}\) (sacar par). Calcula \(A\cup B\), \(A\cap B\) y \(\bar{A}\).</p>
+      <p>\[A\cup B = \{1,2,3,4,6\}\]</p>
+      <p>\[A\cap B = \{2\}\]</p>
+      <p style="margin-bottom:0">\[\bar{A} = \{4,5,6\}\]</p>
+    </div>
+    <div class="box ejemplo">
+      <div class="tag">Ejercicio resuelto</div>
+      <p>Con los mismos sucesos \(A\) y \(B\) del ejercicio anterior, ¿son \(A\) y \(B\) incompatibles?</p>
+      <p style="margin-bottom:0">Como \(A\cap B = \{2\} \neq \varnothing\), <strong>no son incompatibles</strong>: son compatibles, porque el resultado 2 pertenece a ambos.</p>
+    </div>
+  </section>
+
+  <div class="ib">
+    <h3>🎓 Profundiza — Marco IB</h3>
+    <div class="indagacion">
+      <div class="t">🔍 Pregunta de indagación</div>
+      <p>Un suceso es un conjunto, y las operaciones entre sucesos son operaciones de conjuntos. ¿Qué gana la probabilidad al apoyarse en el lenguaje de la teoría de conjuntos, en lugar de crear un lenguaje propio desde cero?</p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="t">Concepto clave</div>
+        <p>Representación · Sistemas. Modelar la incertidumbre exige primero un lenguaje formal (espacio muestral, sucesos) antes de poder medir nada.</p>
+      </div>
+      <div class="card">
+        <div class="t">Habilidad ATL</div>
+        <p>Transferencia: reconocer que las propiedades ya conocidas de conjuntos (conmutativa, De Morgan...) se aplican directamente, sin tener que volver a demostrarlas.</p>
+      </div>
+      <div class="card">
+        <div class="t">Conexión TdC</div>
+        <p>¿Por qué las matemáticas reutilizan una misma estructura (la teoría de conjuntos) para modelar fenómenos tan distintos como la lógica, la probabilidad o la informática?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <a class="btn ghost" href="index.html">← Portal de Probabilidad</a>
+    <a class="btn on" href="probabilidad_b1_practica.html">Practicar B1 →</a>
+    <a class="btn ghost" href="probabilidad_b2_intro.html">Bloque 2 →</a>
+  </div>
+
+</div>
+
+</body>
+</html>

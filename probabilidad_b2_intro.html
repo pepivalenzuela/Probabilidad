@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2 — Concepto de probabilidad · Las Chapas ECOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<style>
+  :root{
+    --navy:#1a2e4a;
+    --navy-light:#2a4468;
+    --teal:#1d7a6b;
+    --teal-light:#e4f2ef;
+    --orange:#e07b3a;
+    --orange-light:#fdeee0;
+    --cream:#f5f2eb;
+    --ink:#2b2b2b;
+    --muted:#6b6f76;
+    --white:#ffffff;
+    --line:#e4e0d6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:'Nunito Sans',sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.7;
+  }
+  h1,h2,h3,.brand{font-family:'Nunito',sans-serif}
+  a{color:inherit;text-decoration:none}
+
+  header.top{
+    background:var(--navy);
+    color:#fff;
+    padding:14px 24px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:.88rem;
+    font-weight:600;
+    flex-wrap:wrap;
+  }
+  header.top a{color:#cfd8e6}
+  header.top a:hover{color:#fff}
+  header.top .sep{color:#5c6b82}
+  header.top .current{color:#fff;font-weight:800}
+
+  .wrap{max-width:800px;margin:0 auto;padding:0 24px}
+
+  .hero{padding:44px 0 8px;text-align:center}
+  .hero .kicker{
+    display:inline-block;
+    background:var(--orange-light);
+    color:var(--orange);
+    font-weight:800;
+    font-size:.76rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:6px 14px;
+    border-radius:100px;
+    margin-bottom:16px;
+  }
+  .hero h1{
+    font-size:2.15rem;
+    font-weight:900;
+    color:var(--navy);
+    margin:0 0 16px;
+    letter-spacing:-.01em;
+  }
+  .hero h1 em{font-style:normal;color:var(--teal)}
+  .hero p.lead{color:var(--muted);font-size:1.05rem;max-width:620px;margin:0 auto}
+
+  section{padding:34px 0}
+  section h2{
+    color:var(--navy);
+    font-size:1.35rem;
+    margin:0 0 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  section h2 .n{
+    background:var(--teal);
+    color:#fff;
+    width:30px;height:30px;
+    border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.9rem;font-weight:800;
+    flex-shrink:0;
+  }
+  p{margin:0 0 14px}
+
+  .box{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px 24px;
+    margin:16px 0;
+  }
+  .box.definicion{
+    border-left:6px solid var(--navy);
+    background:linear-gradient(180deg,#fff,#fbfbf9);
+  }
+  .box.definicion .tag{
+    font-weight:800;color:var(--navy);font-size:.82rem;
+    text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;
+  }
+  .box.ejemplo{border-left:6px solid var(--orange)}
+  .box.ejemplo .tag{color:var(--orange);font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+
+  .verif{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:var(--teal-light);
+    border-radius:10px;
+    padding:14px 18px;
+    margin:14px 0;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .verif .flecha{color:var(--teal);font-size:1.3rem}
+
+  .familia{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:10px;
+    margin:16px 0;
+  }
+  .familia .item{
+    background:var(--navy);
+    color:#fff;
+    text-align:center;
+    padding:12px 8px;
+    border-radius:10px;
+    font-size:.95rem;
+  }
+  .familia .item.destacado{background:var(--orange)}
+
+  table.props{width:100%;border-collapse:collapse;margin:16px 0}
+  table.props td{
+    border:1px solid var(--line);
+    padding:12px 14px;
+    background:#fff;
+  }
+  table.props tr td:first-child{
+    font-weight:700;color:var(--navy);width:38%;
+  }
+
+  .mundo{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;
+    margin:16px 0;
+  }
+  .mundo .item{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 18px;
+  }
+  .mundo .item .k{
+    color:var(--teal);
+    font-weight:800;
+    font-size:.75rem;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:4px;
+  }
+  .mundo .item h4{margin:0 0 6px;color:var(--navy);font-size:1rem}
+  .mundo .item p{margin:0;color:var(--muted);font-size:.92rem}
+
+  .ib{
+    background:var(--navy);
+    color:#fff;
+    border-radius:16px;
+    padding:28px 26px;
+    margin:38px 0;
+  }
+  .ib h3{margin:0 0 16px;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+  .ib .grid2{display:grid;grid-template-columns:1fr;gap:16px}
+  .ib .card{background:rgba(255,255,255,.08);border-radius:10px;padding:16px 18px}
+  .ib .card .t{font-weight:800;font-size:.82rem;color:#ffd4ae;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+  .ib .card p{margin:0;color:#e6ebf2;font-size:.95rem}
+  .ib .indagacion{
+    background:rgba(224,123,58,.18);
+    border:1px solid rgba(224,123,58,.4);
+    border-radius:10px;
+    padding:18px 20px;
+    margin-bottom:16px;
+  }
+  .ib .indagacion .t{color:var(--orange);font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .ib .indagacion p{margin:0;font-weight:600}
+
+  .nav-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:30px 0 60px;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-block;
+    padding:13px 22px;
+    border-radius:10px;
+    font-weight:800;
+    font-size:.95rem;
+  }
+  .btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+  .btn.ghost:hover{background:#f0ede4}
+  .btn.on{background:var(--teal);color:#fff}
+  .btn.on:hover{background:#166357}
+  .btn.off{background:#ece9df;color:#a6a196;cursor:default}
+
+  .video-box{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px;
+    margin:18px 0;
+  }
+  .video-box .vt{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:800;
+    color:var(--navy);
+    font-size:.9rem;
+    margin:2px 6px 12px;
+  }
+  .video-box .vt .dot{
+    width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0;
+  }
+  .video-box .frame{
+    position:relative;
+    width:100%;
+    padding-top:56.25%;
+    border-radius:10px;
+    overflow:hidden;
+    background:#0d1622;
+  }
+  .video-box .frame iframe{
+    position:absolute;top:0;left:0;width:100%;height:100%;border:0;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html">Portal de Probabilidad</a>
+  <span class="sep">·</span>
+  <span class="current">Bloque 2</span>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <span class="kicker">Bloque 2 · Introducción</span>
+    <h1>Concepto de <em>probabilidad</em></h1>
+    <p class="lead">Ya sabes describir un experimento y sus sucesos. Ahora toca ponerles un número: ¿qué significa exactamente "la probabilidad de A", y qué reglas tiene que cumplir ese número para tener sentido?</p>
+  </div>
+
+  <section>
+    <h2><span class="n">1</span> Definición clásica: Regla de Laplace</h2>
+
+    <div class="box definicion">
+      <div class="tag">Un poco de historia</div>
+      <p>A mediados del siglo XVII, el noble francés Chevalier de Méré planteó a Blaise Pascal varios problemas sobre juegos de azar — por ejemplo, cómo repartir de forma justa las apuestas de una partida interrumpida. Pascal se los trasladó a Pierre de Fermat, y el intercambio de cartas entre ambos en 1654 se considera el punto de partida de la teoría de la probabilidad.</p>
+      <p style="margin-bottom:0">Casi 150 años después, <strong>Pierre-Simon Laplace</strong> (1749-1827) recogió y sistematizó estas ideas en su obra <em>Théorie analytique des probabilités</em> (1812), donde formalizó la regla que lleva su nombre: cuando todos los resultados de un experimento son igual de posibles, calcular una probabilidad se reduce a <strong>contar</strong>.</p>
+    </div>
+
+    <div class="box definicion">
+      <div class="tag">Regla de Laplace</div>
+      <p>Si un experimento aleatorio tiene un espacio muestral \(E\) con todos sus resultados <strong>equiprobables</strong> (igual de probables), la probabilidad de un suceso \(A\) es:</p>
+      <p style="text-align:center;font-size:1.3rem;margin:16px 0">\[P(A) = \frac{\text{nº de casos favorables}}{\text{nº de casos posibles}} = \frac{|A|}{|E|}\]</p>
+    </div>
+
+    <div class="box ejemplo">
+      <div class="tag">Ejemplo</div>
+      <p>Lanzamos un dado no trucado. \(E=\{1,2,3,4,5,6\}\), y todos los resultados son equiprobables. ¿Cuál es la probabilidad de sacar un número par?</p>
+      <p>El suceso es \(A=\{2,4,6\}\), con 3 casos favorables sobre 6 posibles:</p>
+      <p style="margin-bottom:0">\[P(A) = \frac{3}{6} = \frac{1}{2}\]</p>
+    </div>
+
+    <p><strong>El límite de esta regla:</strong> solo funciona si los resultados son equiprobables. Si el dado está trucado, o si el experimento no reparte las probabilidades por igual, la regla de Laplace deja de ser válida — necesitamos una definición más general.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span> Definición axiomática de probabilidad</h2>
+    <p>En 1933, el matemático ruso <strong>Andréi Kolmógorov</strong> propuso una definición de probabilidad que no depende de que los resultados sean equiprobables: en lugar de decir "cómo se calcula", establece <strong>qué reglas mínimas</strong> debe cumplir cualquier cosa que llamemos "probabilidad".</p>
+
+    <div class="box definicion">
+      <div class="tag">Axiomas de la probabilidad</div>
+      <p>Una probabilidad es una función que asigna a cada suceso \(A\) del espacio muestral un número real, \(P:\text{sucesos}\rightarrow\mathbb{R}\), \(A\mapsto P(A)\), que cumple:</p>
+      <table class="props" style="margin-top:14px">
+        <tr><td>Axioma 1</td><td>\(0 \leq P(A) \leq 1\), para cualquier suceso \(A\)</td></tr>
+        <tr><td>Axioma 2</td><td>\(P(E) = 1\) (el suceso seguro tiene probabilidad 1)</td></tr>
+        <tr><td>Axioma 3</td><td>Si \(A\) y \(B\) son incompatibles (\(A\cap B=\varnothing\)), entonces \(P(A\cup B) = P(A)+P(B)\)</td></tr>
+      </table>
+    </div>
+
+    <p>Fíjate en que la regla de Laplace <strong>cumple estos tres axiomas</strong> cuando los resultados son equiprobables — por eso no la sustituye, sino que la generaliza: la definición axiomática también sirve para dados trucados, monedas cargadas o cualquier situación donde las probabilidades no sean iguales.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span> Comportamiento de la probabilidad respecto a las operaciones</h2>
+    <p>A partir de los tres axiomas se pueden demostrar propiedades que usarás constantemente para calcular probabilidades de sucesos combinados:</p>
+
+    <table class="props">
+      <tr><td>1) Suceso imposible</td><td>\(P(\varnothing) = 0\)</td></tr>
+      <tr><td>2) Suceso contrario</td><td>\(P(\bar{A}) = 1 - P(A)\)</td></tr>
+      <tr><td>3) Unión general</td><td>\(P(A\cup B) = P(A)+P(B)-P(A\cap B)\) — y si \(A\), \(B\) son incompatibles, se reduce a \(P(A\cup B)=P(A)+P(B)\)</td></tr>
+      <tr><td>4) Diferencia</td><td>\(P(A-B) = P(A) - P(A\cap B)\)</td></tr>
+      <tr><td>5) Leyes de De Morgan</td><td>\(P(\bar{A}\cap\bar{B}) = P(\overline{A\cup B}) = 1-P(A\cup B)\)<br>\(P(\bar{A}\cup\bar{B}) = P(\overline{A\cap B}) = 1-P(A\cap B)\)</td></tr>
+    </table>
+
+    <div class="box ejemplo">
+      <div class="tag">Ejemplo</div>
+      <p>Sean \(A\) y \(B\) sucesos con \(P(A)=0'4\), \(P(B)=\frac{1}{3}\) y \(P(A\cup B)=\frac{1}{2}\). Calcula \(P(A\cap B)\) y di si \(A\) y \(B\) son incompatibles.</p>
+      <p>Usando la propiedad 3:</p>
+      <p>\[P(A\cup B) = P(A)+P(B)-P(A\cap B) \Rightarrow \frac{1}{2} = 0'4+\frac{1}{3}-P(A\cap B)\]</p>
+      <p style="margin-bottom:0">\[P(A\cap B) = 0'4+\frac{1}{3}-\frac{1}{2} = 0'23\overline{3}\neq 0 \Rightarrow \text{No son incompatibles}\]</p>
+    </div>
+
+    <div class="box ejemplo">
+      <div class="tag">Ejemplo</div>
+      <p>Si \(P(A)=0'6\), calcula \(P(\bar{A})\).</p>
+      <p style="margin-bottom:0">\[P(\bar{A}) = 1-P(A) = 1-0'6 = 0'4\]</p>
+    </div>
+  </section>
+
+  <div class="ib">
+    <h3>🎓 Profundiza — Marco IB</h3>
+    <div class="indagacion">
+      <div class="t">🔍 Pregunta de indagación</div>
+      <p>La regla de Laplace calcula probabilidades contando casos; la definición axiomática no cuenta nada, solo impone reglas. ¿Por qué puede ser más potente definir algo por sus propiedades que por un procedimiento concreto de cálculo?</p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="t">Concepto clave</div>
+        <p>Generalización · Sistemas. Pasar de una regla de conteo (Laplace) a un sistema de axiomas (Kolmogórov) permite que la misma teoría sirva para situaciones muy distintas entre sí.</p>
+      </div>
+      <div class="card">
+        <div class="t">Habilidad ATL</div>
+        <p>Pensamiento transferible: usar las propiedades derivadas de los axiomas como herramientas de cálculo, sin necesidad de volver a demostrarlas cada vez.</p>
+      </div>
+      <div class="card">
+        <div class="t">Conexión TdC</div>
+        <p>Laplace y Fermat llegaron a sus ideas a partir de problemas prácticos de juego. ¿Qué papel juegan los problemas cotidianos en el desarrollo de las matemáticas más abstractas?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <a class="btn ghost" href="index.html">← Portal de Probabilidad</a>
+    <a class="btn ghost" href="probabilidad_b1_intro.html">← Bloque 1</a>
+    <a class="btn on" href="probabilidad_b2_practica.html">Practicar B2 →</a>
+  </div>
+
+</div>
+
+</body>
+</html>

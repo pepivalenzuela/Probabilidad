@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4 — Probabilidad condicionada · Las Chapas ECOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<style>
+  :root{
+    --navy:#1a2e4a;
+    --navy-light:#2a4468;
+    --teal:#1d7a6b;
+    --teal-light:#e4f2ef;
+    --orange:#e07b3a;
+    --orange-light:#fdeee0;
+    --cream:#f5f2eb;
+    --ink:#2b2b2b;
+    --muted:#6b6f76;
+    --white:#ffffff;
+    --line:#e4e0d6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:'Nunito Sans',sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.7;
+  }
+  h1,h2,h3,.brand{font-family:'Nunito',sans-serif}
+  a{color:inherit;text-decoration:none}
+
+  header.top{
+    background:var(--navy);
+    color:#fff;
+    padding:14px 24px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:.88rem;
+    font-weight:600;
+    flex-wrap:wrap;
+  }
+  header.top a{color:#cfd8e6}
+  header.top a:hover{color:#fff}
+  header.top .sep{color:#5c6b82}
+  header.top .current{color:#fff;font-weight:800}
+
+  .wrap{max-width:800px;margin:0 auto;padding:0 24px}
+
+  .hero{padding:44px 0 8px;text-align:center}
+  .hero .kicker{
+    display:inline-block;
+    background:var(--orange-light);
+    color:var(--orange);
+    font-weight:800;
+    font-size:.76rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:6px 14px;
+    border-radius:100px;
+    margin-bottom:16px;
+  }
+  .hero h1{
+    font-size:2.15rem;
+    font-weight:900;
+    color:var(--navy);
+    margin:0 0 16px;
+    letter-spacing:-.01em;
+  }
+  .hero h1 em{font-style:normal;color:var(--teal)}
+  .hero p.lead{color:var(--muted);font-size:1.05rem;max-width:620px;margin:0 auto}
+
+  section{padding:34px 0}
+  section h2{
+    color:var(--navy);
+    font-size:1.35rem;
+    margin:0 0 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  section h2 .n{
+    background:var(--teal);
+    color:#fff;
+    width:30px;height:30px;
+    border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.9rem;font-weight:800;
+    flex-shrink:0;
+  }
+  p{margin:0 0 14px}
+
+  .box{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px 24px;
+    margin:16px 0;
+  }
+  .box.definicion{
+    border-left:6px solid var(--navy);
+    background:linear-gradient(180deg,#fff,#fbfbf9);
+  }
+  .box.definicion .tag{
+    font-weight:800;color:var(--navy);font-size:.82rem;
+    text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;
+  }
+  .box.ejemplo{border-left:6px solid var(--orange)}
+  .box.ejemplo .tag{color:var(--orange);font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+
+  .verif{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:var(--teal-light);
+    border-radius:10px;
+    padding:14px 18px;
+    margin:14px 0;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .verif .flecha{color:var(--teal);font-size:1.3rem}
+
+  .familia{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:10px;
+    margin:16px 0;
+  }
+  .familia .item{
+    background:var(--navy);
+    color:#fff;
+    text-align:center;
+    padding:12px 8px;
+    border-radius:10px;
+    font-size:.95rem;
+  }
+  .familia .item.destacado{background:var(--orange)}
+
+  table.props{width:100%;border-collapse:collapse;margin:16px 0}
+  table.props td{
+    border:1px solid var(--line);
+    padding:12px 14px;
+    background:#fff;
+  }
+  table.props tr td:first-child{
+    font-weight:700;color:var(--navy);width:38%;
+  }
+
+  .mundo{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;
+    margin:16px 0;
+  }
+  .mundo .item{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 18px;
+  }
+  .mundo .item .k{
+    color:var(--teal);
+    font-weight:800;
+    font-size:.75rem;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:4px;
+  }
+  .mundo .item h4{margin:0 0 6px;color:var(--navy);font-size:1rem}
+  .mundo .item p{margin:0;color:var(--muted);font-size:.92rem}
+
+  .ib{
+    background:var(--navy);
+    color:#fff;
+    border-radius:16px;
+    padding:28px 26px;
+    margin:38px 0;
+  }
+  .ib h3{margin:0 0 16px;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+  .ib .grid2{display:grid;grid-template-columns:1fr;gap:16px}
+  .ib .card{background:rgba(255,255,255,.08);border-radius:10px;padding:16px 18px}
+  .ib .card .t{font-weight:800;font-size:.82rem;color:#ffd4ae;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+  .ib .card p{margin:0;color:#e6ebf2;font-size:.95rem}
+  .ib .indagacion{
+    background:rgba(224,123,58,.18);
+    border:1px solid rgba(224,123,58,.4);
+    border-radius:10px;
+    padding:18px 20px;
+    margin-bottom:16px;
+  }
+  .ib .indagacion .t{color:var(--orange);font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .ib .indagacion p{margin:0;font-weight:600}
+
+  .nav-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:30px 0 60px;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-block;
+    padding:13px 22px;
+    border-radius:10px;
+    font-weight:800;
+    font-size:.95rem;
+  }
+  .btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+  .btn.ghost:hover{background:#f0ede4}
+  .btn.on{background:var(--teal);color:#fff}
+  .btn.on:hover{background:#166357}
+  .btn.off{background:#ece9df;color:#a6a196;cursor:default}
+
+  .video-box{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px;
+    margin:18px 0;
+  }
+  .video-box .vt{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:800;
+    color:var(--navy);
+    font-size:.9rem;
+    margin:2px 6px 12px;
+  }
+  .video-box .vt .dot{
+    width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0;
+  }
+  .video-box .frame{
+    position:relative;
+    width:100%;
+    padding-top:56.25%;
+    border-radius:10px;
+    overflow:hidden;
+    background:#0d1622;
+  }
+  .video-box .frame iframe{
+    position:absolute;top:0;left:0;width:100%;height:100%;border:0;
+  }
+  .venn-wrap{
+    display:flex;
+    justify-content:center;
+    margin:18px 0;
+    background:#fbfbf9;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px;
+  }
+  .venn-wrap svg{max-width:100%;height:auto}
+
+  .lectura{
+    background:#fbfbf9;
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:14px 16px;
+    margin:14px 0;
+  }
+  .lectura .lt{
+    font-weight:800;
+    color:var(--navy);
+    font-size:.8rem;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:10px;
+  }
+  .frase-item{
+    display:flex;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:8px;
+    font-size:.92rem;
+  }
+  .frase-item:last-child{margin-bottom:0}
+  .frase{
+    background:var(--orange-light);
+    color:#8a4b1e;
+    padding:2px 8px;
+    border-radius:6px;
+    font-style:italic;
+  }
+  .frase .flecha{color:var(--teal);font-weight:800;font-style:normal}
+  .formula{
+    background:var(--navy);
+    color:#fff;
+    padding:2px 10px;
+    border-radius:6px;
+    font-weight:700;
+    font-size:.88rem;
+  }
+
+  .prop-usada{
+    display:inline-block;
+    background:var(--teal-light);
+    color:var(--teal);
+    font-weight:800;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    padding:3px 9px;
+    border-radius:100px;
+    margin-bottom:6px;
+  }
+
+  table.tabla-datos{
+    border-collapse:collapse;
+    margin:16px auto;
+    background:#fff;
+  }
+  table.tabla-datos th, table.tabla-datos td{
+    border:1px solid var(--line);
+    padding:9px 16px;
+    text-align:center;
+    font-size:.92rem;
+  }
+  table.tabla-datos th{
+    background:var(--navy);
+    color:#fff;
+    font-weight:700;
+  }
+  table.tabla-datos td.total{
+    background:#fbfbf9;
+    font-weight:800;
+    color:var(--navy);
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html">Portal de Probabilidad</a>
+  <span class="sep">·</span>
+  <span class="current">Bloque 4</span>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <span class="kicker">Bloque 4 · Introducción</span>
+    <h1>Probabilidad <em>condicionada</em></h1>
+    <p class="lead">En el bloque anterior ya calculaste probabilidades "dentro de un grupo" — solo que sin ponerle nombre. Ahora le ponemos nombre, notación y fórmula: esto es la probabilidad condicionada.</p>
+  </div>
+
+  <section>
+    <h2><span class="n">1</span> ¿Qué es la probabilidad condicionada?</h2>
+    <div class="box definicion">
+      <div class="tag">Definición</div>
+      <p style="margin-bottom:0">La <strong>probabilidad condicionada</strong> de \(A\) dado \(B\), que escribimos \(P(A/B)\), es la probabilidad de que ocurra \(A\) <strong>sabiendo que \(B\) ya ha ocurrido</strong>. Conocer que \(B\) ha ocurrido puede cambiar por completo la probabilidad de \(A\) — reduce el espacio de posibilidades a solo aquellos casos donde \(B\) es cierto.</p>
+    </div>
+
+    <div class="box ejemplo">
+      <div class="tag">Ejemplo: la información cambia la probabilidad</div>
+      <p>Lanzamos un dado. Sea \(A\) = "sacar un número par". Sin más información:</p>
+      <p>\[P(A) = \frac{3}{6} = 0'5\]</p>
+      <p>Ahora supongamos que alguien te dice: "el resultado ha sido mayor que 3" (suceso \(B=\{4,5,6\}\)). Con esa información, los únicos resultados posibles ya no son los 6 de siempre, sino solo esos 3. Y de esos 3, ¿cuántos son pares? Dos: el 4 y el 6.</p>
+      <p style="margin-bottom:0">\[P(A/B) = \frac{2}{3} = 0'667\]</p>
+    </div>
+    <p>La probabilidad de "sacar par" ha pasado de 0'5 a 0'667 solo por saber que \(B\) había ocurrido. <strong>Esto es exactamente lo que hacías en el bloque anterior</strong> cuando calculabas "casos favorables entre casos posibles, dentro de un grupo" — solo que ahora sabemos cómo se llama y cómo se escribe.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span> Nomenclatura</h2>
+    <p>La probabilidad condicionada aparece en los enunciados escrita de formas muy distintas. Todas estas frases significan exactamente lo mismo: \(P(A/B)\).</p>
+
+    <div class="lectura">
+      <div class="lt">🔎 Frases y su notación</div>
+      <div class="frase-item"><span class="frase">"la probabilidad de A sabiendo que ha ocurrido B"</span><span class="flecha">→</span><span class="formula">P(A/B)</span></div>
+      <div class="frase-item"><span class="frase">"si se sabe que B, ¿cuál es la probabilidad de A?"</span><span class="flecha">→</span><span class="formula">P(A/B)</span></div>
+      <div class="frase-item"><span class="frase">"la probabilidad de A, supuesto B"</span><span class="flecha">→</span><span class="formula">P(A/B)</span></div>
+      <div class="frase-item"><span class="frase">"la probabilidad de A condicionada a B"</span><span class="flecha">→</span><span class="formula">P(A/B)</span></div>
+      <div class="frase-item"><span class="frase">"entre los que cumplen B, ¿qué probabilidad hay de A?"</span><span class="flecha">→</span><span class="formula">P(A/B)</span></div>
+      <div class="frase-item"><span class="frase">"si ha salido B, halla la probabilidad de A"</span><span class="flecha">→</span><span class="formula">P(A/B)</span></div>
+      <div class="frase-item"><span class="frase">"de los que son B, ¿cuántos son también A?"</span><span class="flecha">→</span><span class="formula">P(A/B)</span></div>
+    </div>
+
+    <p><strong>Truco para no confundirte:</strong> lo que va justo <em>después de "sabiendo que", "si", "supuesto que"...</em> es lo que va abajo, detrás de la barra. Lo que preguntan de verdad (lo que no sabemos si pasará) va arriba.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span> ¿Cómo se halla la probabilidad condicionada?</h2>
+    <div class="box definicion">
+      <div class="tag">Fórmula</div>
+      <p style="margin-bottom:0">\[P(A/B) = \frac{P(A\cap B)}{P(B)} \qquad (\text{con } P(B)\neq 0)\]</p>
+    </div>
+    <p>Es literalmente "casos favorables entre casos posibles", pero con el universo reducido a \(B\): en el numerador, la parte de \(A\) que además cumple \(B\); en el denominador, todo \(B\).</p>
+
+    <div class="box ejemplo">
+      <div class="tag">Ejemplo</div>
+      <p>Con el mismo dado: \(A=\{2,4,6\}\), \(B=\{4,5,6\}\). \(A\cap B=\{4,6\}\), así que \(P(A\cap B)=\frac{2}{6}\) y \(P(B)=\frac{3}{6}\).</p>
+      <p style="margin-bottom:0">\[P(A/B) = \frac{P(A\cap B)}{P(B)} = \frac{2/6}{3/6} = \frac{2}{3} = 0'667\]</p>
+    </div>
+    <p>Mismo resultado que contando directamente antes. La fórmula no es más que la versión general de ese conteo, y es la que usarás cuando los datos vengan en porcentajes o probabilidades en vez de conteos concretos.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span> Sucesos independientes</h2>
+    <div class="box definicion">
+      <div class="tag">Definición</div>
+      <p style="margin-bottom:0">Dos sucesos \(A\) y \(B\) son <strong>independientes</strong> cuando saber que ha ocurrido uno <strong>no cambia nada</strong> la probabilidad del otro:</p>
+      <p style="text-align:center;font-size:1.15rem;margin:14px 0 0">\[P(A/B) = P(A)\]</p>
+    </div>
+
+    <div class="box definicion">
+      <div class="tag">Relación fundamental</div>
+      <p>De la fórmula de la probabilidad condicionada, despejando \(P(A\cap B)\), obtenemos una relación que <strong>siempre es cierta</strong>, sean o no independientes:</p>
+      <p style="text-align:center;font-size:1.2rem;margin:14px 0">\[P(A\cap B) = P(A)\cdot P(B/A) = P(B)\cdot P(A/B)\]</p>
+      <p style="margin-bottom:0"><strong>Solo cuando \(A\) y \(B\) son independientes</strong>, como \(P(B/A)=P(B)\), esta relación se simplifica a:</p>
+      <p style="text-align:center;font-size:1.2rem;margin:14px 0 0">\[P(A\cap B) = P(A)\cdot P(B)\]</p>
+    </div>
+
+    <div class="box ejemplo" style="border-left-color:var(--red, #c65b4a)">
+      <div class="tag">⚠️ El error más frecuente</div>
+      <p style="margin-bottom:0">\(P(A\cap B)=P(A)\cdot P(B)\) <strong>NO es una fórmula general</strong> — solo vale si ya sabes (o has comprobado) que \(A\) y \(B\) son independientes. Si no lo son, tienes que usar \(P(A\cap B)=P(A)\cdot P(B/A)\), con la probabilidad condicionada real, no con \(P(B)\) a secas.</p>
+    </div>
+
+    <div class="box ejemplo">
+      <div class="tag">¿Cómo compruebo si dos sucesos son independientes?</div>
+      <p style="margin-bottom:0">Calculas \(P(A\cap B)\) por un lado y \(P(A)\cdot P(B)\) por otro (o comparas \(P(A/B)\) con \(P(A)\)). Si coinciden, son independientes. Si no coinciden, son dependientes.</p>
+    </div>
+
+    <h3 style="color:var(--navy);font-size:1.05rem;margin-top:26px">Sucesos incompatibles (repaso) y su relación con la independencia</h3>
+    <p>Recuerda del Bloque 1: \(A\) y \(B\) son <strong>incompatibles</strong> si no pueden ocurrir a la vez, \(A\cap B=\varnothing\), y por tanto \(P(A\cap B)=0\).</p>
+    <div class="box definicion">
+      <div class="tag">Un matiz importante</div>
+      <p style="margin-bottom:0">Si \(A\) y \(B\) son incompatibles <strong>y además</strong> \(P(A)>0\) y \(P(B)>0\), entonces <strong>nunca pueden ser independientes</strong>. Motivo: si fueran independientes, \(P(A\cap B)=P(A)\cdot P(B)\) sería un número mayor que 0 — pero sabemos que \(P(A\cap B)=0\) por ser incompatibles. Contradicción. Saber que ha ocurrido \(A\) (incompatible con \(B\)) te dice con total seguridad que \(B\) NO ha ocurrido — eso es la máxima dependencia posible, todo lo contrario a la independencia.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">5</span> Los mismos ejercicios, ya con la nomenclatura correcta</h2>
+    <p>Estos son los ejercicios del Bloque 3 — los resolviste ya correctamente, solo que sin usar el símbolo \(P(A/B)\). Vuelve a mirar los apartados "sabiendo que...": ahora ya sabes que eso tiene nombre y fórmula propios.</p>
+
+    <div class="box ejemplo">
+      <div class="tag">Juegos Mediterráneos Almería 2005</div>
+      <p>Recordando la tabla del Bloque 3 (en tantos por ciento):</p>
+      <table class="tabla-datos">
+        <tr><th></th><th>A</th><th>F</th><th>E</th><th>Total</th></tr>
+        <tr><th>H</th><td>0'005</td><td>0'05</td><td>0'175</td><td class="total">0'23</td></tr>
+        <tr><th>H<sup>c</sup></th><td>0'045</td><td>0'20</td><td>0'525</td><td class="total">0'77</td></tr>
+        <tr><th>Total</th><td class="total">0'05</td><td class="total">0'25</td><td class="total">0'70</td><td class="total">1</td></tr>
+      </table>
+      <p>b) "Si nos encontramos con un atleta que no habla español, ¿cuál es la probabilidad de que sea africano?" — esto es \(P(F/H^c)\):</p>
+      <p style="margin-bottom:0">\[P(F/H^c) = \frac{P(F\cap H^c)}{P(H^c)} = \frac{0'20}{0'77} = \boxed{0'26}\]</p>
+    </div>
+
+    <div class="box ejemplo">
+      <div class="tag">Compras por internet</div>
+      <p>c) "Sabiendo que no se compraron productos electrónicos, ¿probabilidad de que no fuera por internet?" — esto es \(P(I^c/E^c)\):</p>
+      <p style="margin-bottom:0">\[P(I^c/E^c) = \frac{P(I^c\cap E^c)}{P(E^c)} = \frac{0'1908}{0'45} = \boxed{0'424}\]</p>
+    </div>
+
+    <div class="box ejemplo">
+      <div class="tag">Bicicletas de alquiler</div>
+      <p>c) "Sabiendo que es de la empresa \(E_2\), ¿probabilidad de que sea de calidad media?" — esto es \(P(M/E_2)\):</p>
+      <p style="margin-bottom:0">\[P(M/E_2) = \frac{P(M\cap E_2)}{P(E_2)} = \frac{17'5}{70} = \boxed{0'25}\]</p>
+    </div>
+
+    <div class="box ejemplo">
+      <div class="tag">Siniestralidad de vehículos</div>
+      <p>b) "¿Probabilidad de que el conductor sea joven sabiendo que el vehículo es viejo?" — esto es \(P(J/V)\):</p>
+      <p style="margin-bottom:0">\[P(J/V) = \frac{P(J\cap V)}{P(V)} = \frac{21}{35} = \boxed{0'6}\]</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">6</span> Ejercicios de aplicación directa de las fórmulas</h2>
+
+    <div class="box definicion">
+      <div class="tag">📋 Chuletario · Todo lo visto hasta ahora</div>
+      <table class="props" style="margin-top:10px">
+        <tr><td>Contrario</td><td>\(P(\bar{A}) = 1-P(A)\)</td></tr>
+        <tr><td>Unión</td><td>\(P(A\cup B) = P(A)+P(B)-P(A\cap B)\)</td></tr>
+        <tr><td>Unión de incompatibles</td><td>\(P(A\cup B) = P(A)+P(B)\)</td></tr>
+        <tr><td>Diferencia</td><td>\(P(A-B) = P(A)-P(A\cap B)\)</td></tr>
+        <tr><td>Leyes de De Morgan</td><td>\(P(\bar{A}\cap\bar{B})=1-P(A\cup B)\) &nbsp;·&nbsp; \(P(\bar{A}\cup\bar{B})=1-P(A\cap B)\)</td></tr>
+        <tr><td>Probabilidad condicionada</td><td>\(P(A/B) = \dfrac{P(A\cap B)}{P(B)}\)</td></tr>
+        <tr><td>Intersección (regla general)</td><td>\(P(A\cap B) = P(A)\cdot P(B/A) = P(B)\cdot P(A/B)\)</td></tr>
+        <tr><td>Intersección si son independientes</td><td>\(P(A\cap B) = P(A)\cdot P(B)\)</td></tr>
+        <tr><td>Incompatibles</td><td>\(A\cap B=\varnothing \Rightarrow P(A\cap B)=0\)</td></tr>
+      </table>
+    </div>
+
+    <div class="box ejemplo">
+      <div class="tag">Ejercicio 1</div>
+      <p>Sean \(A\) y \(B\) dos sucesos del mismo experimento aleatorio tales que \(P(A)=\dfrac{1}{6}\), \(P(B)=\dfrac{1}{3}\) y \(P(A\cup B)=\dfrac{1}{2}\).</p>
+      <p>a) ¿Son A y B incompatibles? ¿Son independientes?<br>b) Calcule \(P[A/(A\cup B)]\)</p>
+
+      <span class="prop-usada">Del chuletario: P(A∪B) = P(A)+P(B)-P(A∩B)</span>
+      <p>Despejamos lo único que no nos dan, \(P(A\cap B)\):</p>
+      <p>\[P(A\cap B) = P(A)+P(B)-P(A\cup B) = \frac{1}{6}+\frac{1}{3}-\frac{1}{2} = \frac{1+2-3}{6} = 0\]</p>
+
+      <span class="prop-usada">a) Incompatibles: A∩B=∅ ⟺ P(A∩B)=0</span>
+      <p>Como \(P(A\cap B)=0\), <strong>A y B son incompatibles</strong>.</p>
+      <span class="prop-usada">a) Independientes: P(A∩B) = P(A)·P(B)</span>
+      <p>\(P(A)\cdot P(B) = \dfrac{1}{6}\cdot\dfrac{1}{3}=\dfrac{1}{18}\). Como \(P(A\cap B)=0 \neq \dfrac{1}{18}\), <strong>no son independientes</strong>.</p>
+      <p style="font-size:.85rem;color:var(--muted)">(Tiene sentido: ya vimos en el Bloque 1 que dos sucesos incompatibles, con probabilidad positiva cada uno, nunca pueden ser independientes.)</p>
+
+      <span class="prop-usada">b) Probabilidad condicionada + A∩(A∪B)=A</span>
+      <p>Como \(A\subseteq (A\cup B)\), se cumple que \(A\cap(A\cup B)=A\):</p>
+      <p style="margin-bottom:0">\[P\big[A/(A\cup B)\big] = \frac{P\big(A\cap(A\cup B)\big)}{P(A\cup B)} = \frac{P(A)}{P(A\cup B)} = \frac{1/6}{1/2} = \boxed{\frac{1}{3}}\]</p>
+    </div>
+
+    <div class="box ejemplo">
+      <div class="tag">Ejercicio 2</div>
+      <p>Sean \(A\) y \(B\) dos sucesos <strong>independientes</strong> tales que \(P(A)=0'4\) y \(P(A\cap B)=0'05\).</p>
+      <p>a) Calcule \(P(B)\)<br>b) Calcule \(P(A\cap B^c)\)<br>c) Sabiendo que no ha sucedido B, calcule la probabilidad de que suceda A.</p>
+
+      <span class="prop-usada">a) Independientes: P(A∩B) = P(A)·P(B)</span>
+      <p>\[P(B) = \frac{P(A\cap B)}{P(A)} = \frac{0'05}{0'4} = \boxed{0'125}\]</p>
+
+      <span class="prop-usada">b) Diferencia: P(A−B) = P(A)−P(A∩B)</span>
+      <p>\[P(A\cap B^c) = P(A)-P(A\cap B) = 0'4-0'05 = \boxed{0'35}\]</p>
+
+      <span class="prop-usada">c) Probabilidad condicionada</span>
+      <p>Piden \(P(A/B^c)\). Necesitamos \(P(B^c)=1-P(B)=1-0'125=0'875\):</p>
+      <p style="margin-bottom:0">\[P(A/B^c) = \frac{P(A\cap B^c)}{P(B^c)} = \frac{0'35}{0'875} = \boxed{0'4}\]</p>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:0">Comprobación: como A y B son independientes, A y \(B^c\) también lo son — por eso \(P(A/B^c)\) sale exactamente \(P(A)=0'4\), sin sorpresas.</p>
+    </div>
+
+    <div class="box ejemplo">
+      <div class="tag">Ejercicio 3</div>
+      <p>Sean \(A\) y \(B\) dos sucesos <strong>independientes</strong> tales que \(P(B)=0'05\) y \(P(A/B)=0'35\).</p>
+      <p>a) ¿Cuál es la probabilidad de que suceda al menos uno de ellos?<br>b) ¿Cuál es la probabilidad de que ocurra el suceso A pero no el B?</p>
+
+      <span class="prop-usada">Intersección: P(A∩B) = P(A/B)·P(B)</span>
+      <p>\[P(A\cap B) = P(A/B)\cdot P(B) = 0'35\cdot0'05 = 0'0175\]</p>
+      <span class="prop-usada">Como son independientes: P(A∩B) = P(A)·P(B) ⟹ despejamos P(A)</span>
+      <p>\[P(A) = \frac{P(A\cap B)}{P(B)} = \frac{0'0175}{0'05} = 0'35\]</p>
+
+      <span class="prop-usada">a) "Al menos uno de ellos" = Unión</span>
+      <p>\[P(A\cup B) = P(A)+P(B)-P(A\cap B) = 0'35+0'05-0'0175 = \boxed{0'3825}\]</p>
+
+      <span class="prop-usada">b) "A pero no B" = Diferencia</span>
+      <p style="margin-bottom:0">\[P(A\cap B^c) = P(A)-P(A\cap B) = 0'35-0'0175 = \boxed{0'3325}\]</p>
+    </div>
+  </section>
+
+  <div class="ib">
+    <h3>🎓 Profundiza — Marco IB</h3>
+    <div class="indagacion">
+      <div class="t">🔍 Pregunta de indagación</div>
+      <p>Que dos sucesos sean incompatibles y que sean independientes suenan parecidos, pero son casi opuestos. ¿Por qué el lenguaje cotidiano no distingue bien estas dos ideas, y qué riesgo tiene eso al traducir un enunciado a matemáticas?</p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="t">Concepto clave</div>
+        <p>Cambio · Relaciones. Condicionar una probabilidad a nueva información es, literalmente, actualizar lo que sabemos — la misma idea que subyace al razonamiento bayesiano y a buena parte de la ciencia de datos.</p>
+      </div>
+      <div class="card">
+        <div class="t">Habilidad ATL</div>
+        <p>Precisión en el lenguaje: distinguir con exactitud qué suceso va "arriba" y cuál va "detrás de la barra" en \(P(A/B)\), ya que invertirlos cambia completamente el resultado.</p>
+      </div>
+      <div class="card">
+        <div class="t">Conexión TdC</div>
+        <p>¿Puede la probabilidad de un suceso "cambiar" realmente, o lo único que cambia es nuestro conocimiento sobre él? ¿Qué nos dice esto sobre la diferencia entre el mundo y lo que sabemos del mundo?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <a class="btn ghost" href="index.html">← Portal de Probabilidad</a>
+    <a class="btn ghost" href="probabilidad_b3_intro.html">← Bloque 3</a>
+    <a class="btn on" href="probabilidad_b4_practica.html">Practicar B4 →</a>
+  </div>
+
+</div>
+
+</body>
+</html>

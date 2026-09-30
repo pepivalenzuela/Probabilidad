@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B5 — Probabilidad total y Teorema de Bayes · Las Chapas ECOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<style>
+  :root{
+    --navy:#1a2e4a;
+    --navy-light:#2a4468;
+    --teal:#1d7a6b;
+    --teal-light:#e4f2ef;
+    --orange:#e07b3a;
+    --orange-light:#fdeee0;
+    --cream:#f5f2eb;
+    --ink:#2b2b2b;
+    --muted:#6b6f76;
+    --white:#ffffff;
+    --line:#e4e0d6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:'Nunito Sans',sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.7;
+  }
+  h1,h2,h3,.brand{font-family:'Nunito',sans-serif}
+  a{color:inherit;text-decoration:none}
+
+  header.top{
+    background:var(--navy);
+    color:#fff;
+    padding:14px 24px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:.88rem;
+    font-weight:600;
+    flex-wrap:wrap;
+  }
+  header.top a{color:#cfd8e6}
+  header.top a:hover{color:#fff}
+  header.top .sep{color:#5c6b82}
+  header.top .current{color:#fff;font-weight:800}
+
+  .wrap{max-width:800px;margin:0 auto;padding:0 24px}
+
+  .hero{padding:44px 0 8px;text-align:center}
+  .hero .kicker{
+    display:inline-block;
+    background:var(--orange-light);
+    color:var(--orange);
+    font-weight:800;
+    font-size:.76rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:6px 14px;
+    border-radius:100px;
+    margin-bottom:16px;
+  }
+  .hero h1{
+    font-size:2.15rem;
+    font-weight:900;
+    color:var(--navy);
+    margin:0 0 16px;
+    letter-spacing:-.01em;
+  }
+  .hero h1 em{font-style:normal;color:var(--teal)}
+  .hero p.lead{color:var(--muted);font-size:1.05rem;max-width:620px;margin:0 auto}
+
+  section{padding:34px 0}
+  section h2{
+    color:var(--navy);
+    font-size:1.35rem;
+    margin:0 0 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  section h2 .n{
+    background:var(--teal);
+    color:#fff;
+    width:30px;height:30px;
+    border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.9rem;font-weight:800;
+    flex-shrink:0;
+  }
+  p{margin:0 0 14px}
+
+  .box{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px 24px;
+    margin:16px 0;
+  }
+  .box.definicion{
+    border-left:6px solid var(--navy);
+    background:linear-gradient(180deg,#fff,#fbfbf9);
+  }
+  .box.definicion .tag{
+    font-weight:800;color:var(--navy);font-size:.82rem;
+    text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;
+  }
+  .box.ejemplo{border-left:6px solid var(--orange)}
+  .box.ejemplo .tag{color:var(--orange);font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+
+  .verif{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:var(--teal-light);
+    border-radius:10px;
+    padding:14px 18px;
+    margin:14px 0;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .verif .flecha{color:var(--teal);font-size:1.3rem}
+
+  .familia{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:10px;
+    margin:16px 0;
+  }
+  .familia .item{
+    background:var(--navy);
+    color:#fff;
+    text-align:center;
+    padding:12px 8px;
+    border-radius:10px;
+    font-size:.95rem;
+  }
+  .familia .item.destacado{background:var(--orange)}
+
+  table.props{width:100%;border-collapse:collapse;margin:16px 0}
+  table.props td{
+    border:1px solid var(--line);
+    padding:12px 14px;
+    background:#fff;
+  }
+  table.props tr td:first-child{
+    font-weight:700;color:var(--navy);width:38%;
+  }
+
+  .mundo{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;
+    margin:16px 0;
+  }
+  .mundo .item{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 18px;
+  }
+  .mundo .item .k{
+    color:var(--teal);
+    font-weight:800;
+    font-size:.75rem;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:4px;
+  }
+  .mundo .item h4{margin:0 0 6px;color:var(--navy);font-size:1rem}
+  .mundo .item p{margin:0;color:var(--muted);font-size:.92rem}
+
+  .ib{
+    background:var(--navy);
+    color:#fff;
+    border-radius:16px;
+    padding:28px 26px;
+    margin:38px 0;
+  }
+  .ib h3{margin:0 0 16px;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+  .ib .grid2{display:grid;grid-template-columns:1fr;gap:16px}
+  .ib .card{background:rgba(255,255,255,.08);border-radius:10px;padding:16px 18px}
+  .ib .card .t{font-weight:800;font-size:.82rem;color:#ffd4ae;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+  .ib .card p{margin:0;color:#e6ebf2;font-size:.95rem}
+  .ib .indagacion{
+    background:rgba(224,123,58,.18);
+    border:1px solid rgba(224,123,58,.4);
+    border-radius:10px;
+    padding:18px 20px;
+    margin-bottom:16px;
+  }
+  .ib .indagacion .t{color:var(--orange);font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .ib .indagacion p{margin:0;font-weight:600}
+
+  .nav-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:30px 0 60px;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-block;
+    padding:13px 22px;
+    border-radius:10px;
+    font-weight:800;
+    font-size:.95rem;
+  }
+  .btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+  .btn.ghost:hover{background:#f0ede4}
+  .btn.on{background:var(--teal);color:#fff}
+  .btn.on:hover{background:#166357}
+  .btn.off{background:#ece9df;color:#a6a196;cursor:default}
+
+  .video-box{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px;
+    margin:18px 0;
+  }
+  .video-box .vt{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:800;
+    color:var(--navy);
+    font-size:.9rem;
+    margin:2px 6px 12px;
+  }
+  .video-box .vt .dot{
+    width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0;
+  }
+  .video-box .frame{
+    position:relative;
+    width:100%;
+    padding-top:56.25%;
+    border-radius:10px;
+    overflow:hidden;
+    background:#0d1622;
+  }
+  .video-box .frame iframe{
+    position:absolute;top:0;left:0;width:100%;height:100%;border:0;
+  }
+  .venn-wrap{
+    display:flex;
+    justify-content:center;
+    margin:18px 0;
+    background:#fbfbf9;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px;
+  }
+  .venn-wrap svg{max-width:100%;height:auto}
+
+  .lectura{
+    background:#fbfbf9;
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:14px 16px;
+    margin:14px 0;
+  }
+  .lectura .lt{
+    font-weight:800;
+    color:var(--navy);
+    font-size:.8rem;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:10px;
+  }
+  .frase-item{
+    display:flex;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:8px;
+    font-size:.92rem;
+  }
+  .frase-item:last-child{margin-bottom:0}
+  .frase{
+    background:var(--orange-light);
+    color:#8a4b1e;
+    padding:2px 8px;
+    border-radius:6px;
+    font-style:italic;
+  }
+  .frase .flecha{color:var(--teal);font-weight:800;font-style:normal}
+  .formula{
+    background:var(--navy);
+    color:#fff;
+    padding:2px 10px;
+    border-radius:6px;
+    font-weight:700;
+    font-size:.88rem;
+  }
+
+  .prop-usada{
+    display:inline-block;
+    background:var(--teal-light);
+    color:var(--teal);
+    font-weight:800;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    padding:3px 9px;
+    border-radius:100px;
+    margin-bottom:6px;
+  }
+
+  table.tabla-datos{
+    border-collapse:collapse;
+    margin:16px auto;
+    background:#fff;
+  }
+  table.tabla-datos th, table.tabla-datos td{
+    border:1px solid var(--line);
+    padding:9px 16px;
+    text-align:center;
+    font-size:.92rem;
+  }
+  table.tabla-datos th{
+    background:var(--navy);
+    color:#fff;
+    font-weight:700;
+  }
+  table.tabla-datos td.total{
+    background:#fbfbf9;
+    font-weight:800;
+    color:var(--navy);
+  }
+  .cartas-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+    margin:18px 0;
+  }
+  .carta{
+    perspective:1600px;
+    height:320px;
+    cursor:pointer;
+  }
+  .carta-inner{
+    position:relative;
+    width:100%;
+    height:100%;
+    text-align:left;
+    transition:transform .6s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+  }
+  .carta.volteada .carta-inner{transform:rotateY(180deg)}
+  .carta-cara{
+    position:absolute;
+    inset:0;
+    backface-visibility:hidden;
+    border-radius:14px;
+    padding:20px;
+    overflow-y:auto;
+    box-shadow:0 4px 16px rgba(26,46,74,.08);
+    border:1px solid var(--line);
+  }
+  .carta-frente{background:#fff;display:flex;flex-direction:column}
+  .carta-frente .num{color:var(--orange);font-weight:800;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+  .carta-frente .fuente{color:var(--muted);font-size:.76rem;margin-bottom:10px}
+  .carta-frente .enunciado{font-size:.9rem;color:var(--ink);line-height:1.5;flex:1}
+  .carta-frente .toque{margin-top:10px;text-align:center;color:var(--teal);font-weight:700;font-size:.76rem}
+  .carta-reverso{background:var(--navy);color:#fff;transform:rotateY(180deg)}
+  .carta-reverso .tag-sol{color:#ffd4ae;font-weight:800;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+  .carta-reverso .solucion{font-size:.83rem;line-height:1.55}
+  .carta-reverso .solucion p{margin:0 0 8px}
+  .carta-reverso .solucion p:last-child{margin-bottom:0}
+  .cartas-toolbar{display:flex;gap:10px;margin:0 0 16px;flex-wrap:wrap}
+  .cartas-toolbar button{background:#fff;border:1px solid var(--line);color:var(--navy);font-weight:700;font-size:.84rem;padding:8px 16px;border-radius:100px;cursor:pointer;font-family:inherit}
+  .cartas-toolbar button:hover{background:var(--teal-light);border-color:var(--teal)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html">Portal de Probabilidad</a>
+  <span class="sep">·</span>
+  <span class="current">Bloque 5</span>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <span class="kicker">Bloque 5 · Introducción</span>
+    <h1>Probabilidad total y <em>Teorema de Bayes</em></h1>
+    <p class="lead">¿Y si un suceso puede ocurrir por varios "caminos" distintos? El teorema de la probabilidad total suma esos caminos hacia delante. El teorema de Bayes hace el camino inverso: si ya sabes que algo ha pasado, ¿por cuál de esos caminos es más probable que haya sido?</p>
+  </div>
+
+  <section>
+    <h2><span class="n">1</span> Sistema completo de sucesos</h2>
+    <div class="box definicion">
+      <div class="tag">Definición</div>
+      <p style="margin-bottom:0">Los sucesos \(A_1, A_2, \dots, A_n\) forman un <strong>sistema completo de sucesos</strong> si son incompatibles entre sí dos a dos (\(A_i\cap A_j=\varnothing\)) y entre todos cubren el espacio muestral completo (\(A_1\cup A_2\cup\dots\cup A_n=E\)). Es decir: en cada realización del experimento, ocurre <strong>uno y solo uno</strong> de ellos.</p>
+    </div>
+    <p>Ejemplos de sistema completo: "máquina 1 / máquina 2 / máquina 3" que fabrican todas las piezas; "asiático / africano / europeo" del Bloque 3; "menor de 30 / mayor o igual de 30". Siempre que una clasificación cubra "todos los casos posibles, sin solaparse", tienes un sistema completo.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span> Teorema de la probabilidad total</h2>
+
+    <div class="box ejemplo">
+      <div class="tag">Planteamos el problema</div>
+      <p>Tenemos tres urnas: \(A_1\) con 6 bolas blancas y 5 negras; \(A_2\) con 4 blancas y 8 negras; \(A_3\) con 7 blancas y 3 negras. Elegimos una urna al azar (las tres son igual de probables) y de ella extraemos una bola. <strong>¿Cuál es la probabilidad de que la bola sea blanca (B)?</strong></p>
+
+      <div class="lectura">
+        <div class="lt">🔎 Lectura guiada</div>
+        <div class="frase-item"><span class="frase">"elegimos una urna al azar (las tres igual de probables)"</span><span class="flecha">→</span><span class="formula">P(A₁)=P(A₂)=P(A₃)=1/3</span></div>
+        <div class="frase-item"><span class="frase">"A₁ con 6 blancas y 5 negras"</span><span class="flecha">→</span><span class="formula">P(B/A₁)=6/11, P(N/A₁)=5/11</span></div>
+        <div class="frase-item"><span class="frase">"A₂ con 4 blancas y 8 negras"</span><span class="flecha">→</span><span class="formula">P(B/A₂)=4/12, P(N/A₂)=8/12</span></div>
+        <div class="frase-item"><span class="frase">"A₃ con 7 blancas y 3 negras"</span><span class="flecha">→</span><span class="formula">P(B/A₃)=7/10, P(N/A₃)=3/10</span></div>
+      </div>
+
+      <p style="margin-bottom:0">El problema: no tenemos \(P(B)\) directamente. Solo tenemos información de B <strong>repartida</strong> entre las tres urnas. ¿Cómo la juntamos?</p>
+    </div>
+
+    <div class="box definicion">
+      <div class="tag">Paso 1 · B como unión de intersecciones</div>
+      <p>Toda bola blanca sale de \(A_1\), de \(A_2\) o de \(A_3\) — no hay otra opción, porque \(A_1,A_2,A_3\) son un sistema completo. Así que podemos "romper" el suceso B en tres trozos:</p>
+      <p style="text-align:center">\[B = (A_1\cap B)\cup(A_2\cap B)\cup(A_3\cap B)\]</p>
+      <p style="margin-bottom:0">Estos tres trozos son <strong>incompatibles entre sí</strong> (la bola no puede salir de dos urnas a la vez), así que su unión se convierte en una simple suma de probabilidades:</p>
+      <p style="text-align:center;margin-top:8px">\[P(B) = P(A_1\cap B)+P(A_2\cap B)+P(A_3\cap B)\]</p>
+    </div>
+
+    <div class="box definicion">
+      <div class="tag">Paso 2 · Cada intersección, con la fórmula del Bloque 4</div>
+      <p>Ya sabes calcular cada \(P(A_i\cap B)\), porque es la fórmula de la intersección que vimos con la probabilidad condicionada:</p>
+      <p style="text-align:center">\[P(A_i\cap B) = P(A_i)\cdot P(B/A_i)\]</p>
+      <p style="margin-bottom:0">Sustituyendo los tres trozos del Paso 1 por esta expresión, llegamos a:</p>
+      <p style="text-align:center;font-size:1.1rem;margin-top:8px">\[P(B) = P(A_1)\cdot P(B/A_1)+P(A_2)\cdot P(B/A_2)+P(A_3)\cdot P(B/A_3)\]</p>
+    </div>
+
+    <div class="box definicion">
+      <div class="tag">Esto es, ya en general, el Teorema de la Probabilidad Total</div>
+      <p style="margin-bottom:0">Si \(A_1,\dots,A_n\) es un sistema completo de sucesos:</p>
+      <p style="text-align:center;font-size:1.1rem;margin:10px 0 0">\[P(B) = P(A_1)\cdot P(B/A_1) + P(A_2)\cdot P(B/A_2) + \dots + P(A_n)\cdot P(B/A_n)\]</p>
+    </div>
+
+    <div class="box ejemplo">
+      <div class="tag">Resolvemos con el árbol</div>
+      <p><strong>El árbol es la mejor forma de no perderse:</strong> cada rama del primer nivel lleva la probabilidad de \(A_i\); cada rama del segundo nivel lleva la probabilidad <strong>condicionada</strong> \(P(B/A_i)\) — nunca la probabilidad "suelta" de B, porque en cada rama ya estamos "dentro" de \(A_i\). Multiplicar a lo largo de un camino es, literalmente, el Paso 2 de arriba: \(P(A_i)\cdot P(B/A_i) = P(A_i\cap B)\).</p>
+
+      <div class="venn-wrap">
+<svg viewBox="0 0 480 310" width="480" xmlns="http://www.w3.org/2000/svg">
+<circle cx="30" cy="155" r="4" fill="#1a2e4a"/>
+<line x1="30" y1="155" x2="170" y2="50" stroke="#1a2e4a" stroke-width="2"/>
+<text x="100.0" y="94.5" font-size="13" fill="#1d7a6b" font-weight="700" text-anchor="middle">P(A₁)=1/3</text>
+<circle cx="170" cy="50" r="4" fill="#1a2e4a"/>
+<text x="182" y="55" font-size="15" fill="#1a2e4a" font-weight="800">A₁</text>
+<line x1="30" y1="155" x2="170" y2="155" stroke="#1a2e4a" stroke-width="2"/>
+<text x="100.0" y="147.0" font-size="13" fill="#1d7a6b" font-weight="700" text-anchor="middle">P(A₂)=1/3</text>
+<circle cx="170" cy="155" r="4" fill="#1a2e4a"/>
+<text x="182" y="160" font-size="15" fill="#1a2e4a" font-weight="800">A₂</text>
+<line x1="30" y1="155" x2="170" y2="255" stroke="#1a2e4a" stroke-width="2"/>
+<text x="100.0" y="197.0" font-size="13" fill="#1d7a6b" font-weight="700" text-anchor="middle">P(A₃)=1/3</text>
+<circle cx="170" cy="255" r="4" fill="#1a2e4a"/>
+<text x="182" y="260" font-size="15" fill="#1a2e4a" font-weight="800">A₃</text>
+<line x1="170" y1="50" x2="330" y2="20" stroke="#6b6f76" stroke-width="1.5"/>
+<text x="250.0" y="28.0" font-size="11.5" fill="#e07b3a" font-weight="700" text-anchor="middle">P(B/A₁)=6/11</text>
+<circle cx="330" cy="20" r="3.5" fill="#1a2e4a"/>
+<text x="340" y="24" font-size="13" fill="#1a2e4a" font-weight="700">B</text>
+<line x1="170" y1="50" x2="330" y2="80" stroke="#6b6f76" stroke-width="1.5"/>
+<text x="250.0" y="77.0" font-size="11.5" fill="#e07b3a" font-weight="700" text-anchor="middle">P(N/A₁)=5/11</text>
+<circle cx="330" cy="80" r="3.5" fill="#1a2e4a"/>
+<text x="340" y="84" font-size="13" fill="#1a2e4a" font-weight="700">N</text>
+<line x1="170" y1="155" x2="330" y2="125" stroke="#6b6f76" stroke-width="1.5"/>
+<text x="250.0" y="133.0" font-size="11.5" fill="#e07b3a" font-weight="700" text-anchor="middle">P(B/A₂)=4/12</text>
+<circle cx="330" cy="125" r="3.5" fill="#1a2e4a"/>
+<text x="340" y="129" font-size="13" fill="#1a2e4a" font-weight="700">B</text>
+<line x1="170" y1="155" x2="330" y2="185" stroke="#6b6f76" stroke-width="1.5"/>
+<text x="250.0" y="182.0" font-size="11.5" fill="#e07b3a" font-weight="700" text-anchor="middle">P(N/A₂)=8/12</text>
+<circle cx="330" cy="185" r="3.5" fill="#1a2e4a"/>
+<text x="340" y="189" font-size="13" fill="#1a2e4a" font-weight="700">N</text>
+<line x1="170" y1="255" x2="330" y2="225" stroke="#6b6f76" stroke-width="1.5"/>
+<text x="250.0" y="233.0" font-size="11.5" fill="#e07b3a" font-weight="700" text-anchor="middle">P(B/A₃)=7/10</text>
+<circle cx="330" cy="225" r="3.5" fill="#1a2e4a"/>
+<text x="340" y="229" font-size="13" fill="#1a2e4a" font-weight="700">B</text>
+<line x1="170" y1="255" x2="330" y2="285" stroke="#6b6f76" stroke-width="1.5"/>
+<text x="250.0" y="282.0" font-size="11.5" fill="#e07b3a" font-weight="700" text-anchor="middle">P(N/A₃)=3/10</text>
+<circle cx="330" cy="285" r="3.5" fill="#1a2e4a"/>
+<text x="340" y="289" font-size="13" fill="#1a2e4a" font-weight="700">N</text>
+</svg></div>
+
+      <span class="prop-usada">Aplicamos la fórmula: sumamos el producto de cada camino hacia B</span>
+      <p>\[P(B) = \underbrace{\tfrac{1}{3}\cdot\tfrac{6}{11}}_{6/33} + \underbrace{\tfrac{1}{3}\cdot\tfrac{4}{12}}_{4/36} + \underbrace{\tfrac{1}{3}\cdot\tfrac{7}{10}}_{7/30} = \boxed{0'526}\]</p>
+      <p style="margin-bottom:0">Cada uno de esos tres productos es, además, una probabilidad de intersección: por ejemplo \(\tfrac{1}{3}\cdot\tfrac{6}{11}=P(A_1\cap B)=\tfrac{6}{33}\) — la probabilidad de que la bola salga de la urna 1 <strong>y</strong> además sea blanca.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span> Teorema de Bayes</h2>
+
+    <div class="box ejemplo">
+      <div class="tag">Planteamos la pregunta inversa</div>
+      <p>Extraemos una bola y resulta ser <strong>blanca</strong>. Antes de mirar nada, \(P(A_1)=1/3\). Pero ahora que sabemos que la bola es blanca, ¿sigue siendo \(1/3\) la probabilidad de que venga de la urna \(A_1\)? <strong>¿Cuál es \(P(A_1/B)\)?</strong></p>
+    </div>
+
+    <div class="box definicion">
+      <div class="tag">Paso 1 · Es una probabilidad condicionada — ya sabemos su fórmula</div>
+      <p style="margin-bottom:0">Del Bloque 4: \(\displaystyle P(A_1/B) = \frac{P(A_1\cap B)}{P(B)}\). El problema es que no tenemos ninguno de los dos directamente... o eso parece.</p>
+    </div>
+
+    <div class="box definicion">
+      <div class="tag">Paso 2 · Ambos trozos ya los sabemos calcular</div>
+      <p>El numerador, \(P(A_1\cap B)\), es la fórmula de la intersección del Bloque 4: \(P(A_1\cap B)=P(A_1)\cdot P(B/A_1)\).</p>
+      <p style="margin-bottom:0">El denominador, \(P(B)\), es exactamente la probabilidad total que acabamos de calcular en la sección anterior.</p>
+    </div>
+
+    <div class="box definicion">
+      <div class="tag">Sustituyendo, llegamos al Teorema de Bayes</div>
+      <p style="margin-bottom:0">\[P(A_i/B) = \frac{P(A_i)\cdot P(B/A_i)}{P(B)} = \frac{P(A_i)\cdot P(B/A_i)}{\displaystyle\sum_{j} P(A_j)\cdot P(B/A_j)}\]</p>
+    </div>
+    <p>El denominador es, literalmente, la fórmula de la probabilidad total — por eso siempre calculamos \(P(B)\) primero: la vamos a necesitar sí o sí para aplicar Bayes.</p>
+
+    <div class="box ejemplo">
+      <div class="tag">Resolvemos</div>
+      <span class="prop-usada">Teorema de Bayes</span>
+      <p>\[P(A_1/B) = \frac{P(A_1)\cdot P(B/A_1)}{P(B)} = \frac{6/33}{0'526} = \frac{0'1818}{0'526} = \boxed{0'346}\]</p>
+      <p style="margin-bottom:0">Antes de ver la bola, \(P(A_1)=0'333\). Después de saber que es blanca, esa probabilidad <strong>sube ligeramente a 0'346</strong> — tiene sentido, porque \(A_1\) tiene más proporción de blancas (6/11≈0'55) que la media, así que una bola blanca "apunta un poco más" hacia ella.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span> Ejercicios de aplicación</h2>
+    <p>Problemas reales de exámenes de Selectividad de Andalucía. Toca una tarjeta para ver el enunciado; vuelve a tocarla para ver la solución.</p>
+
+    <div class="cartas-toolbar">
+      <button onclick="voltearTodas(true)">Ver todas las soluciones</button>
+      <button onclick="voltearTodas(false)">Ocultar todas las soluciones</button>
+    </div>
+
+    <div class="cartas-grid" id="grid"></div>
+  </section>
+
+  <script>
+  const TARJETAS = [
+    {
+      fuente: "PEvAU Ordinaria 2020",
+      enunciado: `Tres talleres \\(T_1\\), \\(T_2\\), \\(T_3\\) producen el 30%, el 45% y el 25% de los artículos de una fábrica. Sus tasas de piezas defectuosas son del 2%, 1% y 3% respectivamente.<br><br>a) Probabilidad de que un artículo elegido al azar sea defectuoso.<br>b) Si un artículo resulta defectuoso, probabilidad de que proceda de \\(T_2\\).<br>c) Probabilidad de que proceda de \\(T_1\\) o de \\(T_3\\), sabiendo que es defectuoso.`,
+      solucion: `<p>\\(P(T_1)=0'30,\\ P(T_2)=0'45,\\ P(T_3)=0'25\\)<br>\\(P(D/T_1)=0'02,\\ P(D/T_2)=0'01,\\ P(D/T_3)=0'03\\)</p>
+      <p><strong>a)</strong> Probabilidad total:<br>\\(P(D)=0'30\\cdot0'02+0'45\\cdot0'01+0'25\\cdot0'03=0'006+0'0045+0'0075=\\boxed{0'018}\\)</p>
+      <p><strong>b)</strong> Bayes:<br>\\(P(T_2/D)=\\dfrac{0'0045}{0'018}=\\boxed{0'25}\\)</p>
+      <p><strong>c)</strong> \\(P(T_1\\cup T_3/D)=\\dfrac{0'006+0'0075}{0'018}=\\dfrac{0'0135}{0'018}=\\boxed{0'75}\\)</p>`
+    },
+    {
+      fuente: "PEvAU Ordinaria 2023",
+      enunciado: `En una empresa, el 40% de la plantilla son mujeres. El 60% de las mujeres tiene carnet de conducir, y el 75% de los hombres tiene carnet de conducir. Se elige una persona al azar.<br><br>a) Calcule, por el teorema de la probabilidad total, la probabilidad de que tenga carnet de conducir.<br>b) Calcule, por el teorema de Bayes, la probabilidad de que sea mujer sabiendo que tiene carnet.<br>c) ¿Son independientes los sucesos "ser mujer" y "tener carnet"?`,
+      solucion: `<p>\\(P(M)=0'40,\\ P(H)=0'60\\)<br>\\(P(C/M)=0'60,\\ P(C/H)=0'75\\)</p>
+      <p><strong>a)</strong> \\(P(C)=0'40\\cdot0'60+0'60\\cdot0'75=0'24+0'45=\\boxed{0'69}\\)</p>
+      <p><strong>b)</strong> \\(P(M/C)=\\dfrac{0'24}{0'69}=\\boxed{0'348}\\)</p>
+      <p><strong>c)</strong> \\(P(M)\\cdot P(C)=0'40\\cdot0'69=0'276 \\neq P(M\\cap C)=0'24\\) → <strong>No son independientes</strong>.</p>`
+    },
+    {
+      fuente: "Modelo de examen",
+      enunciado: `En una agrupación musical, el 60% de sus componentes son mujeres. El 20% de las mujeres y el 30% de los hombres de la agrupación están jubilados.<br><br>a) ¿Cuál es la probabilidad de que un componente, elegido al azar, esté jubilado?<br>b) Sabiendo que un componente elegido al azar está jubilado, ¿cuál es la probabilidad de que sea mujer?`,
+      solucion: `<p>\\(P(M)=0'60,\\ P(H)=0'40\\)<br>\\(P(J/M)=0'20,\\ P(J/H)=0'30\\)</p>
+      <p><strong>a)</strong> \\(P(J)=0'60\\cdot0'20+0'40\\cdot0'30=0'12+0'12=\\boxed{0'24}\\)</p>
+      <p><strong>b)</strong> \\(P(M/J)=\\dfrac{0'12}{0'24}=\\boxed{0'5}\\)</p>`
+    },
+    {
+      fuente: "PEvAU Andalucía",
+      enunciado: `Un llavero tiene 7 llaves, otro 8 y otro 5. En cada llavero hay una única llave que abre el trastero. Se elige un llavero al azar y, de él, una llave al azar.<br><br>a) Probabilidad de no acertar con la llave.<br>b) Probabilidad de que sea el 3<sup>er</sup> llavero y la llave abra el trastero.<br>c) Sabiendo que la llave abre, probabilidad de que sea del 1<sup>er</sup> o del 3<sup>er</sup> llavero.`,
+      solucion: `<p>\\(P(L_1)=P(L_2)=P(L_3)=\\tfrac{1}{3}\\)<br>\\(P(A/L_1)=\\tfrac{1}{7},\\ P(A/L_2)=\\tfrac{1}{8},\\ P(A/L_3)=\\tfrac{1}{5}\\)</p>
+      <p>Probabilidad total: \\(P(A)=\\tfrac{1}{3}\\left(\\tfrac{1}{7}+\\tfrac{1}{8}+\\tfrac{1}{5}\\right)=\\tfrac{131}{840}\\approx0'156\\)</p>
+      <p><strong>a)</strong> \\(P(A^c)=1-\\tfrac{131}{840}=\\tfrac{709}{840}\\approx\\boxed{0'844}\\)</p>
+      <p><strong>b)</strong> \\(P(L_3\\cap A)=\\tfrac{1}{3}\\cdot\\tfrac{1}{5}=\\tfrac{1}{15}\\approx\\boxed{0'067}\\)</p>
+      <p><strong>c)</strong> \\(P(L_1\\cup L_3/A)=\\dfrac{\\frac{1}{21}+\\frac{1}{15}}{\\frac{131}{840}}=\\dfrac{96}{131}\\approx\\boxed{0'733}\\)</p>`
+    },
+    {
+      fuente: "Tu propio ejemplo (sección 2 y 3)",
+      enunciado: `Tenemos tres urnas: \\(A_1\\) con 6 bolas blancas y 5 negras; \\(A_2\\) con 4 blancas y 8 negras; \\(A_3\\) con 7 blancas y 3 negras. Se elige una urna al azar (las tres igual de probables) y de ella se extrae una bola.<br><br>a) Probabilidad de que la bola sea blanca.<br>b) Sabiendo que la bola es blanca, probabilidad de que proceda de la urna \\(A_1\\).`,
+      solucion: `<p>\\(P(A_1)=P(A_2)=P(A_3)=\\tfrac{1}{3}\\)<br>\\(P(B/A_1)=\\tfrac{6}{11},\\ P(B/A_2)=\\tfrac{4}{12},\\ P(B/A_3)=\\tfrac{7}{10}\\)</p>
+      <p><strong>a)</strong> \\(P(B)=\\tfrac{1}{3}\\cdot\\tfrac{6}{11}+\\tfrac{1}{3}\\cdot\\tfrac{4}{12}+\\tfrac{1}{3}\\cdot\\tfrac{7}{10}=\\tfrac{6}{33}+\\tfrac{4}{36}+\\tfrac{7}{30}\\approx\\boxed{0'526}\\)</p>
+      <p><strong>b)</strong> \\(P(A_1/B)=\\dfrac{6/33}{0'526}\\approx\\boxed{0'346}\\)</p>`
+    }
+  ];
+
+  const grid = document.getElementById('grid');
+  TARJETAS.forEach((t, i) => {
+    const div = document.createElement('div');
+    div.className = 'carta';
+    div.onclick = () => div.classList.toggle('volteada');
+    div.innerHTML = `
+      <div class="carta-inner">
+        <div class="carta-cara carta-frente">
+          <div class="num">Tarjeta ${i+1}</div>
+          <div class="fuente">${t.fuente}</div>
+          <div class="enunciado">${t.enunciado}</div>
+          <div class="toque">👆 toca para ver la solución</div>
+        </div>
+        <div class="carta-cara carta-reverso">
+          <div class="tag-sol">✓ Solución</div>
+          <div class="solucion">${t.solucion}</div>
+        </div>
+      </div>`;
+    grid.appendChild(div);
+  });
+
+  function voltearTodas(mostrar){
+    document.querySelectorAll('.carta').forEach(c => c.classList.toggle('volteada', mostrar));
+  }
+
+  window.addEventListener('load', function(){
+    if(window.MathJax && MathJax.typesetPromise){ MathJax.typesetPromise(); }
+  });
+  </script>
+
+
+  <div class="ib">
+    <h3>🎓 Profundiza — Marco IB</h3>
+    <div class="indagacion">
+      <div class="t">🔍 Pregunta de indagación</div>
+      <p>Antes de ver la pieza, la máquina más probable era A₂ (45%). Después de saber que es defectuosa, sigue siendo A₂, pero con una probabilidad distinta. ¿Cuándo un nuevo dato cambia "cuánto" creemos algo, y cuándo cambia "qué" creemos?</p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="t">Concepto clave</div>
+        <p>Cambio · Sistemas. Bayes formaliza cómo actualizar una creencia (la probabilidad de A₂) a la luz de nueva evidencia (la pieza es defectuosa) — la base del razonamiento estadístico moderno.</p>
+      </div>
+      <div class="card">
+        <div class="t">Habilidad ATL</div>
+        <p>Autogestión del proceso: en un problema de Bayes hay que calcular la probabilidad total primero, casi siempre, aunque no la pidan explícitamente — reconocer ese paso intermedio es clave.</p>
+      </div>
+      <div class="card">
+        <div class="t">Conexión TdC</div>
+        <p>¿Es razonable actualizar nuestras creencias en proporción exacta a la evidencia, como hace Bayes? ¿En qué otros ámbitos del conocimiento "actualizamos" lo que creemos de forma tan explícita?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <a class="btn ghost" href="index.html">← Portal de Probabilidad</a>
+    <a class="btn ghost" href="probabilidad_b4_intro.html">← Bloque 4</a>
+    <a class="btn on" href="probabilidad_b5_practica.html">Practicar B5 →</a>
+  </div>
+
+</div>
+
+</body>
+</html>

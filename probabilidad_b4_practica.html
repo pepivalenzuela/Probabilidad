@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4 Práctica — Probabilidad · Las Chapas ECOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<style>
+  :root{
+    --navy:#1a2e4a; --navy-light:#2a4468; --teal:#1d7a6b; --teal-light:#e4f2ef;
+    --orange:#e07b3a; --orange-light:#fdeee0; --cream:#f5f2eb; --ink:#2b2b2b;
+    --muted:#6b6f76; --white:#ffffff; --line:#e4e0d6;
+    --red:#c65b4a; --red-light:#fbeae7;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Nunito Sans',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6}
+  h1,h2,h3,.brand{font-family:'Nunito',sans-serif}
+  a{color:inherit;text-decoration:none}
+
+  header.top{background:var(--navy);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:8px;font-size:.88rem;font-weight:600;flex-wrap:wrap}
+  header.top a{color:#cfd8e6}
+  header.top a:hover{color:#fff}
+  header.top .sep{color:#5c6b82}
+  header.top .current{color:#fff;font-weight:800}
+
+  .wrap{max-width:720px;margin:0 auto;padding:30px 24px 60px}
+
+  .titlebar{text-align:center;margin-bottom:22px}
+  .titlebar .kicker{display:inline-block;background:var(--teal-light);color:var(--teal);font-weight:800;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:12px}
+  .titlebar h1{font-size:1.6rem;color:var(--navy);margin:0 0 6px;font-weight:900}
+  .titlebar p{color:var(--muted);margin:0;font-size:.95rem}
+
+  #gate{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;text-align:center}
+  #gate input{width:100%;max-width:340px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-size:1rem;font-family:inherit;margin:14px 0}
+  .btn{display:inline-block;padding:13px 26px;border-radius:10px;font-weight:800;font-size:.95rem;border:none;cursor:pointer;font-family:inherit}
+  .btn.on{background:var(--teal);color:#fff}
+  .btn.on:hover{background:#166357}
+  .btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+  .btn.ghost:hover{background:#f0ede4}
+  .btn:disabled{opacity:.5;cursor:default}
+
+  #quiz{display:none}
+  .scoreboard{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 20px;margin-bottom:18px;font-weight:700;color:var(--navy);font-size:.9rem}
+  .scoreboard .ok{color:var(--teal)}
+  .scoreboard .bad{color:var(--red)}
+
+  .qcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px}
+  .qtag{display:inline-block;font-weight:800;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:100px;margin-bottom:14px}
+  .qtag.teoria{background:var(--teal-light);color:var(--teal)}
+  .qtag.aplicacion{background:var(--orange-light);color:var(--orange)}
+  .qtext{font-size:1.15rem;color:var(--navy);font-weight:700;margin-bottom:20px}
+
+  .opt{display:block;width:100%;text-align:left;background:#fbfbf9;border:1.5px solid var(--line);border-radius:10px;padding:13px 16px;margin-bottom:10px;font-family:inherit;font-size:1rem;cursor:pointer;color:var(--ink)}
+  .opt:hover{border-color:var(--teal)}
+  .opt.correcta{background:var(--teal-light);border-color:var(--teal);color:var(--navy);font-weight:700}
+  .opt.incorrecta{background:var(--red-light);border-color:var(--red);color:#8a3a2e;font-weight:700}
+  .opt:disabled{cursor:default}
+
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:.92rem;display:none}
+  .feedback.show{display:block}
+  .feedback.ok{background:var(--teal-light);color:#12574c}
+  .feedback.bad{background:var(--red-light);color:#8a3a2e}
+
+  .controls{display:flex;justify-content:flex-end;margin-top:20px}
+
+  .nav-bottom{display:flex;justify-content:space-between;margin-top:28px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html">Portal de Probabilidad</a>
+  <span class="sep">·</span>
+  <a href="probabilidad_b4_intro.html">Bloque 4</a>
+  <span class="sep">·</span>
+  <span class="current">Práctica libre</span>
+</header>
+
+<div class="wrap">
+  <div class="titlebar">
+    <span class="kicker">Bloque 4 · Práctica libre</span>
+    <h1>Probabilidad condicionada</h1>
+    <p>Ejercicios aleatorios de teoría (nomenclatura, fórmula, independencia) y de aplicación (calcular con la fórmula de la condicionada). Cada vez que entras, el orden cambia.</p>
+  </div>
+
+  <div id="gate">
+    <p style="margin:0;color:var(--muted)">Escribe tu nombre para empezar (no hay límite de tiempo ni de intentos):</p>
+    <input type="text" id="nombre" placeholder="Nombre y apellidos">
+    <br>
+    <button class="btn on" onclick="empezar()">Empezar a practicar →</button>
+  </div>
+
+  <div id="quiz">
+    <div class="scoreboard">
+      <span id="contador">Pregunta 1</span>
+      <span><span class="ok" id="okcount">0</span> correctas · <span class="bad" id="badcount">0</span> incorrectas</span>
+    </div>
+
+    <div class="qcard">
+      <span class="qtag" id="qtag">Teoría</span>
+      <div class="qtext" id="qtext">—</div>
+      <div id="opciones"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="controls">
+        <button class="btn on" id="btnSiguiente" onclick="siguiente()" disabled>Siguiente pregunta →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom" style="flex-wrap:wrap;gap:12px">
+    <a class="btn ghost" href="probabilidad_b4_intro.html">← Volver a la teoría</a>
+    <a class="btn on" href="https://pepivalenzuela.github.io/panel-matematicas/">Formativas en mi panel →</a>
+    <a class="btn ghost" href="probabilidad_b5_intro.html">Bloque 5 →</a>
+  </div>
+</div>
+
+<script>
+// ---------- Banco de preguntas: Bloque 4 · Probabilidad condicionada ----------
+const BANCO_TEORIA = [
+  {q:"¿Qué significa P(A/B)?", o:["La probabilidad de que ocurra A, sabiendo que B ya ha ocurrido", "La probabilidad de que ocurran A y B a la vez", "La probabilidad de que ocurra A dividida entre la de B, sin relación causal", "La probabilidad de que no ocurra ni A ni B"], c:0},
+  {q:"En la frase 'probabilidad de aprobar Matemáticas sabiendo que ha aprobado Física', ¿qué va detrás de la barra en P(_/_)?", o:["Física, porque es lo que ya sabemos que ha ocurrido", "Matemáticas", "Ambas asignaturas a la vez", "Ninguna, no se puede poner en notación condicionada"], c:0},
+  {q:"¿Cuál es la fórmula de la probabilidad condicionada?", o:["P(A/B) = P(A∩B)/P(B)", "P(A/B) = P(A)+P(B)", "P(A/B) = P(A)·P(B)", "P(A/B) = P(B)/P(A)"], c:0},
+  {q:"¿Qué condición debe cumplirse para poder calcular P(A/B)?", o:["P(B)≠0", "P(A)≠0", "A y B deben ser incompatibles", "A y B deben ser independientes"], c:0},
+  {q:"¿Cuándo se dice que A y B son independientes?", o:["Cuando P(A/B)=P(A): saber que ha ocurrido B no cambia la probabilidad de A", "Cuando P(A∩B)=0", "Cuando A y B nunca pueden ocurrir a la vez", "Cuando P(A)=P(B)"], c:0},
+  {q:"¿Cuál es la relación fundamental que siempre es cierta, sean o no independientes A y B?", o:["P(A∩B) = P(A)·P(B/A) = P(B)·P(A/B)", "P(A∩B) = P(A)·P(B), siempre", "P(A∩B) = P(A)+P(B)", "P(A∩B) = P(A)-P(B)"], c:0},
+  {q:"¿Cuándo se simplifica P(A∩B)=P(A)·P(B/A) a P(A∩B)=P(A)·P(B)?", o:["Solo cuando A y B son independientes", "Siempre, es la fórmula general", "Solo cuando son incompatibles", "Nunca se puede simplificar así"], c:0},
+  {q:"¿Por qué usar P(A∩B)=P(A)·P(B) sin comprobar independencia es un error frecuente?", o:["Porque esa fórmula solo es válida si A y B son independientes; si no, hay que usar P(A)·P(B/A)", "Porque esa fórmula nunca es válida", "Porque falta multiplicar por P(A/B) además", "No es un error, siempre se puede usar"], c:0},
+  {q:"Si A y B son incompatibles y ambos tienen probabilidad positiva, ¿pueden ser independientes?", o:["No, nunca", "Sí, siempre", "Depende de los valores concretos", "Sí, si además P(A)=P(B)"], c:0},
+  {q:"¿Por qué dos sucesos incompatibles con probabilidad positiva no pueden ser independientes?", o:["Porque P(A∩B)=0 pero P(A)·P(B)>0, y esos valores deberían coincidir si fueran independientes", "Porque los sucesos incompatibles no tienen probabilidad", "Porque la independencia solo se aplica a sucesos compatibles por definición", "Sí pueden, no hay contradicción"], c:0},
+  {q:"¿Cómo se comprueba si A y B son independientes, con datos numéricos?", o:["Comparando P(A∩B) con P(A)·P(B): si coinciden, son independientes", "Comprobando si P(A)=P(B)", "Comprobando si A∩B=∅", "Sumando P(A)+P(B) y viendo si da 1"], c:0},
+  {q:"Si P(A/B)=P(A), ¿qué se puede afirmar sobre P(B/A)?", o:["También será P(B/A)=P(B): la independencia es una relación simétrica", "No se puede saber nada de P(B/A)", "P(B/A)=0 necesariamente", "P(B/A)=1 necesariamente"], c:0},
+  {q:"'Entre los que cumplen B, ¿qué probabilidad hay de A?' es una forma de preguntar por...", o:["P(A/B)", "P(B/A)", "P(A∩B) directamente sobre el total", "P(A∪B)"], c:0},
+  {q:"Si conoces P(A∩B) y P(B), ¿qué fórmula usas para hallar P(A/B)?", o:["P(A/B) = P(A∩B)/P(B)", "P(A/B) = P(B)/P(A∩B)", "P(A/B) = P(A∩B)·P(B)", "P(A/B) = P(A∩B)-P(B)"], c:0},
+  {q:"Si conoces P(A) y P(B/A), ¿qué fórmula usas para hallar P(A∩B)?", o:["P(A∩B) = P(A)·P(B/A)", "P(A∩B) = P(A)/P(B/A)", "P(A∩B) = P(A)+P(B/A)", "P(A∩B) = P(B/A)-P(A)"], c:0},
+  {q:"Si A y B son independientes, ¿qué resultado esperamos al calcular P(A/Bᶜ)?", o:["P(A/Bᶜ) = P(A), porque A también es independiente de Bᶜ", "P(A/Bᶜ) = 0 siempre", "P(A/Bᶜ) = 1 - P(A/B)", "No se puede calcular sin más datos"], c:0}
+];
+
+const BANCO_APLICACION = [
+  {q:"Sean A y B sucesos con P(A)=0'6, P(B)=0'5 y P(A∩B)=0'3. Calcula P(A/B)", o:["0'6", "0'5", "0'3", "0'8"], c:0},
+  {q:"Con los mismos datos (P(A)=0'6, P(B)=0'5, P(A∩B)=0'3), calcula P(B/A)", o:["0'5", "0'6", "0'3", "0'9"], c:0},
+  {q:"Con esos mismos datos (P(A)=0'6, P(B)=0'5, P(A∩B)=0'3), ¿son A y B independientes?", o:["Sí, porque P(A)·P(B)=0'3 coincide con P(A∩B)", "No, los valores no coinciden", "No se puede determinar", "Sí, pero solo porque P(A)>P(B)"], c:0},
+  {q:"Sean A y B con P(A)=0'4, P(B)=0'3, P(A∩B)=0'1. Calcula P(A/B)", o:["0'333", "0'3", "0'1", "0'75"], c:0},
+  {q:"Con los mismos datos (P(A)=0'4, P(B)=0'3, P(A∩B)=0'1), ¿son A y B independientes?", o:["No, porque P(A)·P(B)=0'12≠0'1", "Sí, porque ambas probabilidades son menores que 0'5", "No se puede determinar", "Sí, porque P(A∩B)≠0"], c:0},
+  {q:"Sean A y B independientes con P(A)=0'7 y P(B)=0'2. Calcula P(A∩B)", o:["0'14", "0'9", "0'5", "0'35"], c:0},
+  {q:"Con A y B independientes, P(A)=0'7 y P(B)=0'2, calcula P(A/B)", o:["0'7", "0'2", "0'14", "0'35"], c:0},
+  {q:"Sean A y B con P(B)=0'4 y P(A∩B)=0'12. Calcula P(A/B)", o:["0'3", "0'48", "0'12", "0'52"], c:0},
+  {q:"Sean A y B con P(A)=0'5 y P(A∩B)=0'2. Calcula P(B/A)", o:["0'4", "0'2", "0'5", "0'7"], c:0},
+  {q:"Sean A y B independientes con P(A)=0'25 y P(A∩B)=0'1. Calcula P(B)", o:["0'4", "0'1", "0'25", "0'025"], c:0},
+  {q:"Sean A y B con P(A)=0'8 y P(B/A)=0'5. Calcula P(A∩B)", o:["0'4", "0'8", "0'5", "1'3"], c:0},
+  {q:"Sean A y B con P(B)=0'6 y P(A/B)=0'25. Calcula P(A∩B)", o:["0'15", "0'6", "0'25", "0'85"], c:0},
+  {q:"Sean A y B independientes con P(A)=0'3 y P(B)=0'6. Calcula P(A∪B)", o:["0'72", "0'9", "0'18", "0'62"], c:0},
+  {q:"Sean A y B con P(A)=0'5, P(B)=0'45 y P(Aᶜ∩B)=0'2. Calcula P(A∩B)", o:["0'25", "0'2", "0'65", "0'3"], c:0},
+  {q:"Sean A y B incompatibles con P(A)=0'3 y P(B)=0'4 (ambas positivas). ¿Pueden ser independientes?", o:["No, nunca: P(A∩B)=0 pero P(A)·P(B)=0'12≠0", "Sí, siempre que sean incompatibles", "Depende de si P(A)>P(B)", "Sí, porque suman menos de 1"], c:0},
+  {q:"Sean A y B independientes con P(A)=0'6 y P(B)=0'5. Calcula P(Aᶜ∩Bᶜ)", o:["0'2", "0'5", "0'3", "0'7"], c:0}
+];
+
+let orden = [];
+let idx = 0;
+let ok = 0, bad = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function empezar(){
+  const nombre = document.getElementById('nombre').value.trim();
+  if(!nombre){ alert('Escribe tu nombre para empezar.'); return; }
+  document.getElementById('gate').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  generarSecuencia();
+  mostrarPregunta();
+}
+
+function generarSecuencia(){
+  const todas = shuffle(
+    BANCO_TEORIA.map(x=>({...x,tipo:'teoria'})).concat(
+    BANCO_APLICACION.map(x=>({...x,tipo:'aplicacion'})))
+  );
+  orden = todas;
+  idx = 0; ok = 0; bad = 0;
+}
+
+function mostrarPregunta(){
+  if(idx >= orden.length){ generarSecuencia(); }
+  const item = orden[idx];
+  document.getElementById('contador').textContent = `Pregunta ${idx+1}`;
+  document.getElementById('okcount').textContent = ok;
+  document.getElementById('badcount').textContent = bad;
+  const tag = document.getElementById('qtag');
+  tag.textContent = item.tipo === 'teoria' ? 'Teoría' : 'Aplicación';
+  tag.className = 'qtag ' + item.tipo;
+  document.getElementById('qtext').innerHTML = item.q;
+
+  const opciones = shuffle(item.o.map((texto,i)=>({texto, esCorrecta:i===item.c})));
+  const cont = document.getElementById('opciones');
+  cont.innerHTML='';
+  opciones.forEach(op=>{
+    const btn = document.createElement('button');
+    btn.className='opt';
+    btn.innerHTML = op.texto;
+    btn.onclick = ()=>responder(btn, op.esCorrecta, opciones, cont);
+    cont.appendChild(btn);
+  });
+
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('btnSiguiente').disabled = true;
+  if(window.MathJax){ MathJax.typesetClear([cont, document.getElementById('qtext')]); MathJax.typesetPromise([cont, document.getElementById('qtext')]); }
+}
+
+function responder(btnPulsado, esCorrecta, opciones, cont){
+  const botones = cont.querySelectorAll('.opt');
+  botones.forEach(b=>b.disabled=true);
+  botones.forEach((b,i)=>{
+    if(opciones[i].esCorrecta) b.classList.add('correcta');
+  });
+  if(!esCorrecta) btnPulsado.classList.add('incorrecta');
+
+  const fb = document.getElementById('feedback');
+  if(esCorrecta){
+    ok++;
+    fb.textContent = '✓ Correcto.';
+    fb.className = 'feedback show ok';
+  } else {
+    bad++;
+    fb.textContent = '✗ No es correcto. La respuesta correcta está marcada en verde.';
+    fb.className = 'feedback show bad';
+  }
+  document.getElementById('okcount').textContent = ok;
+  document.getElementById('badcount').textContent = bad;
+  document.getElementById('btnSiguiente').disabled = false;
+}
+
+function siguiente(){
+  idx++;
+  mostrarPregunta();
+}
+</script>
+
+</body>
+</html>

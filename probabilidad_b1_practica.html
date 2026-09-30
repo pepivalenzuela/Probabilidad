@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B1 Práctica — Probabilidad · Las Chapas ECOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<style>
+  :root{
+    --navy:#1a2e4a; --navy-light:#2a4468; --teal:#1d7a6b; --teal-light:#e4f2ef;
+    --orange:#e07b3a; --orange-light:#fdeee0; --cream:#f5f2eb; --ink:#2b2b2b;
+    --muted:#6b6f76; --white:#ffffff; --line:#e4e0d6;
+    --red:#c65b4a; --red-light:#fbeae7;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Nunito Sans',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6}
+  h1,h2,h3,.brand{font-family:'Nunito',sans-serif}
+  a{color:inherit;text-decoration:none}
+
+  header.top{background:var(--navy);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:8px;font-size:.88rem;font-weight:600;flex-wrap:wrap}
+  header.top a{color:#cfd8e6}
+  header.top a:hover{color:#fff}
+  header.top .sep{color:#5c6b82}
+  header.top .current{color:#fff;font-weight:800}
+
+  .wrap{max-width:720px;margin:0 auto;padding:30px 24px 60px}
+
+  .titlebar{text-align:center;margin-bottom:22px}
+  .titlebar .kicker{display:inline-block;background:var(--teal-light);color:var(--teal);font-weight:800;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:12px}
+  .titlebar h1{font-size:1.6rem;color:var(--navy);margin:0 0 6px;font-weight:900}
+  .titlebar p{color:var(--muted);margin:0;font-size:.95rem}
+
+  #gate{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;text-align:center}
+  #gate input{width:100%;max-width:340px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-size:1rem;font-family:inherit;margin:14px 0}
+  .btn{display:inline-block;padding:13px 26px;border-radius:10px;font-weight:800;font-size:.95rem;border:none;cursor:pointer;font-family:inherit}
+  .btn.on{background:var(--teal);color:#fff}
+  .btn.on:hover{background:#166357}
+  .btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+  .btn.ghost:hover{background:#f0ede4}
+  .btn:disabled{opacity:.5;cursor:default}
+
+  #quiz{display:none}
+  .scoreboard{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 20px;margin-bottom:18px;font-weight:700;color:var(--navy);font-size:.9rem}
+  .scoreboard .ok{color:var(--teal)}
+  .scoreboard .bad{color:var(--red)}
+
+  .qcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px}
+  .qtag{display:inline-block;font-weight:800;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:100px;margin-bottom:14px}
+  .qtag.teoria{background:var(--teal-light);color:var(--teal)}
+  .qtag.aplicacion{background:var(--orange-light);color:var(--orange)}
+  .qtext{font-size:1.15rem;color:var(--navy);font-weight:700;margin-bottom:20px}
+
+  .opt{display:block;width:100%;text-align:left;background:#fbfbf9;border:1.5px solid var(--line);border-radius:10px;padding:13px 16px;margin-bottom:10px;font-family:inherit;font-size:1rem;cursor:pointer;color:var(--ink)}
+  .opt:hover{border-color:var(--teal)}
+  .opt.correcta{background:var(--teal-light);border-color:var(--teal);color:var(--navy);font-weight:700}
+  .opt.incorrecta{background:var(--red-light);border-color:var(--red);color:#8a3a2e;font-weight:700}
+  .opt:disabled{cursor:default}
+
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:.92rem;display:none}
+  .feedback.show{display:block}
+  .feedback.ok{background:var(--teal-light);color:#12574c}
+  .feedback.bad{background:var(--red-light);color:#8a3a2e}
+
+  .controls{display:flex;justify-content:flex-end;margin-top:20px}
+
+  .nav-bottom{display:flex;justify-content:space-between;margin-top:28px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html">Portal de Probabilidad</a>
+  <span class="sep">·</span>
+  <a href="probabilidad_b1_intro.html">Bloque 1</a>
+  <span class="sep">·</span>
+  <span class="current">Práctica libre</span>
+</header>
+
+<div class="wrap">
+  <div class="titlebar">
+    <span class="kicker">Bloque 1 · Práctica libre</span>
+    <h1>Conceptos fundamentales</h1>
+    <p>Ejercicios aleatorios de teoría (experimento, espacio muestral, sucesos) y de aplicación (escribir espacios muestrales, operar con sucesos). Cada vez que entras, el orden cambia.</p>
+  </div>
+
+  <div id="gate">
+    <p style="margin:0;color:var(--muted)">Escribe tu nombre para empezar (no hay límite de tiempo ni de intentos):</p>
+    <input type="text" id="nombre" placeholder="Nombre y apellidos">
+    <br>
+    <button class="btn on" onclick="empezar()">Empezar a practicar →</button>
+  </div>
+
+  <div id="quiz">
+    <div class="scoreboard">
+      <span id="contador">Pregunta 1</span>
+      <span><span class="ok" id="okcount">0</span> correctas · <span class="bad" id="badcount">0</span> incorrectas</span>
+    </div>
+
+    <div class="qcard">
+      <span class="qtag" id="qtag">Teoría</span>
+      <div class="qtext" id="qtext">—</div>
+      <div id="opciones"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="controls">
+        <button class="btn on" id="btnSiguiente" onclick="siguiente()" disabled>Siguiente pregunta →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom" style="flex-wrap:wrap;gap:12px">
+    <a class="btn ghost" href="probabilidad_b1_intro.html">← Volver a la teoría</a>
+    <a class="btn on" href="https://pepivalenzuela.github.io/panel-matematicas/">Formativas en mi panel →</a>
+    <a class="btn ghost" href="probabilidad_b2_intro.html">Bloque 2 →</a>
+  </div>
+</div>
+
+<script>
+// ---------- Banco de preguntas: Probabilidad ----------
+const BANCO_TEORIA = [
+  {q:"¿Cuál de estos experimentos es determinista, NO aleatorio?", o:["El tiempo de caída libre de un objeto sin resistencia del aire, desde una altura conocida", "El tiempo que tarda un ciclista en completar una etapa", "El resultado de una final de tenis", "El número de clientes que entran en una tienda en una hora"], c:0},
+  {q:"En el experimento 'extraer 2 cartas de una baraja sin reposición, anotando el resultado en orden', ¿qué tipo de elementos forman el espacio muestral?", o:["Pares ordenados de cartas distintas", "Pares no ordenados", "Un único número", "Ternas de cartas"], c:0},
+  {q:"¿Por qué extraer 'sin reposición' cambia el espacio muestral respecto a extraer 'con reposición'?", o:["Porque sin reposición no puede repetirse el mismo elemento en las dos extracciones", "Porque cambia el orden de la baraja", "No cambia en absoluto", "Porque el experimento deja de ser aleatorio"], c:0},
+  {q:"Si A y B son incompatibles, ¿son necesariamente sucesos contrarios?", o:["No necesariamente: para ser contrarios, además deben cubrir todo el espacio muestral (A∪B=E)", "Sí, siempre", "No, nunca pueden coexistir siendo incompatibles", "Sí, porque incompatible implica complementario"], c:0},
+  {q:"¿Qué dos condiciones debe cumplir un sistema completo de sucesos {A₁,...,Aₙ}?", o:["Ser incompatibles dos a dos Y que su unión sea el espacio muestral completo", "Solo que sean incompatibles dos a dos", "Solo que su unión sea E", "Que todos tengan la misma probabilidad"], c:0},
+  {q:"Al lanzar un dado, ¿cuál de estas parejas de sucesos NO forma un sistema completo de sucesos?", o:["{1,2,3} y {3,4,5,6} — se solapan en el 3", "{1,2,3} y {4,5,6}", "{par} y {impar}", "{menor que 4} y {mayor o igual que 4}"], c:0},
+  {q:"La expresión A−B (diferencia de sucesos) es equivalente a...", o:["A∩B̄", "A∪B̄", "Ā∩B", "Ā∪B"], c:0},
+  {q:"Si el espacio muestral E tiene 8 elementos y A tiene 5, ¿cuántos elementos tiene como máximo Ā?", o:["3", "8", "5", "0"], c:0},
+  {q:"¿Qué representa el suceso (A∪B)∩C̄?", o:["Ocurre A o B, pero no ocurre C", "Ocurren los tres a la vez", "No ocurre ninguno de los tres", "Solo ocurre C"], c:0},
+  {q:"Si A⊆B (A está contenido en B), ¿qué es A∩B?", o:["A", "B", "∅", "E"], c:0},
+  {q:"Si A⊆B, ¿qué es A∪B?", o:["B", "A", "∅", "E"], c:0},
+  {q:"¿Cuál de estas afirmaciones es cierta para cualquier suceso A?", o:["A∩Ā=∅ y A∪Ā=E", "A∩Ā=E", "A∪Ā=∅", "A=Ā siempre"], c:0},
+  {q:"¿Cuándo decimos que A, B y C forman una partición del espacio muestral E?", o:["Cuando son incompatibles dos a dos y A∪B∪C=E", "Cuando A∩B∩C=E", "Cuando cualquiera de ellos es el suceso seguro", "Cuando tienen la misma probabilidad"], c:0},
+  {q:"Según las Leyes de De Morgan, (A∩B∩C)ᶜ es igual a...", o:["Āᶜ∪B̄∪C̄ → es decir, Ā∪B̄∪C̄", "Ā∩B̄∩C̄", "A∪B∪C", "A∩B∩C"], c:0},
+  {q:"¿Es correcto decir que dos sucesos elementales distintos son siempre incompatibles?", o:["Sí, porque un resultado del experimento no puede ser dos elementos distintos a la vez", "No, pueden solaparse", "Depende del experimento", "Solo si son complementarios"], c:0},
+  {q:"Si A y B son dos sucesos cualesquiera, ¿qué relación general existe entre |A∪B|, |A|, |B| y |A∩B|?", o:["|A∪B| = |A|+|B|-|A∩B|", "|A∪B| = |A|+|B|", "|A∪B| = |A|·|B|", "|A∪B| = |A|-|B|"], c:0}
+];
+
+const BANCO_APLICACION = [
+  {q:"Se lanza una moneda y un dado a la vez. ¿Cuántos elementos tiene el espacio muestral?", o:["12", "6", "2", "8"], c:0},
+  {q:"Se lanza una moneda y un dado a la vez. ¿Cuántos elementos tiene el suceso 'sacar cara y un número par'?", o:["3", "6", "2", "1"], c:0},
+  {q:"En una baraja de 40 cartas se extraen 2 cartas SIN reposición, importando el orden. ¿Cuántos resultados posibles hay?", o:["40×39 = 1560", "40×40 = 1600", "40+39 = 79", "40²/2 = 800"], c:0},
+  {q:"En un instituto con 200 alumnos: 120 aprueban Matemáticas (A), 90 aprueban Física (B), 60 aprueban ambas. ¿Cuántos aprueban al menos una?", o:["150", "210", "60", "30"], c:0},
+  {q:"Con los mismos datos (200 alumnos, |A|=120, |B|=90, |A∩B|=60), ¿cuántos no aprueban ninguna de las dos?", o:["50", "150", "200", "30"], c:0},
+  {q:"En el mismo instituto de 200 alumnos (|A|=120 aprueban Matemáticas, |B|=90 aprueban Física, |A∩B|=60 aprueban ambas), ¿cuántos aprueban Matemáticas pero no Física?", o:["60", "120", "90", "30"], c:0},
+  {q:"Sean A y B con |A|=15, |B|=10, |A∩B|=4. ¿Cuántos elementos tiene A∪B?", o:["21", "25", "6", "19"], c:0},
+  {q:"A, B, C son sucesos con A∩B=∅, A∩C=∅, pero B∩C≠∅. Suponiendo A∪B∪C=E, ¿forman {A,B,C} un sistema completo de sucesos?", o:["No, porque B y C no son incompatibles entre sí", "Sí, porque su unión es E", "Sí, porque A es incompatible con los otros dos", "No se puede determinar"], c:0},
+  {q:"El suceso contrario de 'sacar al menos un 6' al lanzar dos dados es...", o:["No sacar ningún 6 en ninguno de los dos dados", "Sacar dos seises", "Sacar como mucho un 6", "Sacar un 6 en el primer dado"], c:0},
+  {q:"Se lanzan 3 monedas. ¿Cuál es el suceso 'obtener exactamente 2 caras'?", o:["{CCX,CXC,XCC}", "{CCC}", "{CCX,CXC,XCC,CCC}", "{XXX}"], c:0},
+  {q:"¿Cuántos elementos tiene el espacio muestral de lanzar 3 monedas?", o:["8", "6", "3", "9"], c:0},
+  {q:"Con E={1,...,12}, A='múltiplo de 2', B='múltiplo de 3'. Calcula A∩B.", o:["{6,12}", "{2,3,4,6,8,9,10,12}", "{1}", "{6}"], c:0},
+  {q:"Con los mismos datos (E={1..12}, A múltiplo de 2, B múltiplo de 3), calcula |A∪B|.", o:["8", "10", "6", "12"], c:0},
+  {q:"Con E={1,...,10}, A='par', B='múltiplo de 5'={5,10}. ¿Son A y B incompatibles?", o:["No, comparten el 10", "Sí, no comparten nada", "Sí, porque son de distinto tipo", "No se puede saber"], c:0},
+  {q:"En una clase de 30 alumnos, 18 estudian inglés, 12 francés y 6 ambos idiomas. ¿Cuántos no estudian ninguno de los dos?", o:["6", "24", "12", "0"], c:0},
+  {q:"En la misma clase de 30 alumnos (18 estudian inglés, 12 francés, 6 ambos idiomas), ¿cuántos estudian inglés pero no francés?", o:["12", "18", "6", "24"], c:0}
+];
+
+let orden = [];
+let idx = 0;
+let ok = 0, bad = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function empezar(){
+  const nombre = document.getElementById('nombre').value.trim();
+  if(!nombre){ alert('Escribe tu nombre para empezar.'); return; }
+  document.getElementById('gate').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  generarSecuencia();
+  mostrarPregunta();
+}
+
+function generarSecuencia(){
+  const todas = shuffle(
+    BANCO_TEORIA.map(x=>({...x,tipo:'teoria'})).concat(
+    BANCO_APLICACION.map(x=>({...x,tipo:'aplicacion'})))
+  );
+  orden = todas;
+  idx = 0; ok = 0; bad = 0;
+}
+
+function mostrarPregunta(){
+  if(idx >= orden.length){ generarSecuencia(); }
+  const item = orden[idx];
+  document.getElementById('contador').textContent = `Pregunta ${idx+1}`;
+  document.getElementById('okcount').textContent = ok;
+  document.getElementById('badcount').textContent = bad;
+  const tag = document.getElementById('qtag');
+  tag.textContent = item.tipo === 'teoria' ? 'Teoría' : 'Aplicación';
+  tag.className = 'qtag ' + item.tipo;
+  document.getElementById('qtext').innerHTML = item.q;
+
+  const opciones = shuffle(item.o.map((texto,i)=>({texto, esCorrecta:i===item.c})));
+  const cont = document.getElementById('opciones');
+  cont.innerHTML='';
+  opciones.forEach(op=>{
+    const btn = document.createElement('button');
+    btn.className='opt';
+    btn.innerHTML = op.texto;
+    btn.onclick = ()=>responder(btn, op.esCorrecta, opciones, cont);
+    cont.appendChild(btn);
+  });
+
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('btnSiguiente').disabled = true;
+  if(window.MathJax){ MathJax.typesetClear([cont, document.getElementById('qtext')]); MathJax.typesetPromise([cont, document.getElementById('qtext')]); }
+}
+
+function responder(btnPulsado, esCorrecta, opciones, cont){
+  const botones = cont.querySelectorAll('.opt');
+  botones.forEach(b=>b.disabled=true);
+  botones.forEach((b,i)=>{
+    if(opciones[i].esCorrecta) b.classList.add('correcta');
+  });
+  if(!esCorrecta) btnPulsado.classList.add('incorrecta');
+
+  const fb = document.getElementById('feedback');
+  if(esCorrecta){
+    ok++;
+    fb.textContent = '✓ Correcto.';
+    fb.className = 'feedback show ok';
+  } else {
+    bad++;
+    fb.textContent = '✗ No es correcto. La respuesta correcta está marcada en verde.';
+    fb.className = 'feedback show bad';
+  }
+  document.getElementById('okcount').textContent = ok;
+  document.getElementById('badcount').textContent = bad;
+  document.getElementById('btnSiguiente').disabled = false;
+}
+
+function siguiente(){
+  idx++;
+  mostrarPregunta();
+}
+</script>
+
+</body>
+</html>
