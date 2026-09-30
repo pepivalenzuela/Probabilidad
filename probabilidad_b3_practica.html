@@ -125,42 +125,362 @@
 <script>
 // ---------- Banco de preguntas: Bloque 3 · Venn y tablas de contingencia ----------
 const BANCO_TEORIA = [
-  {q:"En un diagrama de Venn de dos sucesos A y B, ¿qué región representa 'solo A' (A pero no B)?", o:["La parte del óvalo A que no se solapa con B", "La intersección A∩B", "Todo el rectángulo", "La parte fuera de ambos óvalos"], c:0},
-  {q:"¿Qué deben cumplir las 4 regiones básicas de un diagrama de Venn de 2 sucesos (solo A, solo B, A∩B, ninguno)?", o:["Ser disjuntas entre sí y sumar entre todas el total (o 1)", "Solaparse siempre entre ellas", "Sumar exactamente 0'5 cada una", "Ser todas iguales"], c:0},
-  {q:"En una tabla de contingencia de dos variables, ¿qué representa el total de una fila?", o:["La probabilidad (o frecuencia) marginal de esa categoría, sumando todas las columnas", "La intersección con cada columna por separado", "El total general de la tabla", "El complementario de la fila"], c:0},
-  {q:"En una tabla de contingencia, ¿cómo se calcula 'probabilidad de A dentro del grupo B', sin usar aún la notación de condicionada?", o:["Casos favorables (celda A∩B) entre casos posibles (total marginal de B)", "Casos favorables entre el total general de la tabla", "Sumando fila y columna", "Multiplicando los totales marginales"], c:0},
-  {q:"Si conoces P(A), P(B) y P(A∩B) y quieres montar un diagrama de Venn de 2 sucesos, ¿qué región conviene calcular primero?", o:["La intersección A∩B, es la base para las demás", "La región 'ninguno'", "Siempre 'solo A'", "No importa el orden"], c:0},
-  {q:"En un diagrama de Venn de 3 sucesos, ¿cuántas regiones distintas hay como máximo (incluyendo 'ninguno')?", o:["8", "6", "4", "3"], c:0},
-  {q:"Para un problema con dos variables categóricas cruzadas (por ejemplo: empresa × calidad del producto), ¿qué herramienta es más natural?", o:["Tabla de contingencia, porque organiza dos variables en filas y columnas", "Diagrama de Venn siempre", "Ninguna de las dos es válida", "Un árbol de decisión únicamente"], c:0},
-  {q:"¿Qué fórmula de inclusión-exclusión se usa para 3 sucesos A, B, C?", o:["P(A∪B∪C)=P(A)+P(B)+P(C)-P(A∩B)-P(A∩C)-P(B∩C)+P(A∩B∩C)", "P(A∪B∪C)=P(A)+P(B)+P(C)", "P(A∪B∪C)=P(A)·P(B)·P(C)", "P(A∪B∪C)=P(A∩B∩C)"], c:0},
-  {q:"En una tabla de contingencia con totales de fila y columna conocidos pero una celda interior desconocida, ¿cómo se halla esa celda?", o:["Por diferencia: total de la fila (o columna) menos las demás celdas conocidas", "Multiplicando los dos totales marginales", "Es imposible de calcular sin más datos", "Se supone siempre 0"], c:0},
-  {q:"Si en una tabla de contingencia la celda A∩B vale 0, ¿qué se puede afirmar?", o:["A y B son incompatibles en esa tabla", "A y B son independientes", "La tabla está mal construida", "A y B son iguales"], c:0},
-  {q:"En un diagrama de Venn, ¿qué representa la región totalmente fuera de todos los óvalos?", o:["El contrario de la unión de todos: no ocurre ninguno", "La intersección de todos", "El suceso seguro", "Una región que nunca puede aparecer"], c:0},
-  {q:"¿Por qué en un diagrama de Venn de 3 sucesos conviene rellenar primero la intersección central?", o:["Porque el resto de regiones se calculan restando de esa intersección hacia fuera", "Porque es la región más grande siempre", "Porque no influye en el resto de regiones", "Es indiferente el orden"], c:0},
-  {q:"En una tabla de contingencia, la suma de todos los totales de fila debe coincidir con...", o:["La suma de todos los totales de columna (ambas dan el total general)", "El total de la primera columna únicamente", "Cero", "La mitad del total general"], c:0},
-  {q:"¿Qué error es habitual al calcular 'probabilidad de A dentro del grupo B' en una tabla?", o:["Dividir entre el total general en vez de entre el total marginal de B", "Dividir entre el total marginal de B", "Sumar en vez de dividir", "Multiplicar las dos probabilidades marginales"], c:0},
-  {q:"Si P(A∪B)=1 y A∩B=∅, ¿qué relación tienen A y B?", o:["Son sucesos contrarios (complementarios)", "Son independientes", "Son el mismo suceso", "No tienen ninguna relación especial"], c:0},
-  {q:"En un diagrama de Venn con 2 sucesos, si P(A)=0'5 y la región 'solo A' vale 0'2, ¿cuánto vale A∩B?", o:["0'3", "0'2", "0'5", "0'7"], c:0}
-];
+  {
+  "q": "En un diagrama de Venn de dos sucesos A y B, ¿qué región representa 'solo A' (A pero no B)?",
+  "o": [
+  "La parte del óvalo A que no se solapa con B",
+  "La intersección A∩B",
+  "Todo el rectángulo",
+  "La parte fuera de ambos óvalos"
+  ],
+  "c": 0,
+  "e": "«Solo A» son los resultados que están en A y no en B: la parte del óvalo de A que queda fuera de la zona común con B (A∩B̄)."
+  },
+  {
+  "q": "¿Qué deben cumplir las 4 regiones básicas de un diagrama de Venn de 2 sucesos (solo A, solo B, A∩B, ninguno)?",
+  "o": [
+  "Ser disjuntas entre sí y sumar entre todas el total (o 1)",
+  "Solaparse siempre entre ellas",
+  "Sumar exactamente 0'5 cada una",
+  "Ser todas iguales"
+  ],
+  "c": 0,
+  "e": "Cada resultado cae en una sola de las cuatro regiones, así que no se solapan, y entre todas recogen todos los casos: suman el total (o 1 si trabajamos con probabilidades)."
+  },
+  {
+  "q": "En una tabla de contingencia de dos variables, ¿qué representa el total de una fila?",
+  "o": [
+  "La probabilidad (o frecuencia) marginal de esa categoría, sumando todas las columnas",
+  "La intersección con cada columna por separado",
+  "El total general de la tabla",
+  "El complementario de la fila"
+  ],
+  "c": 0,
+  "e": "El total de una fila suma esa categoría a lo largo de todas las columnas: es su frecuencia (o probabilidad) marginal."
+  },
+  {
+  "q": "En una tabla de contingencia, ¿cómo se calcula 'probabilidad de A dentro del grupo B', sin usar aún la notación de condicionada?",
+  "o": [
+  "Casos favorables (celda A∩B) entre casos posibles (total marginal de B)",
+  "Casos favorables entre el total general de la tabla",
+  "Sumando fila y columna",
+  "Multiplicando los totales marginales"
+  ],
+  "c": 0,
+  "e": "Si nos restringimos al grupo B, los casos posibles ya no son todos, sino solo los de B. Se divide la celda A∩B entre el total marginal de B."
+  },
+  {
+  "q": "Si conoces P(A), P(B) y P(A∩B) y quieres montar un diagrama de Venn de 2 sucesos, ¿qué región conviene calcular primero?",
+  "o": [
+  "La intersección A∩B, es la base para las demás",
+  "La región 'ninguno'",
+  "Siempre 'solo A'",
+  "No importa el orden"
+  ],
+  "c": 0,
+  "e": "Con la intersección ya calculada, «solo A» = P(A) − P(A∩B), «solo B» = P(B) − P(A∩B) y «ninguno» es lo que falta hasta 1. Por eso se empieza por el centro."
+  },
+  {
+  "q": "En un diagrama de Venn de 3 sucesos, ¿cuántas regiones distintas hay como máximo (incluyendo 'ninguno')?",
+  "o": [
+  "8",
+  "6",
+  "4",
+  "3"
+  ],
+  "c": 0,
+  "e": "Cada resultado puede estar o no en A, en B y en C: 2·2·2 = 8 combinaciones, contando la región de fuera (ninguno)."
+  },
+  {
+  "q": "Para un problema con dos variables categóricas cruzadas (por ejemplo: empresa × calidad del producto), ¿qué herramienta es más natural?",
+  "o": [
+  "Tabla de contingencia, porque organiza dos variables en filas y columnas",
+  "Diagrama de Venn siempre",
+  "Ninguna de las dos es válida",
+  "Un árbol de decisión únicamente"
+  ],
+  "c": 0,
+  "e": "Cuando se cruzan dos variables con varias categorías (empresa y calidad), la tabla de contingencia las organiza directamente en filas y columnas, con sus totales."
+  },
+  {
+  "q": "¿Qué fórmula de inclusión-exclusión se usa para 3 sucesos A, B, C?",
+  "o": [
+  "P(A∪B∪C)=P(A)+P(B)+P(C)-P(A∩B)-P(A∩C)-P(B∩C)+P(A∩B∩C)",
+  "P(A∪B∪C)=P(A)+P(B)+P(C)",
+  "P(A∪B∪C)=P(A)·P(B)·P(C)",
+  "P(A∪B∪C)=P(A∩B∩C)"
+  ],
+  "c": 0,
+  "e": "Al sumar las tres probabilidades, las intersecciones de dos en dos se cuentan dos veces y hay que restarlas; pero entonces la zona central se ha quitado de más y hay que volver a sumarla."
+  },
+  {
+  "q": "En una tabla de contingencia con totales de fila y columna conocidos pero una celda interior desconocida, ¿cómo se halla esa celda?",
+  "o": [
+  "Por diferencia: total de la fila (o columna) menos las demás celdas conocidas",
+  "Multiplicando los dos totales marginales",
+  "Es imposible de calcular sin más datos",
+  "Se supone siempre 0"
+  ],
+  "c": 0,
+  "e": "Las celdas de una fila (o de una columna) suman su total marginal, así que la celda desconocida es el total menos las celdas conocidas."
+  },
+  {
+  "q": "Si en una tabla de contingencia la celda A∩B vale 0, ¿qué se puede afirmar?",
+  "o": [
+  "A y B son incompatibles en esa tabla",
+  "A y B son independientes",
+  "La tabla está mal construida",
+  "A y B son iguales"
+  ],
+  "c": 0,
+  "e": "Si la celda A∩B vale 0, ningún caso cumple A y B a la vez: A y B son incompatibles. (Independencia es otra cosa y no se deduce de aquí.)"
+  },
+  {
+  "q": "En un diagrama de Venn, ¿qué representa la región totalmente fuera de todos los óvalos?",
+  "o": [
+  "El contrario de la unión de todos: no ocurre ninguno",
+  "La intersección de todos",
+  "El suceso seguro",
+  "Una región que nunca puede aparecer"
+  ],
+  "c": 0,
+  "e": "La zona fuera de todos los óvalos son los resultados que no están en ninguno de los sucesos: el contrario de su unión."
+  },
+  {
+  "q": "¿Por qué en un diagrama de Venn de 3 sucesos conviene rellenar primero la intersección central?",
+  "o": [
+  "Porque el resto de regiones se calculan restando de esa intersección hacia fuera",
+  "Porque es la región más grande siempre",
+  "Porque no influye en el resto de regiones",
+  "Es indiferente el orden"
+  ],
+  "c": 0,
+  "e": "El dato de la intersección de los tres entra en todas las intersecciones de dos. Con él se obtienen las zonas «solo dos», después las «solo uno» y por último «ninguno»."
+  },
+  {
+  "q": "En una tabla de contingencia, la suma de todos los totales de fila debe coincidir con...",
+  "o": [
+  "La suma de todos los totales de columna (ambas dan el total general)",
+  "El total de la primera columna únicamente",
+  "Cero",
+  "La mitad del total general"
+  ],
+  "c": 0,
+  "e": "Tanto sumando las filas como sumando las columnas se cuentan todos los casos de la tabla una sola vez: los dos caminos dan el total general."
+  },
+  {
+  "q": "¿Qué error es habitual al calcular 'probabilidad de A dentro del grupo B' en una tabla?",
+  "o": [
+  "Dividir entre el total general en vez de entre el total marginal de B",
+  "Dividir entre el total marginal de B",
+  "Sumar en vez de dividir",
+  "Multiplicar las dos probabilidades marginales"
+  ],
+  "c": 0,
+  "e": "El error típico es dividir entre el total general. Si la pregunta se refiere solo al grupo B, hay que dividir entre el total de B."
+  },
+  {
+  "q": "Si P(A∪B)=1 y A∩B=∅, ¿qué relación tienen A y B?",
+  "o": [
+  "Son sucesos contrarios (complementarios)",
+  "Son independientes",
+  "Son el mismo suceso",
+  "No tienen ninguna relación especial"
+  ],
+  "c": 0,
+  "e": "A∩B = ∅ (no ocurren a la vez) y A∪B tiene probabilidad 1 (entre los dos lo cubren todo): esas son justo las condiciones de sucesos contrarios."
+  },
+  {
+  "q": "En un diagrama de Venn con 2 sucesos, si P(A)=0'5 y la región 'solo A' vale 0'2, ¿cuánto vale A∩B?",
+  "o": [
+  "0'3",
+  "0'2",
+  "0'5",
+  "0'7"
+  ],
+  "c": 0,
+  "e": "El óvalo de A se divide en «solo A» y A∩B: P(A∩B) = P(A) − P(solo A) = 0,5 − 0,2 = 0,3."
+  }
+  ];
 
 const BANCO_APLICACION = [
-  {q:"En un instituto de 500 alumnos: 300 juegan al fútbol (F), 150 al baloncesto (B), 120 hacen ciclismo (C); F∩B=90, F∩C=30, B∩C=25, F∩B∩C=3. Calcula P(no practicar ningún deporte)", o:["0'144", "0'856", "0'3", "0'072"], c:0},
-  {q:"En el mismo instituto (500 alumnos: F=300, B=150, C=120, F∩B=90, F∩C=30, B∩C=25, F∩B∩C=3), calcula P(practicar solo fútbol)", o:["0'366", "0'6", "0'18", "0'24"], c:0},
-  {q:"De 165 diplomáticos: 125 hablan inglés (I), 80 francés (F), 50 alemán (A); I∩F=60, I∩A=30, F∩A=10, I∩F∩A=5. Calcula P(hablar los tres idiomas)", o:["0'0303", "0'333", "0'1", "0'05"], c:0},
-  {q:"Con los mismos 165 diplomáticos (I=125, F=80, A=50, I∩F=60, I∩A=30, F∩A=10, I∩F∩A=5), calcula P(hablar exactamente dos idiomas)", o:["0'515", "0'303", "0'667", "0'1"], c:0},
-  {q:"En un grupo de 60 personas: 24 leen la revista A, 22 la B, 20 la C; A∩B=6, A∩C=7, B∩C=8, A∩B∩C=3. Calcula P(leer exactamente una revista)", o:["0'55", "0'8", "0'25", "0'2"], c:0},
-  {q:"Con el mismo grupo de 60 personas (A=24, B=22, C=20, A∩B=6, A∩C=7, B∩C=8, A∩B∩C=3), calcula P(leer al menos dos revistas)", o:["0'25", "0'55", "0'8", "0'05"], c:0},
-  {q:"En una clase de 20 alumnos: 4 son chicas con asignaturas pendientes, 6 son chicos con pendientes, 9 son chicas sin pendientes y 1 es chico sin pendientes. Calcula P(elegir una chica sin pendientes)", o:["0'45", "0'2", "0'3", "0'05"], c:0},
-  {q:"Una ciudad reparte sus bicicletas de alquiler entre dos empresas: E₁ (30% del total: de cada 100 bicis, aporta 24 buenas, 1'5 medias, 4'5 malas) y E₂ (70%: aporta 42 buenas, 17'5 medias, 10'5 malas). Calcula P(bicicleta de buena calidad)", o:["0'66", "0'3", "0'7", "0'24"], c:0},
-  {q:"Con los mismos datos de las bicicletas (E₁ aporta, sobre 30 en total: 24 buenas, 1'5 medias, 4'5 malas), calcula la probabilidad de mala calidad dentro del grupo de la empresa E₁", o:["0'15", "0'045", "0'3", "0'05"], c:0},
-  {q:"En un estudio de 54 siniestros de tráfico: conductor joven+vehículo nuevo=8, joven+viejo=21, sénior+nuevo=11, sénior+viejo=14. Calcula P(conductor joven y vehículo nuevo)", o:["0'148", "0'389", "0'204", "0'259"], c:0},
-  {q:"Con los mismos 54 siniestros (joven+nuevo=8, joven+viejo=21, sénior+nuevo=11, sénior+viejo=14), calcula la probabilidad de que el conductor sea sénior, dentro del grupo de vehículos viejos", o:["0'4", "0'259", "0'6", "0'389"], c:0},
-  {q:"En una tabla de contingencia 2×2: fila 1 suma 40, fila 2 suma 60, columna 1 suma 45, columna 2 suma 55, y la celda (fila 1, columna 1) vale 25. Calcula la celda (fila 1, columna 2)", o:["15", "20", "35", "10"], c:0},
-  {q:"Con la misma tabla 2×2 (fila 1=40, fila 2=60, columna 1=45, columna 2=55, celda(f1,c1)=25), calcula la celda (fila 2, columna 1)", o:["20", "15", "25", "40"], c:0},
-  {q:"Con la misma tabla 2×2 (fila 1=40, fila 2=60, columna 1=45, columna 2=55, celda(f1,c1)=25), calcula la celda (fila 2, columna 2)", o:["40", "35", "20", "45"], c:0},
-  {q:"En una tabla en tantos por ciento: P(A)=0'45, P(B)=0'30, P(A∩B)=0'10. Calcula la celda 'A y no B'", o:["0'35", "0'20", "0'55", "0'15"], c:0},
-  {q:"Con los mismos datos (P(A)=0'45, P(B)=0'30, P(A∩B)=0'10), calcula la celda 'ni A ni B'", o:["0'35", "0'65", "0'55", "0'1"], c:0}
-];
+  {
+  "q": "En un instituto de 500 alumnos: 300 juegan al fútbol (F), 150 al baloncesto (B), 120 hacen ciclismo (C); F∩B=90, F∩C=30, B∩C=25, F∩B∩C=3. Calcula P(no practicar ningún deporte)",
+  "o": [
+  "0'144",
+  "0'856",
+  "0'3",
+  "0'072"
+  ],
+  "c": 0,
+  "e": "Por inclusión-exclusión, practican algún deporte 300 + 150 + 120 − 90 − 30 − 25 + 3 = 428. No practican ninguno 500 − 428 = 72, y 72/500 = 0,144."
+  },
+  {
+  "q": "En el mismo instituto (500 alumnos: F=300, B=150, C=120, F∩B=90, F∩C=30, B∩C=25, F∩B∩C=3), calcula P(practicar solo fútbol)",
+  "o": [
+  "0'366",
+  "0'6",
+  "0'18",
+  "0'24"
+  ],
+  "c": 0,
+  "e": "Solo fútbol = F − (F∩B) − (F∩C) + (F∩B∩C) = 300 − 90 − 30 + 3 = 183 (la zona central se ha restado dos veces). 183/500 = 0,366."
+  },
+  {
+  "q": "De 165 diplomáticos: 125 hablan inglés (I), 80 francés (F), 50 alemán (A); I∩F=60, I∩A=30, F∩A=10, I∩F∩A=5. Calcula P(hablar los tres idiomas)",
+  "o": [
+  "0'0303",
+  "0'333",
+  "0'1",
+  "0'05"
+  ],
+  "c": 0,
+  "e": "Hablan los tres idiomas 5 de 165: 5/165 ≈ 0,0303."
+  },
+  {
+  "q": "Con los mismos 165 diplomáticos (I=125, F=80, A=50, I∩F=60, I∩A=30, F∩A=10, I∩F∩A=5), calcula P(hablar exactamente dos idiomas)",
+  "o": [
+  "0'515",
+  "0'303",
+  "0'667",
+  "0'1"
+  ],
+  "c": 0,
+  "e": "Exactamente dos: a cada intersección doble se le quita la triple: (60−5) + (30−5) + (10−5) = 85. 85/165 ≈ 0,515."
+  },
+  {
+  "q": "En un grupo de 60 personas: 24 leen la revista A, 22 la B, 20 la C; A∩B=6, A∩C=7, B∩C=8, A∩B∩C=3. Calcula P(leer exactamente una revista)",
+  "o": [
+  "0'55",
+  "0'8",
+  "0'25",
+  "0'2"
+  ],
+  "c": 0,
+  "e": "Solo A = 24 − 6 − 7 + 3 = 14; solo B = 22 − 6 − 8 + 3 = 11; solo C = 20 − 7 − 8 + 3 = 8. En total 33 personas: 33/60 = 0,55."
+  },
+  {
+  "q": "Con el mismo grupo de 60 personas (A=24, B=22, C=20, A∩B=6, A∩C=7, B∩C=8, A∩B∩C=3), calcula P(leer al menos dos revistas)",
+  "o": [
+  "0'25",
+  "0'55",
+  "0'8",
+  "0'05"
+  ],
+  "c": 0,
+  "e": "Exactamente dos: (6−3) + (7−3) + (8−3) = 12; los tres: 3. Al menos dos: 15, y 15/60 = 0,25."
+  },
+  {
+  "q": "En una clase de 20 alumnos: 4 son chicas con asignaturas pendientes, 6 son chicos con pendientes, 9 son chicas sin pendientes y 1 es chico sin pendientes. Calcula P(elegir una chica sin pendientes)",
+  "o": [
+  "0'45",
+  "0'2",
+  "0'3",
+  "0'05"
+  ],
+  "c": 0,
+  "e": "Chicas sin pendientes: 9 de 20 alumnos. 9/20 = 0,45."
+  },
+  {
+  "q": "Una ciudad reparte sus bicicletas de alquiler entre dos empresas: E₁ (30% del total: de cada 100 bicis, aporta 24 buenas, 1'5 medias, 4'5 malas) y E₂ (70%: aporta 42 buenas, 17'5 medias, 10'5 malas). Calcula P(bicicleta de buena calidad)",
+  "o": [
+  "0'66",
+  "0'3",
+  "0'7",
+  "0'24"
+  ],
+  "c": 0,
+  "e": "De cada 100 bicicletas, son buenas 24 (de E₁) + 42 (de E₂) = 66. P(buena) = 0,66."
+  },
+  {
+  "q": "Con los mismos datos de las bicicletas (E₁ aporta, sobre 30 en total: 24 buenas, 1'5 medias, 4'5 malas), calcula la probabilidad de mala calidad dentro del grupo de la empresa E₁",
+  "o": [
+  "0'15",
+  "0'045",
+  "0'3",
+  "0'05"
+  ],
+  "c": 0,
+  "e": "Dentro de E₁ solo se cuentan sus 30 bicicletas: 4,5 son malas. 4,5/30 = 0,15."
+  },
+  {
+  "q": "En un estudio de 54 siniestros de tráfico: conductor joven+vehículo nuevo=8, joven+viejo=21, sénior+nuevo=11, sénior+viejo=14. Calcula P(conductor joven y vehículo nuevo)",
+  "o": [
+  "0'148",
+  "0'389",
+  "0'204",
+  "0'259"
+  ],
+  "c": 0,
+  "e": "Joven y nuevo: 8 casos de 54 siniestros. 8/54 ≈ 0,148."
+  },
+  {
+  "q": "Con los mismos 54 siniestros (joven+nuevo=8, joven+viejo=21, sénior+nuevo=11, sénior+viejo=14), calcula la probabilidad de que el conductor sea sénior, dentro del grupo de vehículos viejos",
+  "o": [
+  "0'4",
+  "0'259",
+  "0'6",
+  "0'389"
+  ],
+  "c": 0,
+  "e": "Vehículos viejos: 21 + 14 = 35. De ellos, 14 con conductor sénior: 14/35 = 0,4."
+  },
+  {
+  "q": "En una tabla de contingencia 2×2: fila 1 suma 40, fila 2 suma 60, columna 1 suma 45, columna 2 suma 55, y la celda (fila 1, columna 1) vale 25. Calcula la celda (fila 1, columna 2)",
+  "o": [
+  "15",
+  "20",
+  "35",
+  "10"
+  ],
+  "c": 0,
+  "e": "La fila 1 suma 40 y ya tiene 25 en la columna 1: 40 − 25 = 15."
+  },
+  {
+  "q": "Con la misma tabla 2×2 (fila 1=40, fila 2=60, columna 1=45, columna 2=55, celda(f1,c1)=25), calcula la celda (fila 2, columna 1)",
+  "o": [
+  "20",
+  "15",
+  "25",
+  "40"
+  ],
+  "c": 0,
+  "e": "La columna 1 suma 45 y ya tiene 25 en la fila 1: 45 − 25 = 20."
+  },
+  {
+  "q": "Con la misma tabla 2×2 (fila 1=40, fila 2=60, columna 1=45, columna 2=55, celda(f1,c1)=25), calcula la celda (fila 2, columna 2)",
+  "o": [
+  "40",
+  "35",
+  "20",
+  "45"
+  ],
+  "c": 0,
+  "e": "La fila 2 suma 60 y ya tiene 20 en la columna 1: 60 − 20 = 40. (También: columna 2, 55 − 15 = 40.)"
+  },
+  {
+  "q": "En una tabla en tantos por ciento: P(A)=0'45, P(B)=0'30, P(A∩B)=0'10. Calcula la celda 'A y no B'",
+  "o": [
+  "0'35",
+  "0'20",
+  "0'55",
+  "0'15"
+  ],
+  "c": 0,
+  "e": "«A y no B» = P(A) − P(A∩B) = 0,45 − 0,10 = 0,35."
+  },
+  {
+  "q": "Con los mismos datos (P(A)=0'45, P(B)=0'30, P(A∩B)=0'10), calcula la celda 'ni A ni B'",
+  "o": [
+  "0'35",
+  "0'65",
+  "0'55",
+  "0'1"
+  ],
+  "c": 0,
+  "e": "P(A∪B) = 0,45 + 0,30 − 0,10 = 0,65, así que «ni A ni B» = 1 − 0,65 = 0,35."
+  }
+  ];
 
 let orden = [];
 let idx = 0;
@@ -229,15 +549,17 @@ function responder(btnPulsado, esCorrecta, opciones, cont){
   if(!esCorrecta) btnPulsado.classList.add('incorrecta');
 
   const fb = document.getElementById('feedback');
+  const exp = orden[idx] && orden[idx].e ? '<div style="margin-top:8px;font-weight:400">💡 ' + orden[idx].e + '</div>' : '';
   if(esCorrecta){
     ok++;
-    fb.textContent = '✓ Correcto.';
+    fb.innerHTML = '<b>✓ Correcto.</b>' + exp;
     fb.className = 'feedback show ok';
   } else {
     bad++;
-    fb.textContent = '✗ No es correcto. La respuesta correcta está marcada en verde.';
+    fb.innerHTML = '<b>✗ No es correcto. La respuesta correcta está marcada en verde.</b>' + exp;
     fb.className = 'feedback show bad';
   }
+  if(window.MathJax && MathJax.typesetPromise){ MathJax.typesetPromise([fb]).catch(()=>{}); }
   document.getElementById('okcount').textContent = ok;
   document.getElementById('badcount').textContent = bad;
   document.getElementById('btnSiguiente').disabled = false;

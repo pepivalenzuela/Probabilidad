@@ -125,42 +125,362 @@
 <script>
 // ---------- Banco de preguntas: Bloque 5 · Probabilidad total y Bayes ----------
 const BANCO_TEORIA = [
-  {q:"¿Qué condiciones debe cumplir un sistema completo de sucesos {A₁,...,Aₙ}?", o:["Ser incompatibles dos a dos y que su unión sea todo el espacio muestral E", "Solo que sean incompatibles dos a dos", "Solo que su unión sea E", "Que todos tengan la misma probabilidad"], c:0},
-  {q:"El teorema de la probabilidad total permite calcular...", o:["P(B) cuando B solo puede ocurrir a través de varios caminos A₁,...,Aₙ", "P(A/B) directamente sin más datos", "P(A) cuando A es independiente de todo", "La probabilidad de un suceso imposible"], c:0},
-  {q:"¿Cuál es la fórmula del teorema de la probabilidad total?", o:["P(B) = ΣP(Aᵢ)·P(B/Aᵢ)", "P(B) = ΣP(Aᵢ)+P(B/Aᵢ)", "P(B) = P(A₁)·P(A₂)·...·P(Aₙ)", "P(B) = ΣP(Aᵢ)/P(B/Aᵢ)"], c:0},
-  {q:"¿De dónde sale cada término P(Aᵢ)·P(B/Aᵢ) de la fórmula de la probabilidad total?", o:["Es la fórmula de la intersección, P(Aᵢ∩B)", "Es una suposición sin justificación", "Es la fórmula de Bayes ya aplicada", "Es el complementario de P(B)"], c:0},
-  {q:"¿Por qué se pueden sumar directamente los términos P(Aᵢ∩B) en la fórmula de la probabilidad total?", o:["Porque son incompatibles entre sí, al ser los Aᵢ un sistema completo", "Porque siempre se pueden sumar probabilidades", "Porque son independientes entre sí", "Porque su suma siempre da 1"], c:0},
-  {q:"El teorema de Bayes responde a la pregunta...", o:["Sabiendo que ha ocurrido B, ¿cuál es la probabilidad de que haya sido por el camino Aᵢ?", "¿Cuál es la probabilidad total de B?", "¿Son A y B independientes?", "¿Cuántos caminos lleva a B?"], c:0},
-  {q:"¿Cuál es la fórmula del teorema de Bayes?", o:["P(Aᵢ/B) = P(Aᵢ)·P(B/Aᵢ) / P(B)", "P(Aᵢ/B) = P(B)/[P(Aᵢ)·P(B/Aᵢ)]", "P(Aᵢ/B) = P(Aᵢ)+P(B/Aᵢ)", "P(Aᵢ/B) = P(B/Aᵢ)"], c:0},
-  {q:"¿Qué representa el denominador de la fórmula de Bayes?", o:["La probabilidad total, P(B)", "La probabilidad de Aᵢ únicamente", "Siempre el número 1", "La suma de todas las P(Aᵢ)"], c:0},
-  {q:"¿Por qué siempre se calcula primero la probabilidad total al resolver un problema de Bayes?", o:["Porque el denominador de Bayes es exactamente esa probabilidad total", "Porque no influye en el resultado final", "Porque Bayes no necesita la probabilidad total en realidad", "Es solo una costumbre, no una necesidad matemática"], c:0},
-  {q:"En un diagrama de árbol para probabilidad total, ¿qué debe llevar cada rama de primer nivel?", o:["La probabilidad P(Aᵢ)", "La probabilidad condicionada P(B/Aᵢ)", "La probabilidad total P(B)", "El resultado de Bayes ya calculado"], c:0},
-  {q:"¿Qué debe llevar cada rama de segundo nivel del árbol?", o:["La probabilidad condicionada P(B/Aᵢ), nunca la probabilidad suelta de B", "La probabilidad P(Aᵢ) otra vez", "La probabilidad P(B) sin condicionar", "El producto ya calculado P(Aᵢ)·P(B/Aᵢ)"], c:0},
-  {q:"Multiplicar las probabilidades a lo largo de un camino del árbol da como resultado...", o:["La probabilidad de la intersección de ese camino, P(Aᵢ∩B)", "La probabilidad total P(B) directamente", "La probabilidad condicionada P(Aᵢ/B)", "Siempre 0"], c:0},
-  {q:"Si antes del experimento P(A₂)=0'45 y, tras conocer un resultado B, P(A₂/B)=0'6, ¿qué ha ocurrido?", o:["La evidencia B ha hecho más probable que el suceso proceda de A₂", "Se ha cometido un error de cálculo, es imposible que cambie", "A₂ y B son incompatibles", "P(A₂) ha bajado en realidad"], c:0},
-  {q:"¿Es siempre cierto que la suma de todas las P(Aᵢ/B), para i=1,...,n, vale 1?", o:["Sí, porque {A₁,...,Aₙ} sigue siendo una partición, ahora condicionada a B", "No, depende de los valores de P(B/Aᵢ)", "Solo si los Aᵢ son independientes de B", "No, la suma siempre es menor que 1"], c:0},
-  {q:"¿Qué error se comete si en el árbol se pone P(B) en vez de P(B/Aᵢ) en las ramas de segundo nivel?", o:["Se pierde que cada rama ya está condicionada por el camino Aᵢ tomado, y el cálculo sale mal", "Ningún error, es lo mismo", "El árbol queda incompleto pero el resultado es correcto igualmente", "Solo afecta al cálculo de Bayes, no al de la probabilidad total"], c:0},
-  {q:"Si un suceso B solo puede darse a través de un único camino A₁ (P(A₁)=1), ¿en qué se convierte la probabilidad total?", o:["En la propia P(B/A₁), ya que no hay otros caminos que sumar", "En 0 siempre", "En P(A₁) sin más", "En 1 siempre, sin importar P(B/A₁)"], c:0}
-];
+  {
+  "q": "¿Qué condiciones debe cumplir un sistema completo de sucesos {A₁,...,Aₙ}?",
+  "o": [
+  "Ser incompatibles dos a dos y que su unión sea todo el espacio muestral E",
+  "Solo que sean incompatibles dos a dos",
+  "Solo que su unión sea E",
+  "Que todos tengan la misma probabilidad"
+  ],
+  "c": 0,
+  "e": "Un sistema completo reparte el espacio muestral en trozos sin solaparse: los sucesos son incompatibles dos a dos y su unión es E. No tienen por qué tener la misma probabilidad."
+  },
+  {
+  "q": "El teorema de la probabilidad total permite calcular...",
+  "o": [
+  "P(B) cuando B solo puede ocurrir a través de varios caminos A₁,...,Aₙ",
+  "P(A/B) directamente sin más datos",
+  "P(A) cuando A es independiente de todo",
+  "La probabilidad de un suceso imposible"
+  ],
+  "c": 0,
+  "e": "Sirve para calcular la probabilidad de un suceso B que puede ocurrir por varios caminos (las causas A₁, …, Aₙ de un sistema completo), sumando lo que aporta cada camino."
+  },
+  {
+  "q": "¿Cuál es la fórmula del teorema de la probabilidad total?",
+  "o": [
+  "P(B) = ΣP(Aᵢ)·P(B/Aᵢ)",
+  "P(B) = ΣP(Aᵢ)+P(B/Aᵢ)",
+  "P(B) = P(A₁)·P(A₂)·...·P(Aₙ)",
+  "P(B) = ΣP(Aᵢ)/P(B/Aᵢ)"
+  ],
+  "c": 0,
+  "e": "P(B) = P(A₁)·P(B/A₁) + … + P(Aₙ)·P(B/Aₙ): en cada camino se multiplica la probabilidad de la causa por la de B condicionada a esa causa, y se suman todos los caminos."
+  },
+  {
+  "q": "¿De dónde sale cada término P(Aᵢ)·P(B/Aᵢ) de la fórmula de la probabilidad total?",
+  "o": [
+  "Es la fórmula de la intersección, P(Aᵢ∩B)",
+  "Es una suposición sin justificación",
+  "Es la fórmula de Bayes ya aplicada",
+  "Es el complementario de P(B)"
+  ],
+  "c": 0,
+  "e": "Por la regla del producto, P(Aᵢ)·P(B/Aᵢ) = P(Aᵢ∩B): es la probabilidad de llegar a B por el camino Aᵢ."
+  },
+  {
+  "q": "¿Por qué se pueden sumar directamente los términos P(Aᵢ∩B) en la fórmula de la probabilidad total?",
+  "o": [
+  "Porque son incompatibles entre sí, al ser los Aᵢ un sistema completo",
+  "Porque siempre se pueden sumar probabilidades",
+  "Porque son independientes entre sí",
+  "Porque su suma siempre da 1"
+  ],
+  "c": 0,
+  "e": "Como los Aᵢ son incompatibles dos a dos, los trozos Aᵢ∩B tampoco se solapan, y por el tercer axioma la probabilidad de su unión (que es B) es la suma."
+  },
+  {
+  "q": "El teorema de Bayes responde a la pregunta...",
+  "o": [
+  "Sabiendo que ha ocurrido B, ¿cuál es la probabilidad de que haya sido por el camino Aᵢ?",
+  "¿Cuál es la probabilidad total de B?",
+  "¿Son A y B independientes?",
+  "¿Cuántos caminos lleva a B?"
+  ],
+  "c": 0,
+  "e": "Bayes hace el camino inverso: conocido el resultado B, calcula la probabilidad de cada causa Aᵢ, es decir, P(Aᵢ/B)."
+  },
+  {
+  "q": "¿Cuál es la fórmula del teorema de Bayes?",
+  "o": [
+  "P(Aᵢ/B) = P(Aᵢ)·P(B/Aᵢ) / P(B)",
+  "P(Aᵢ/B) = P(B)/[P(Aᵢ)·P(B/Aᵢ)]",
+  "P(Aᵢ/B) = P(Aᵢ)+P(B/Aᵢ)",
+  "P(Aᵢ/B) = P(B/Aᵢ)"
+  ],
+  "c": 0,
+  "e": "P(Aᵢ/B) = P(Aᵢ∩B)/P(B), y en el numerador P(Aᵢ∩B) = P(Aᵢ)·P(B/Aᵢ); el denominador es la probabilidad total."
+  },
+  {
+  "q": "¿Qué representa el denominador de la fórmula de Bayes?",
+  "o": [
+  "La probabilidad total, P(B)",
+  "La probabilidad de Aᵢ únicamente",
+  "Siempre el número 1",
+  "La suma de todas las P(Aᵢ)"
+  ],
+  "c": 0,
+  "e": "El denominador es P(B), que se calcula con el teorema de la probabilidad total: la suma de todos los caminos que llevan a B."
+  },
+  {
+  "q": "¿Por qué siempre se calcula primero la probabilidad total al resolver un problema de Bayes?",
+  "o": [
+  "Porque el denominador de Bayes es exactamente esa probabilidad total",
+  "Porque no influye en el resultado final",
+  "Porque Bayes no necesita la probabilidad total en realidad",
+  "Es solo una costumbre, no una necesidad matemática"
+  ],
+  "c": 0,
+  "e": "Bayes divide la rama que nos interesa entre P(B), y P(B) es precisamente la probabilidad total. Sin ella no se puede terminar el cálculo."
+  },
+  {
+  "q": "En un diagrama de árbol para probabilidad total, ¿qué debe llevar cada rama de primer nivel?",
+  "o": [
+  "La probabilidad P(Aᵢ)",
+  "La probabilidad condicionada P(B/Aᵢ)",
+  "La probabilidad total P(B)",
+  "El resultado de Bayes ya calculado"
+  ],
+  "c": 0,
+  "e": "Las ramas de primer nivel corresponden a las causas del sistema completo, y cada una lleva su probabilidad P(Aᵢ). Entre todas suman 1."
+  },
+  {
+  "q": "¿Qué debe llevar cada rama de segundo nivel del árbol?",
+  "o": [
+  "La probabilidad condicionada P(B/Aᵢ), nunca la probabilidad suelta de B",
+  "La probabilidad P(Aᵢ) otra vez",
+  "La probabilidad P(B) sin condicionar",
+  "El producto ya calculado P(Aᵢ)·P(B/Aᵢ)"
+  ],
+  "c": 0,
+  "e": "Al llegar al segundo nivel ya estamos dentro de un camino Aᵢ, así que la probabilidad de B está condicionada a él: P(B/Aᵢ)."
+  },
+  {
+  "q": "Multiplicar las probabilidades a lo largo de un camino del árbol da como resultado...",
+  "o": [
+  "La probabilidad de la intersección de ese camino, P(Aᵢ∩B)",
+  "La probabilidad total P(B) directamente",
+  "La probabilidad condicionada P(Aᵢ/B)",
+  "Siempre 0"
+  ],
+  "c": 0,
+  "e": "Por la regla del producto, P(Aᵢ)·P(B/Aᵢ) = P(Aᵢ∩B): la probabilidad de recorrer ese camino completo."
+  },
+  {
+  "q": "Si antes del experimento P(A₂)=0'45 y, tras conocer un resultado B, P(A₂/B)=0'6, ¿qué ha ocurrido?",
+  "o": [
+  "La evidencia B ha hecho más probable que el suceso proceda de A₂",
+  "Se ha cometido un error de cálculo, es imposible que cambie",
+  "A₂ y B son incompatibles",
+  "P(A₂) ha bajado en realidad"
+  ],
+  "c": 0,
+  "e": "La probabilidad a priori de A₂ era 0,45 y, tras conocer B, sube a 0,6: el resultado observado B hace más probable que la causa haya sido A₂. Es justo lo que mide Bayes."
+  },
+  {
+  "q": "¿Es siempre cierto que la suma de todas las P(Aᵢ/B), para i=1,...,n, vale 1?",
+  "o": [
+  "Sí, porque {A₁,...,Aₙ} sigue siendo una partición, ahora condicionada a B",
+  "No, depende de los valores de P(B/Aᵢ)",
+  "Solo si los Aᵢ son independientes de B",
+  "No, la suma siempre es menor que 1"
+  ],
+  "c": 0,
+  "e": "Sabiendo que ha ocurrido B, alguna de las causas tiene que haberlo producido y solo una: las P(Aᵢ/B) forman un reparto completo y suman 1."
+  },
+  {
+  "q": "¿Qué error se comete si en el árbol se pone P(B) en vez de P(B/Aᵢ) en las ramas de segundo nivel?",
+  "o": [
+  "Se pierde que cada rama ya está condicionada por el camino Aᵢ tomado, y el cálculo sale mal",
+  "Ningún error, es lo mismo",
+  "El árbol queda incompleto pero el resultado es correcto igualmente",
+  "Solo afecta al cálculo de Bayes, no al de la probabilidad total"
+  ],
+  "c": 0,
+  "e": "Cada rama del segundo nivel depende del camino por el que se ha llegado. Poner P(B) sin condicionar ignora esa dependencia y los productos de cada camino salen mal."
+  },
+  {
+  "q": "Si un suceso B solo puede darse a través de un único camino A₁ (P(A₁)=1), ¿en qué se convierte la probabilidad total?",
+  "o": [
+  "En la propia P(B/A₁), ya que no hay otros caminos que sumar",
+  "En 0 siempre",
+  "En P(A₁) sin más",
+  "En 1 siempre, sin importar P(B/A₁)"
+  ],
+  "c": 0,
+  "e": "Si solo hay un camino y P(A₁) = 1, la suma tiene un único término: P(B) = 1·P(B/A₁) = P(B/A₁)."
+  }
+  ];
 
 const BANCO_APLICACION = [
-  {q:"Una fábrica tiene 2 máquinas: M1 produce el 40% de las piezas y M2 el 60%. Las tasas de defectos son 5% en M1 y 2% en M2. Calcula P(pieza defectuosa)", o:["0'032", "0'07", "0'02", "0'05"], c:0},
-  {q:"Con los mismos datos (M1: 40% con 5% defectos; M2: 60% con 2% defectos), si una pieza es defectuosa, calcula la probabilidad de que sea de M1", o:["0'625", "0'4", "0'2", "0'375"], c:0},
-  {q:"En una ciudad, el 55% son mujeres y el 45% hombres. Fuma el 8% de las mujeres y el 12% de los hombres. Calcula P(fumar)", o:["0'098", "0'2", "0'044", "0'054"], c:0},
-  {q:"Con los mismos datos (55% mujeres fuman 8%, 45% hombres fuman 12%), si una persona elegida al azar fuma, calcula la probabilidad de que sea hombre", o:["0'551", "0'449", "0'12", "0'6"], c:0},
-  {q:"Una caja A tiene 3 bolas blancas y 7 negras; una caja B tiene 6 blancas y 4 negras. Se elige una caja al azar (probabilidad 1/2 cada una) y se extrae una bola. Calcula P(bola blanca)", o:["0'45", "0'3", "0'6", "0'9"], c:0},
-  {q:"Con las mismas cajas (A: 3B/7N, B: 6B/4N, cada una con probabilidad 1/2), si la bola es blanca, calcula la probabilidad de que proceda de la caja B", o:["0'667", "0'333", "0'5", "0'6"], c:0},
-  {q:"Un examen tiene temas tipo I (30% de probabilidad, se aprueba con 0'9), tipo II (50%, se aprueba con 0'7) y tipo III (20%, se aprueba con 0'4). Calcula P(aprobar)", o:["0'7", "0'67", "0'6", "2"], c:0},
-  {q:"Con los mismos datos del examen (tipo I: 30% aprueba 0'9; tipo II: 50% aprueba 0'7; tipo III: 20% aprueba 0'4), si un alumno aprueba, calcula la probabilidad de que le tocara el tipo III", o:["0'114", "0'2", "0'08", "0'4"], c:0},
-  {q:"En una empresa: 20% en producción (10% de bajas), 50% en ventas (4% de bajas), 30% en administración (6% de bajas). Calcula P(baja laboral)", o:["0'058", "0'2", "0'02", "0'1"], c:0},
-  {q:"Con los mismos datos de la empresa (producción 20% con 10% bajas; ventas 50% con 4%; administración 30% con 6%), si hay una baja, calcula la probabilidad de que sea de producción", o:["0'345", "0'2", "0'5", "0'02"], c:0},
-  {q:"Tres proveedores: P1 suministra el 25% (2% defectuosos), P2 el 45% (3% defectuosos), P3 el 30% (1% defectuoso). Calcula P(tornillo defectuoso)", o:["0'0215", "0'06", "0'005", "0'02"], c:0},
-  {q:"Con los mismos datos de los tornillos (P1: 25% con 2%; P2: 45% con 3%; P3: 30% con 1%), si uno es defectuoso, calcula la probabilidad de que sea del proveedor P2", o:["0'628", "0'45", "0'233", "0'14"], c:0},
-  {q:"En un hospital, el 60% de los pacientes de una prueba son del grupo A y el 40% del grupo B. La prueba da positivo en el 15% del grupo A y en el 25% del grupo B. Calcula P(positivo)", o:["0'19", "0'4", "0'09", "0'1"], c:0},
-  {q:"Con los mismos datos del hospital (grupo A: 60% con 15% positivo; grupo B: 40% con 25% positivo), si un paciente da positivo, calcula la probabilidad de que sea del grupo B", o:["0'526", "0'474", "0'25", "0'4"], c:0},
-  {q:"Sean A₁, A₂ un sistema completo con P(A₁)=0'35 y P(A₂)=0'65, y P(B/A₁)=0'2, P(B/A₂)=0'5. Calcula P(A₁/B)", o:["0'177", "0'35", "0'2", "0'823"], c:0},
-  {q:"Con los mismos datos (P(A₁)=0'35, P(A₂)=0'65, P(B/A₁)=0'2, P(B/A₂)=0'5), calcula P(A₂/B)", o:["0'823", "0'65", "0'5", "0'177"], c:0}
-];
+  {
+  "q": "Una fábrica tiene 2 máquinas: M1 produce el 40% de las piezas y M2 el 60%. Las tasas de defectos son 5% en M1 y 2% en M2. Calcula P(pieza defectuosa)",
+  "o": [
+  "0'032",
+  "0'07",
+  "0'02",
+  "0'05"
+  ],
+  "c": 0,
+  "e": "Probabilidad total: P(D) = 0,4·0,05 + 0,6·0,02 = 0,020 + 0,012 = 0,032."
+  },
+  {
+  "q": "Con los mismos datos (M1: 40% con 5% defectos; M2: 60% con 2% defectos), si una pieza es defectuosa, calcula la probabilidad de que sea de M1",
+  "o": [
+  "0'625",
+  "0'4",
+  "0'2",
+  "0'375"
+  ],
+  "c": 0,
+  "e": "Bayes: P(M1/D) = 0,4·0,05 / 0,032 = 0,020 / 0,032 = 0,625."
+  },
+  {
+  "q": "En una ciudad, el 55% son mujeres y el 45% hombres. Fuma el 8% de las mujeres y el 12% de los hombres. Calcula P(fumar)",
+  "o": [
+  "0'098",
+  "0'2",
+  "0'044",
+  "0'054"
+  ],
+  "c": 0,
+  "e": "P(fumar) = 0,55·0,08 + 0,45·0,12 = 0,044 + 0,054 = 0,098."
+  },
+  {
+  "q": "Con los mismos datos (55% mujeres fuman 8%, 45% hombres fuman 12%), si una persona elegida al azar fuma, calcula la probabilidad de que sea hombre",
+  "o": [
+  "0'551",
+  "0'449",
+  "0'12",
+  "0'6"
+  ],
+  "c": 0,
+  "e": "Bayes: P(hombre/fuma) = 0,45·0,12 / 0,098 = 0,054 / 0,098 ≈ 0,551."
+  },
+  {
+  "q": "Una caja A tiene 3 bolas blancas y 7 negras; una caja B tiene 6 blancas y 4 negras. Se elige una caja al azar (probabilidad 1/2 cada una) y se extrae una bola. Calcula P(bola blanca)",
+  "o": [
+  "0'45",
+  "0'3",
+  "0'6",
+  "0'9"
+  ],
+  "c": 0,
+  "e": "P(blanca) = ½·3/10 + ½·6/10 = 0,15 + 0,30 = 0,45."
+  },
+  {
+  "q": "Con las mismas cajas (A: 3B/7N, B: 6B/4N, cada una con probabilidad 1/2), si la bola es blanca, calcula la probabilidad de que proceda de la caja B",
+  "o": [
+  "0'667",
+  "0'333",
+  "0'5",
+  "0'6"
+  ],
+  "c": 0,
+  "e": "Bayes: P(B/blanca) = 0,30 / 0,45 ≈ 0,667."
+  },
+  {
+  "q": "Un examen tiene temas tipo I (30% de probabilidad, se aprueba con 0'9), tipo II (50%, se aprueba con 0'7) y tipo III (20%, se aprueba con 0'4). Calcula P(aprobar)",
+  "o": [
+  "0'7",
+  "0'67",
+  "0'6",
+  "2"
+  ],
+  "c": 0,
+  "e": "P(aprobar) = 0,3·0,9 + 0,5·0,7 + 0,2·0,4 = 0,27 + 0,35 + 0,08 = 0,70."
+  },
+  {
+  "q": "Con los mismos datos del examen (tipo I: 30% aprueba 0'9; tipo II: 50% aprueba 0'7; tipo III: 20% aprueba 0'4), si un alumno aprueba, calcula la probabilidad de que le tocara el tipo III",
+  "o": [
+  "0'114",
+  "0'2",
+  "0'08",
+  "0'4"
+  ],
+  "c": 0,
+  "e": "Bayes: P(tipo III/aprueba) = 0,2·0,4 / 0,70 = 0,08 / 0,70 ≈ 0,114."
+  },
+  {
+  "q": "En una empresa: 20% en producción (10% de bajas), 50% en ventas (4% de bajas), 30% en administración (6% de bajas). Calcula P(baja laboral)",
+  "o": [
+  "0'058",
+  "0'2",
+  "0'02",
+  "0'1"
+  ],
+  "c": 0,
+  "e": "P(baja) = 0,2·0,10 + 0,5·0,04 + 0,3·0,06 = 0,020 + 0,020 + 0,018 = 0,058."
+  },
+  {
+  "q": "Con los mismos datos de la empresa (producción 20% con 10% bajas; ventas 50% con 4%; administración 30% con 6%), si hay una baja, calcula la probabilidad de que sea de producción",
+  "o": [
+  "0'345",
+  "0'2",
+  "0'5",
+  "0'02"
+  ],
+  "c": 0,
+  "e": "Bayes: P(producción/baja) = 0,020 / 0,058 ≈ 0,345."
+  },
+  {
+  "q": "Tres proveedores: P1 suministra el 25% (2% defectuosos), P2 el 45% (3% defectuosos), P3 el 30% (1% defectuoso). Calcula P(tornillo defectuoso)",
+  "o": [
+  "0'0215",
+  "0'06",
+  "0'005",
+  "0'02"
+  ],
+  "c": 0,
+  "e": "P(defectuoso) = 0,25·0,02 + 0,45·0,03 + 0,30·0,01 = 0,0050 + 0,0135 + 0,0030 = 0,0215."
+  },
+  {
+  "q": "Con los mismos datos de los tornillos (P1: 25% con 2%; P2: 45% con 3%; P3: 30% con 1%), si uno es defectuoso, calcula la probabilidad de que sea del proveedor P2",
+  "o": [
+  "0'628",
+  "0'45",
+  "0'233",
+  "0'14"
+  ],
+  "c": 0,
+  "e": "Bayes: P(P2/defectuoso) = 0,0135 / 0,0215 ≈ 0,628."
+  },
+  {
+  "q": "En un hospital, el 60% de los pacientes de una prueba son del grupo A y el 40% del grupo B. La prueba da positivo en el 15% del grupo A y en el 25% del grupo B. Calcula P(positivo)",
+  "o": [
+  "0'19",
+  "0'4",
+  "0'09",
+  "0'1"
+  ],
+  "c": 0,
+  "e": "P(positivo) = 0,6·0,15 + 0,4·0,25 = 0,09 + 0,10 = 0,19."
+  },
+  {
+  "q": "Con los mismos datos del hospital (grupo A: 60% con 15% positivo; grupo B: 40% con 25% positivo), si un paciente da positivo, calcula la probabilidad de que sea del grupo B",
+  "o": [
+  "0'526",
+  "0'474",
+  "0'25",
+  "0'4"
+  ],
+  "c": 0,
+  "e": "Bayes: P(B/positivo) = 0,10 / 0,19 ≈ 0,526."
+  },
+  {
+  "q": "Sean A₁, A₂ un sistema completo con P(A₁)=0'35 y P(A₂)=0'65, y P(B/A₁)=0'2, P(B/A₂)=0'5. Calcula P(A₁/B)",
+  "o": [
+  "0'177",
+  "0'35",
+  "0'2",
+  "0'823"
+  ],
+  "c": 0,
+  "e": "P(B) = 0,35·0,2 + 0,65·0,5 = 0,070 + 0,325 = 0,395. Bayes: P(A₁/B) = 0,070 / 0,395 ≈ 0,177."
+  },
+  {
+  "q": "Con los mismos datos (P(A₁)=0'35, P(A₂)=0'65, P(B/A₁)=0'2, P(B/A₂)=0'5), calcula P(A₂/B)",
+  "o": [
+  "0'823",
+  "0'65",
+  "0'5",
+  "0'177"
+  ],
+  "c": 0,
+  "e": "P(A₂/B) = 0,325 / 0,395 ≈ 0,823. Comprobación: 0,177 + 0,823 = 1."
+  }
+  ];
 
 let orden = [];
 let idx = 0;
@@ -229,15 +549,17 @@ function responder(btnPulsado, esCorrecta, opciones, cont){
   if(!esCorrecta) btnPulsado.classList.add('incorrecta');
 
   const fb = document.getElementById('feedback');
+  const exp = orden[idx] && orden[idx].e ? '<div style="margin-top:8px;font-weight:400">💡 ' + orden[idx].e + '</div>' : '';
   if(esCorrecta){
     ok++;
-    fb.textContent = '✓ Correcto.';
+    fb.innerHTML = '<b>✓ Correcto.</b>' + exp;
     fb.className = 'feedback show ok';
   } else {
     bad++;
-    fb.textContent = '✗ No es correcto. La respuesta correcta está marcada en verde.';
+    fb.innerHTML = '<b>✗ No es correcto. La respuesta correcta está marcada en verde.</b>' + exp;
     fb.className = 'feedback show bad';
   }
+  if(window.MathJax && MathJax.typesetPromise){ MathJax.typesetPromise([fb]).catch(()=>{}); }
   document.getElementById('okcount').textContent = ok;
   document.getElementById('badcount').textContent = bad;
   document.getElementById('btnSiguiente').disabled = false;

@@ -125,42 +125,362 @@
 <script>
 // ---------- Banco de preguntas: Bloque 4 · Probabilidad condicionada ----------
 const BANCO_TEORIA = [
-  {q:"¿Qué significa P(A/B)?", o:["La probabilidad de que ocurra A, sabiendo que B ya ha ocurrido", "La probabilidad de que ocurran A y B a la vez", "La probabilidad de que ocurra A dividida entre la de B, sin relación causal", "La probabilidad de que no ocurra ni A ni B"], c:0},
-  {q:"En la frase 'probabilidad de aprobar Matemáticas sabiendo que ha aprobado Física', ¿qué va detrás de la barra en P(_/_)?", o:["Física, porque es lo que ya sabemos que ha ocurrido", "Matemáticas", "Ambas asignaturas a la vez", "Ninguna, no se puede poner en notación condicionada"], c:0},
-  {q:"¿Cuál es la fórmula de la probabilidad condicionada?", o:["P(A/B) = P(A∩B)/P(B)", "P(A/B) = P(A)+P(B)", "P(A/B) = P(A)·P(B)", "P(A/B) = P(B)/P(A)"], c:0},
-  {q:"¿Qué condición debe cumplirse para poder calcular P(A/B)?", o:["P(B)≠0", "P(A)≠0", "A y B deben ser incompatibles", "A y B deben ser independientes"], c:0},
-  {q:"¿Cuándo se dice que A y B son independientes?", o:["Cuando P(A/B)=P(A): saber que ha ocurrido B no cambia la probabilidad de A", "Cuando P(A∩B)=0", "Cuando A y B nunca pueden ocurrir a la vez", "Cuando P(A)=P(B)"], c:0},
-  {q:"¿Cuál es la relación fundamental que siempre es cierta, sean o no independientes A y B?", o:["P(A∩B) = P(A)·P(B/A) = P(B)·P(A/B)", "P(A∩B) = P(A)·P(B), siempre", "P(A∩B) = P(A)+P(B)", "P(A∩B) = P(A)-P(B)"], c:0},
-  {q:"¿Cuándo se simplifica P(A∩B)=P(A)·P(B/A) a P(A∩B)=P(A)·P(B)?", o:["Solo cuando A y B son independientes", "Siempre, es la fórmula general", "Solo cuando son incompatibles", "Nunca se puede simplificar así"], c:0},
-  {q:"¿Por qué usar P(A∩B)=P(A)·P(B) sin comprobar independencia es un error frecuente?", o:["Porque esa fórmula solo es válida si A y B son independientes; si no, hay que usar P(A)·P(B/A)", "Porque esa fórmula nunca es válida", "Porque falta multiplicar por P(A/B) además", "No es un error, siempre se puede usar"], c:0},
-  {q:"Si A y B son incompatibles y ambos tienen probabilidad positiva, ¿pueden ser independientes?", o:["No, nunca", "Sí, siempre", "Depende de los valores concretos", "Sí, si además P(A)=P(B)"], c:0},
-  {q:"¿Por qué dos sucesos incompatibles con probabilidad positiva no pueden ser independientes?", o:["Porque P(A∩B)=0 pero P(A)·P(B)>0, y esos valores deberían coincidir si fueran independientes", "Porque los sucesos incompatibles no tienen probabilidad", "Porque la independencia solo se aplica a sucesos compatibles por definición", "Sí pueden, no hay contradicción"], c:0},
-  {q:"¿Cómo se comprueba si A y B son independientes, con datos numéricos?", o:["Comparando P(A∩B) con P(A)·P(B): si coinciden, son independientes", "Comprobando si P(A)=P(B)", "Comprobando si A∩B=∅", "Sumando P(A)+P(B) y viendo si da 1"], c:0},
-  {q:"Si P(A/B)=P(A), ¿qué se puede afirmar sobre P(B/A)?", o:["También será P(B/A)=P(B): la independencia es una relación simétrica", "No se puede saber nada de P(B/A)", "P(B/A)=0 necesariamente", "P(B/A)=1 necesariamente"], c:0},
-  {q:"'Entre los que cumplen B, ¿qué probabilidad hay de A?' es una forma de preguntar por...", o:["P(A/B)", "P(B/A)", "P(A∩B) directamente sobre el total", "P(A∪B)"], c:0},
-  {q:"Si conoces P(A∩B) y P(B), ¿qué fórmula usas para hallar P(A/B)?", o:["P(A/B) = P(A∩B)/P(B)", "P(A/B) = P(B)/P(A∩B)", "P(A/B) = P(A∩B)·P(B)", "P(A/B) = P(A∩B)-P(B)"], c:0},
-  {q:"Si conoces P(A) y P(B/A), ¿qué fórmula usas para hallar P(A∩B)?", o:["P(A∩B) = P(A)·P(B/A)", "P(A∩B) = P(A)/P(B/A)", "P(A∩B) = P(A)+P(B/A)", "P(A∩B) = P(B/A)-P(A)"], c:0},
-  {q:"Si A y B son independientes, ¿qué resultado esperamos al calcular P(A/Bᶜ)?", o:["P(A/Bᶜ) = P(A), porque A también es independiente de Bᶜ", "P(A/Bᶜ) = 0 siempre", "P(A/Bᶜ) = 1 - P(A/B)", "No se puede calcular sin más datos"], c:0}
-];
+  {
+  "q": "¿Qué significa P(A/B)?",
+  "o": [
+  "La probabilidad de que ocurra A, sabiendo que B ya ha ocurrido",
+  "La probabilidad de que ocurran A y B a la vez",
+  "La probabilidad de que ocurra A dividida entre la de B, sin relación causal",
+  "La probabilidad de que no ocurra ni A ni B"
+  ],
+  "c": 0,
+  "e": "P(A/B) se lee «probabilidad de A condicionada a B»: la probabilidad de A cuando ya sabemos que ha ocurrido B. El espacio de referencia deja de ser E y pasa a ser B."
+  },
+  {
+  "q": "En la frase 'probabilidad de aprobar Matemáticas sabiendo que ha aprobado Física', ¿qué va detrás de la barra en P(_/_)?",
+  "o": [
+  "Física, porque es lo que ya sabemos que ha ocurrido",
+  "Matemáticas",
+  "Ambas asignaturas a la vez",
+  "Ninguna, no se puede poner en notación condicionada"
+  ],
+  "c": 0,
+  "e": "Detrás de la barra va la condición, lo que ya sabemos: «sabiendo que ha aprobado Física». Queda P(Matemáticas / Física)."
+  },
+  {
+  "q": "¿Cuál es la fórmula de la probabilidad condicionada?",
+  "o": [
+  "P(A/B) = P(A∩B)/P(B)",
+  "P(A/B) = P(A)+P(B)",
+  "P(A/B) = P(A)·P(B)",
+  "P(A/B) = P(B)/P(A)"
+  ],
+  "c": 0,
+  "e": "Dentro de B, los casos favorables a A son los de A∩B: P(A/B) = P(A∩B) / P(B)."
+  },
+  {
+  "q": "¿Qué condición debe cumplirse para poder calcular P(A/B)?",
+  "o": [
+  "P(B)≠0",
+  "P(A)≠0",
+  "A y B deben ser incompatibles",
+  "A y B deben ser independientes"
+  ],
+  "c": 0,
+  "e": "En la fórmula se divide entre P(B), así que P(B) no puede ser 0. Además, no tiene sentido condicionar a algo que no puede ocurrir."
+  },
+  {
+  "q": "¿Cuándo se dice que A y B son independientes?",
+  "o": [
+  "Cuando P(A/B)=P(A): saber que ha ocurrido B no cambia la probabilidad de A",
+  "Cuando P(A∩B)=0",
+  "Cuando A y B nunca pueden ocurrir a la vez",
+  "Cuando P(A)=P(B)"
+  ],
+  "c": 0,
+  "e": "A y B son independientes cuando saber que ha ocurrido B no cambia la probabilidad de A: P(A/B) = P(A). Equivale a P(A∩B) = P(A)·P(B)."
+  },
+  {
+  "q": "¿Cuál es la relación fundamental que siempre es cierta, sean o no independientes A y B?",
+  "o": [
+  "P(A∩B) = P(A)·P(B/A) = P(B)·P(A/B)",
+  "P(A∩B) = P(A)·P(B), siempre",
+  "P(A∩B) = P(A)+P(B)",
+  "P(A∩B) = P(A)-P(B)"
+  ],
+  "c": 0,
+  "e": "Despejando de la definición de probabilidad condicionada, P(A∩B) = P(A)·P(B/A) = P(B)·P(A/B). Es la regla del producto y vale siempre."
+  },
+  {
+  "q": "¿Cuándo se simplifica P(A∩B)=P(A)·P(B/A) a P(A∩B)=P(A)·P(B)?",
+  "o": [
+  "Solo cuando A y B son independientes",
+  "Siempre, es la fórmula general",
+  "Solo cuando son incompatibles",
+  "Nunca se puede simplificar así"
+  ],
+  "c": 0,
+  "e": "Solo si son independientes se cumple P(B/A) = P(B), y entonces P(A)·P(B/A) se convierte en P(A)·P(B)."
+  },
+  {
+  "q": "¿Por qué usar P(A∩B)=P(A)·P(B) sin comprobar independencia es un error frecuente?",
+  "o": [
+  "Porque esa fórmula solo es válida si A y B son independientes; si no, hay que usar P(A)·P(B/A)",
+  "Porque esa fórmula nunca es válida",
+  "Porque falta multiplicar por P(A/B) además",
+  "No es un error, siempre se puede usar"
+  ],
+  "c": 0,
+  "e": "P(A∩B) = P(A)·P(B) solo vale para sucesos independientes. En general hay que usar P(A)·P(B/A); aplicar la fórmula corta sin comprobarlo da resultados erróneos."
+  },
+  {
+  "q": "Si A y B son incompatibles y ambos tienen probabilidad positiva, ¿pueden ser independientes?",
+  "o": [
+  "No, nunca",
+  "Sí, siempre",
+  "Depende de los valores concretos",
+  "Sí, si además P(A)=P(B)"
+  ],
+  "c": 0,
+  "e": "Si son incompatibles, P(A∩B) = 0; si fueran independientes, P(A∩B) = P(A)·P(B) > 0. Las dos cosas a la vez son imposibles."
+  },
+  {
+  "q": "¿Por qué dos sucesos incompatibles con probabilidad positiva no pueden ser independientes?",
+  "o": [
+  "Porque P(A∩B)=0 pero P(A)·P(B)>0, y esos valores deberían coincidir si fueran independientes",
+  "Porque los sucesos incompatibles no tienen probabilidad",
+  "Porque la independencia solo se aplica a sucesos compatibles por definición",
+  "Sí pueden, no hay contradicción"
+  ],
+  "c": 0,
+  "e": "Incompatibles implica P(A∩B) = 0, e independientes exige P(A∩B) = P(A)·P(B), que es positivo. No pueden coincidir. Intuitivamente: si ocurre A ya sabemos que B no ha ocurrido, así que A sí informa sobre B."
+  },
+  {
+  "q": "¿Cómo se comprueba si A y B son independientes, con datos numéricos?",
+  "o": [
+  "Comparando P(A∩B) con P(A)·P(B): si coinciden, son independientes",
+  "Comprobando si P(A)=P(B)",
+  "Comprobando si A∩B=∅",
+  "Sumando P(A)+P(B) y viendo si da 1"
+  ],
+  "c": 0,
+  "e": "Se calcula P(A)·P(B) y se compara con P(A∩B): si son iguales, son independientes; si no, son dependientes. También vale comprobar si P(A/B) = P(A)."
+  },
+  {
+  "q": "Si P(A/B)=P(A), ¿qué se puede afirmar sobre P(B/A)?",
+  "o": [
+  "También será P(B/A)=P(B): la independencia es una relación simétrica",
+  "No se puede saber nada de P(B/A)",
+  "P(B/A)=0 necesariamente",
+  "P(B/A)=1 necesariamente"
+  ],
+  "c": 0,
+  "e": "Si P(A/B) = P(A), entonces P(A∩B) = P(A)·P(B), y de ahí P(B/A) = P(A∩B)/P(A) = P(B). La independencia funciona en los dos sentidos."
+  },
+  {
+  "q": "'Entre los que cumplen B, ¿qué probabilidad hay de A?' es una forma de preguntar por...",
+  "o": [
+  "P(A/B)",
+  "P(B/A)",
+  "P(A∩B) directamente sobre el total",
+  "P(A∪B)"
+  ],
+  "c": 0,
+  "e": "«Entre los que cumplen B» significa que B es la condición conocida: se pregunta por P(A/B)."
+  },
+  {
+  "q": "Si conoces P(A∩B) y P(B), ¿qué fórmula usas para hallar P(A/B)?",
+  "o": [
+  "P(A/B) = P(A∩B)/P(B)",
+  "P(A/B) = P(B)/P(A∩B)",
+  "P(A/B) = P(A∩B)·P(B)",
+  "P(A/B) = P(A∩B)-P(B)"
+  ],
+  "c": 0,
+  "e": "Es la definición de probabilidad condicionada: P(A/B) = P(A∩B) / P(B)."
+  },
+  {
+  "q": "Si conoces P(A) y P(B/A), ¿qué fórmula usas para hallar P(A∩B)?",
+  "o": [
+  "P(A∩B) = P(A)·P(B/A)",
+  "P(A∩B) = P(A)/P(B/A)",
+  "P(A∩B) = P(A)+P(B/A)",
+  "P(A∩B) = P(B/A)-P(A)"
+  ],
+  "c": 0,
+  "e": "Es la regla del producto: P(A∩B) = P(A)·P(B/A)."
+  },
+  {
+  "q": "Si A y B son independientes, ¿qué resultado esperamos al calcular P(A/Bᶜ)?",
+  "o": [
+  "P(A/Bᶜ) = P(A), porque A también es independiente de Bᶜ",
+  "P(A/Bᶜ) = 0 siempre",
+  "P(A/Bᶜ) = 1 - P(A/B)",
+  "No se puede calcular sin más datos"
+  ],
+  "c": 0,
+  "e": "Si A y B son independientes, también lo son A y Bᶜ. Por tanto saber que no ha ocurrido B tampoco cambia la probabilidad de A: P(A/Bᶜ) = P(A)."
+  }
+  ];
 
 const BANCO_APLICACION = [
-  {q:"Sean A y B sucesos con P(A)=0'6, P(B)=0'5 y P(A∩B)=0'3. Calcula P(A/B)", o:["0'6", "0'5", "0'3", "0'8"], c:0},
-  {q:"Con los mismos datos (P(A)=0'6, P(B)=0'5, P(A∩B)=0'3), calcula P(B/A)", o:["0'5", "0'6", "0'3", "0'9"], c:0},
-  {q:"Con esos mismos datos (P(A)=0'6, P(B)=0'5, P(A∩B)=0'3), ¿son A y B independientes?", o:["Sí, porque P(A)·P(B)=0'3 coincide con P(A∩B)", "No, los valores no coinciden", "No se puede determinar", "Sí, pero solo porque P(A)>P(B)"], c:0},
-  {q:"Sean A y B con P(A)=0'4, P(B)=0'3, P(A∩B)=0'1. Calcula P(A/B)", o:["0'333", "0'3", "0'1", "0'75"], c:0},
-  {q:"Con los mismos datos (P(A)=0'4, P(B)=0'3, P(A∩B)=0'1), ¿son A y B independientes?", o:["No, porque P(A)·P(B)=0'12≠0'1", "Sí, porque ambas probabilidades son menores que 0'5", "No se puede determinar", "Sí, porque P(A∩B)≠0"], c:0},
-  {q:"Sean A y B independientes con P(A)=0'7 y P(B)=0'2. Calcula P(A∩B)", o:["0'14", "0'9", "0'5", "0'35"], c:0},
-  {q:"Con A y B independientes, P(A)=0'7 y P(B)=0'2, calcula P(A/B)", o:["0'7", "0'2", "0'14", "0'35"], c:0},
-  {q:"Sean A y B con P(B)=0'4 y P(A∩B)=0'12. Calcula P(A/B)", o:["0'3", "0'48", "0'12", "0'52"], c:0},
-  {q:"Sean A y B con P(A)=0'5 y P(A∩B)=0'2. Calcula P(B/A)", o:["0'4", "0'2", "0'5", "0'7"], c:0},
-  {q:"Sean A y B independientes con P(A)=0'25 y P(A∩B)=0'1. Calcula P(B)", o:["0'4", "0'1", "0'25", "0'025"], c:0},
-  {q:"Sean A y B con P(A)=0'8 y P(B/A)=0'5. Calcula P(A∩B)", o:["0'4", "0'8", "0'5", "1'3"], c:0},
-  {q:"Sean A y B con P(B)=0'6 y P(A/B)=0'25. Calcula P(A∩B)", o:["0'15", "0'6", "0'25", "0'85"], c:0},
-  {q:"Sean A y B independientes con P(A)=0'3 y P(B)=0'6. Calcula P(A∪B)", o:["0'72", "0'9", "0'18", "0'62"], c:0},
-  {q:"Sean A y B con P(A)=0'5, P(B)=0'45 y P(Aᶜ∩B)=0'2. Calcula P(A∩B)", o:["0'25", "0'2", "0'65", "0'3"], c:0},
-  {q:"Sean A y B incompatibles con P(A)=0'3 y P(B)=0'4 (ambas positivas). ¿Pueden ser independientes?", o:["No, nunca: P(A∩B)=0 pero P(A)·P(B)=0'12≠0", "Sí, siempre que sean incompatibles", "Depende de si P(A)>P(B)", "Sí, porque suman menos de 1"], c:0},
-  {q:"Sean A y B independientes con P(A)=0'6 y P(B)=0'5. Calcula P(Aᶜ∩Bᶜ)", o:["0'2", "0'5", "0'3", "0'7"], c:0}
-];
+  {
+  "q": "Sean A y B sucesos con P(A)=0'6, P(B)=0'5 y P(A∩B)=0'3. Calcula P(A/B)",
+  "o": [
+  "0'6",
+  "0'5",
+  "0'3",
+  "0'8"
+  ],
+  "c": 0,
+  "e": "P(A/B) = P(A∩B) / P(B) = 0,3 / 0,5 = 0,6."
+  },
+  {
+  "q": "Con los mismos datos (P(A)=0'6, P(B)=0'5, P(A∩B)=0'3), calcula P(B/A)",
+  "o": [
+  "0'5",
+  "0'6",
+  "0'3",
+  "0'9"
+  ],
+  "c": 0,
+  "e": "P(B/A) = P(A∩B) / P(A) = 0,3 / 0,6 = 0,5."
+  },
+  {
+  "q": "Con esos mismos datos (P(A)=0'6, P(B)=0'5, P(A∩B)=0'3), ¿son A y B independientes?",
+  "o": [
+  "Sí, porque P(A)·P(B)=0'3 coincide con P(A∩B)",
+  "No, los valores no coinciden",
+  "No se puede determinar",
+  "Sí, pero solo porque P(A)>P(B)"
+  ],
+  "c": 0,
+  "e": "P(A)·P(B) = 0,6·0,5 = 0,3, que coincide con P(A∩B). Son independientes (fíjate en que además P(A/B) = P(A) = 0,6)."
+  },
+  {
+  "q": "Sean A y B con P(A)=0'4, P(B)=0'3, P(A∩B)=0'1. Calcula P(A/B)",
+  "o": [
+  "0'333",
+  "0'3",
+  "0'1",
+  "0'75"
+  ],
+  "c": 0,
+  "e": "P(A/B) = 0,1 / 0,3 ≈ 0,333."
+  },
+  {
+  "q": "Con los mismos datos (P(A)=0'4, P(B)=0'3, P(A∩B)=0'1), ¿son A y B independientes?",
+  "o": [
+  "No, porque P(A)·P(B)=0'12≠0'1",
+  "Sí, porque ambas probabilidades son menores que 0'5",
+  "No se puede determinar",
+  "Sí, porque P(A∩B)≠0"
+  ],
+  "c": 0,
+  "e": "P(A)·P(B) = 0,4·0,3 = 0,12, que no coincide con P(A∩B) = 0,1. No son independientes."
+  },
+  {
+  "q": "Sean A y B independientes con P(A)=0'7 y P(B)=0'2. Calcula P(A∩B)",
+  "o": [
+  "0'14",
+  "0'9",
+  "0'5",
+  "0'35"
+  ],
+  "c": 0,
+  "e": "Al ser independientes, P(A∩B) = P(A)·P(B) = 0,7·0,2 = 0,14."
+  },
+  {
+  "q": "Con A y B independientes, P(A)=0'7 y P(B)=0'2, calcula P(A/B)",
+  "o": [
+  "0'7",
+  "0'2",
+  "0'14",
+  "0'35"
+  ],
+  "c": 0,
+  "e": "Al ser independientes, saber B no cambia nada: P(A/B) = P(A) = 0,7. (Comprobación: 0,14/0,2 = 0,7.)"
+  },
+  {
+  "q": "Sean A y B con P(B)=0'4 y P(A∩B)=0'12. Calcula P(A/B)",
+  "o": [
+  "0'3",
+  "0'48",
+  "0'12",
+  "0'52"
+  ],
+  "c": 0,
+  "e": "P(A/B) = P(A∩B) / P(B) = 0,12 / 0,4 = 0,3."
+  },
+  {
+  "q": "Sean A y B con P(A)=0'5 y P(A∩B)=0'2. Calcula P(B/A)",
+  "o": [
+  "0'4",
+  "0'2",
+  "0'5",
+  "0'7"
+  ],
+  "c": 0,
+  "e": "P(B/A) = P(A∩B) / P(A) = 0,2 / 0,5 = 0,4."
+  },
+  {
+  "q": "Sean A y B independientes con P(A)=0'25 y P(A∩B)=0'1. Calcula P(B)",
+  "o": [
+  "0'4",
+  "0'1",
+  "0'25",
+  "0'025"
+  ],
+  "c": 0,
+  "e": "Por ser independientes, P(A∩B) = P(A)·P(B), así que P(B) = 0,1 / 0,25 = 0,4."
+  },
+  {
+  "q": "Sean A y B con P(A)=0'8 y P(B/A)=0'5. Calcula P(A∩B)",
+  "o": [
+  "0'4",
+  "0'8",
+  "0'5",
+  "1'3"
+  ],
+  "c": 0,
+  "e": "Regla del producto: P(A∩B) = P(A)·P(B/A) = 0,8·0,5 = 0,4."
+  },
+  {
+  "q": "Sean A y B con P(B)=0'6 y P(A/B)=0'25. Calcula P(A∩B)",
+  "o": [
+  "0'15",
+  "0'6",
+  "0'25",
+  "0'85"
+  ],
+  "c": 0,
+  "e": "P(A∩B) = P(B)·P(A/B) = 0,6·0,25 = 0,15."
+  },
+  {
+  "q": "Sean A y B independientes con P(A)=0'3 y P(B)=0'6. Calcula P(A∪B)",
+  "o": [
+  "0'72",
+  "0'9",
+  "0'18",
+  "0'62"
+  ],
+  "c": 0,
+  "e": "P(A∩B) = 0,3·0,6 = 0,18 por ser independientes. P(A∪B) = 0,3 + 0,6 − 0,18 = 0,72."
+  },
+  {
+  "q": "Sean A y B con P(A)=0'5, P(B)=0'45 y P(Aᶜ∩B)=0'2. Calcula P(A∩B)",
+  "o": [
+  "0'25",
+  "0'2",
+  "0'65",
+  "0'3"
+  ],
+  "c": 0,
+  "e": "B se reparte entre A∩B y Aᶜ∩B: P(A∩B) = P(B) − P(Aᶜ∩B) = 0,45 − 0,2 = 0,25."
+  },
+  {
+  "q": "Sean A y B incompatibles con P(A)=0'3 y P(B)=0'4 (ambas positivas). ¿Pueden ser independientes?",
+  "o": [
+  "No, nunca: P(A∩B)=0 pero P(A)·P(B)=0'12≠0",
+  "Sí, siempre que sean incompatibles",
+  "Depende de si P(A)>P(B)",
+  "Sí, porque suman menos de 1"
+  ],
+  "c": 0,
+  "e": "Incompatibles: P(A∩B) = 0. Si fueran independientes, P(A∩B) = 0,3·0,4 = 0,12. Como 0 ≠ 0,12, no pueden ser independientes."
+  },
+  {
+  "q": "Sean A y B independientes con P(A)=0'6 y P(B)=0'5. Calcula P(Aᶜ∩Bᶜ)",
+  "o": [
+  "0'2",
+  "0'5",
+  "0'3",
+  "0'7"
+  ],
+  "c": 0,
+  "e": "Si A y B son independientes, también lo son sus contrarios: P(Aᶜ∩Bᶜ) = P(Aᶜ)·P(Bᶜ) = 0,4·0,5 = 0,2."
+  }
+  ];
 
 let orden = [];
 let idx = 0;
@@ -229,15 +549,17 @@ function responder(btnPulsado, esCorrecta, opciones, cont){
   if(!esCorrecta) btnPulsado.classList.add('incorrecta');
 
   const fb = document.getElementById('feedback');
+  const exp = orden[idx] && orden[idx].e ? '<div style="margin-top:8px;font-weight:400">💡 ' + orden[idx].e + '</div>' : '';
   if(esCorrecta){
     ok++;
-    fb.textContent = '✓ Correcto.';
+    fb.innerHTML = '<b>✓ Correcto.</b>' + exp;
     fb.className = 'feedback show ok';
   } else {
     bad++;
-    fb.textContent = '✗ No es correcto. La respuesta correcta está marcada en verde.';
+    fb.innerHTML = '<b>✗ No es correcto. La respuesta correcta está marcada en verde.</b>' + exp;
     fb.className = 'feedback show bad';
   }
+  if(window.MathJax && MathJax.typesetPromise){ MathJax.typesetPromise([fb]).catch(()=>{}); }
   document.getElementById('okcount').textContent = ok;
   document.getElementById('badcount').textContent = bad;
   document.getElementById('btnSiguiente').disabled = false;

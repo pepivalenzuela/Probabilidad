@@ -125,42 +125,362 @@
 <script>
 // ---------- Banco de preguntas: Probabilidad ----------
 const BANCO_TEORIA = [
-  {q:"¿Cuál de estos experimentos es determinista, NO aleatorio?", o:["El tiempo de caída libre de un objeto sin resistencia del aire, desde una altura conocida", "El tiempo que tarda un ciclista en completar una etapa", "El resultado de una final de tenis", "El número de clientes que entran en una tienda en una hora"], c:0},
-  {q:"En el experimento 'extraer 2 cartas de una baraja sin reposición, anotando el resultado en orden', ¿qué tipo de elementos forman el espacio muestral?", o:["Pares ordenados de cartas distintas", "Pares no ordenados", "Un único número", "Ternas de cartas"], c:0},
-  {q:"¿Por qué extraer 'sin reposición' cambia el espacio muestral respecto a extraer 'con reposición'?", o:["Porque sin reposición no puede repetirse el mismo elemento en las dos extracciones", "Porque cambia el orden de la baraja", "No cambia en absoluto", "Porque el experimento deja de ser aleatorio"], c:0},
-  {q:"Si A y B son incompatibles, ¿son necesariamente sucesos contrarios?", o:["No necesariamente: para ser contrarios, además deben cubrir todo el espacio muestral (A∪B=E)", "Sí, siempre", "No, nunca pueden coexistir siendo incompatibles", "Sí, porque incompatible implica complementario"], c:0},
-  {q:"¿Qué dos condiciones debe cumplir un sistema completo de sucesos {A₁,...,Aₙ}?", o:["Ser incompatibles dos a dos Y que su unión sea el espacio muestral completo", "Solo que sean incompatibles dos a dos", "Solo que su unión sea E", "Que todos tengan la misma probabilidad"], c:0},
-  {q:"Al lanzar un dado, ¿cuál de estas parejas de sucesos NO forma un sistema completo de sucesos?", o:["{1,2,3} y {3,4,5,6} — se solapan en el 3", "{1,2,3} y {4,5,6}", "{par} y {impar}", "{menor que 4} y {mayor o igual que 4}"], c:0},
-  {q:"La expresión A−B (diferencia de sucesos) es equivalente a...", o:["A∩B̄", "A∪B̄", "Ā∩B", "Ā∪B"], c:0},
-  {q:"Si el espacio muestral E tiene 8 elementos y A tiene 5, ¿cuántos elementos tiene como máximo Ā?", o:["3", "8", "5", "0"], c:0},
-  {q:"¿Qué representa el suceso (A∪B)∩C̄?", o:["Ocurre A o B, pero no ocurre C", "Ocurren los tres a la vez", "No ocurre ninguno de los tres", "Solo ocurre C"], c:0},
-  {q:"Si A⊆B (A está contenido en B), ¿qué es A∩B?", o:["A", "B", "∅", "E"], c:0},
-  {q:"Si A⊆B, ¿qué es A∪B?", o:["B", "A", "∅", "E"], c:0},
-  {q:"¿Cuál de estas afirmaciones es cierta para cualquier suceso A?", o:["A∩Ā=∅ y A∪Ā=E", "A∩Ā=E", "A∪Ā=∅", "A=Ā siempre"], c:0},
-  {q:"¿Cuándo decimos que A, B y C forman una partición del espacio muestral E?", o:["Cuando son incompatibles dos a dos y A∪B∪C=E", "Cuando A∩B∩C=E", "Cuando cualquiera de ellos es el suceso seguro", "Cuando tienen la misma probabilidad"], c:0},
-  {q:"Según las Leyes de De Morgan, (A∩B∩C)ᶜ es igual a...", o:["Āᶜ∪B̄∪C̄ → es decir, Ā∪B̄∪C̄", "Ā∩B̄∩C̄", "A∪B∪C", "A∩B∩C"], c:0},
-  {q:"¿Es correcto decir que dos sucesos elementales distintos son siempre incompatibles?", o:["Sí, porque un resultado del experimento no puede ser dos elementos distintos a la vez", "No, pueden solaparse", "Depende del experimento", "Solo si son complementarios"], c:0},
-  {q:"Si A y B son dos sucesos cualesquiera, ¿qué relación general existe entre |A∪B|, |A|, |B| y |A∩B|?", o:["|A∪B| = |A|+|B|-|A∩B|", "|A∪B| = |A|+|B|", "|A∪B| = |A|·|B|", "|A∪B| = |A|-|B|"], c:0}
-];
+  {
+  "q": "¿Cuál de estos experimentos es determinista, NO aleatorio?",
+  "o": [
+  "El tiempo de caída libre de un objeto sin resistencia del aire, desde una altura conocida",
+  "El tiempo que tarda un ciclista en completar una etapa",
+  "El resultado de una final de tenis",
+  "El número de clientes que entran en una tienda en una hora"
+  ],
+  "c": 0,
+  "e": "Un experimento es determinista si, en las mismas condiciones, siempre da el mismo resultado. La caída libre sin rozamiento desde una altura conocida se calcula exactamente con la física (t = √(2h/g)); las otras tres situaciones dependen del azar."
+  },
+  {
+  "q": "En el experimento 'extraer 2 cartas de una baraja sin reposición, anotando el resultado en orden', ¿qué tipo de elementos forman el espacio muestral?",
+  "o": [
+  "Pares ordenados de cartas distintas",
+  "Pares no ordenados",
+  "Un único número",
+  "Ternas de cartas"
+  ],
+  "c": 0,
+  "e": "Como no hay reposición, las dos cartas son distintas, y como se anota el orden, (A, B) y (B, A) son resultados diferentes: el espacio muestral está formado por pares ordenados de cartas distintas."
+  },
+  {
+  "q": "¿Por qué extraer 'sin reposición' cambia el espacio muestral respecto a extraer 'con reposición'?",
+  "o": [
+  "Porque sin reposición no puede repetirse el mismo elemento en las dos extracciones",
+  "Porque cambia el orden de la baraja",
+  "No cambia en absoluto",
+  "Porque el experimento deja de ser aleatorio"
+  ],
+  "c": 0,
+  "e": "Con reposición la carta vuelve a la baraja y puede salir dos veces; sin reposición eso es imposible. Por eso desaparecen del espacio muestral los resultados con el mismo elemento repetido."
+  },
+  {
+  "q": "Si A y B son incompatibles, ¿son necesariamente sucesos contrarios?",
+  "o": [
+  "No necesariamente: para ser contrarios, además deben cubrir todo el espacio muestral (A∪B=E)",
+  "Sí, siempre",
+  "No, nunca pueden coexistir siendo incompatibles",
+  "Sí, porque incompatible implica complementario"
+  ],
+  "c": 0,
+  "e": "Incompatibles solo significa A∩B=∅. Para ser contrarios hace falta además que entre los dos cubran todo el espacio muestral: A∪B=E. Ejemplo: en un dado, {1} y {2} son incompatibles pero no contrarios."
+  },
+  {
+  "q": "¿Qué dos condiciones debe cumplir un sistema completo de sucesos {A₁,...,Aₙ}?",
+  "o": [
+  "Ser incompatibles dos a dos Y que su unión sea el espacio muestral completo",
+  "Solo que sean incompatibles dos a dos",
+  "Solo que su unión sea E",
+  "Que todos tengan la misma probabilidad"
+  ],
+  "c": 0,
+  "e": "Un sistema completo exige las dos condiciones a la vez: que no se solapen (incompatibles dos a dos) y que no quede ningún resultado fuera (su unión es E). No hace falta que tengan la misma probabilidad."
+  },
+  {
+  "q": "Al lanzar un dado, ¿cuál de estas parejas de sucesos NO forma un sistema completo de sucesos?",
+  "o": [
+  "{1,2,3} y {3,4,5,6} — se solapan en el 3",
+  "{1,2,3} y {4,5,6}",
+  "{par} y {impar}",
+  "{menor que 4} y {mayor o igual que 4}"
+  ],
+  "c": 0,
+  "e": "{1,2,3} y {3,4,5,6} cubren todo E, pero comparten el 3, así que no son incompatibles. Las otras parejas no se solapan y juntas forman E."
+  },
+  {
+  "q": "La expresión A−B (diferencia de sucesos) es equivalente a...",
+  "o": [
+  "A∩B̄",
+  "A∪B̄",
+  "Ā∩B",
+  "Ā∪B"
+  ],
+  "c": 0,
+  "e": "A−B son los resultados que están en A pero no en B, es decir, en A y en el contrario de B: A−B = A∩B̄."
+  },
+  {
+  "q": "Si el espacio muestral E tiene 8 elementos y A tiene 5, ¿cuántos elementos tiene como máximo Ā?",
+  "o": [
+  "3",
+  "8",
+  "5",
+  "0"
+  ],
+  "c": 0,
+  "e": "Ā está formado por los resultados de E que no están en A. Si E tiene 8 elementos y A tiene 5, Ā tiene exactamente 8−5 = 3."
+  },
+  {
+  "q": "¿Qué representa el suceso (A∪B)∩C̄?",
+  "o": [
+  "Ocurre A o B, pero no ocurre C",
+  "Ocurren los tres a la vez",
+  "No ocurre ninguno de los tres",
+  "Solo ocurre C"
+  ],
+  "c": 0,
+  "e": "A∪B significa «ocurre A o B» y la intersección con C̄ añade «y no ocurre C». Por tanto: ocurre A o B, pero no C."
+  },
+  {
+  "q": "Si A⊆B (A está contenido en B), ¿qué es A∩B?",
+  "o": [
+  "A",
+  "B",
+  "∅",
+  "E"
+  ],
+  "c": 0,
+  "e": "Si A está contenido en B, todos los elementos de A están también en B, así que lo que tienen en común es todo A: A∩B = A."
+  },
+  {
+  "q": "Si A⊆B, ¿qué es A∪B?",
+  "o": [
+  "B",
+  "A",
+  "∅",
+  "E"
+  ],
+  "c": 0,
+  "e": "Si A⊆B, al unir A con B no se añade nada nuevo a B: A∪B = B."
+  },
+  {
+  "q": "¿Cuál de estas afirmaciones es cierta para cualquier suceso A?",
+  "o": [
+  "A∩Ā=∅ y A∪Ā=E",
+  "A∩Ā=E",
+  "A∪Ā=∅",
+  "A=Ā siempre"
+  ],
+  "c": 0,
+  "e": "Un suceso y su contrario nunca ocurren a la vez (A∩Ā=∅) y entre los dos recogen todos los resultados posibles (A∪Ā=E)."
+  },
+  {
+  "q": "¿Cuándo decimos que A, B y C forman una partición del espacio muestral E?",
+  "o": [
+  "Cuando son incompatibles dos a dos y A∪B∪C=E",
+  "Cuando A∩B∩C=E",
+  "Cuando cualquiera de ellos es el suceso seguro",
+  "Cuando tienen la misma probabilidad"
+  ],
+  "c": 0,
+  "e": "Una partición es un sistema completo de sucesos: sucesos incompatibles dos a dos cuya unión es el espacio muestral."
+  },
+  {
+  "q": "Según las Leyes de De Morgan, (A∩B∩C)ᶜ es igual a...",
+  "o": [
+  "Āᶜ∪B̄∪C̄ → es decir, Ā∪B̄∪C̄",
+  "Ā∩B̄∩C̄",
+  "A∪B∪C",
+  "A∩B∩C"
+  ],
+  "c": 0,
+  "e": "De Morgan: el contrario de una intersección es la unión de los contrarios. Por tanto (A∩B∩C)ᶜ = Ā∪B̄∪C̄."
+  },
+  {
+  "q": "¿Es correcto decir que dos sucesos elementales distintos son siempre incompatibles?",
+  "o": [
+  "Sí, porque un resultado del experimento no puede ser dos elementos distintos a la vez",
+  "No, pueden solaparse",
+  "Depende del experimento",
+  "Solo si son complementarios"
+  ],
+  "c": 0,
+  "e": "Al realizar el experimento se obtiene un único resultado, así que no pueden ocurrir a la vez dos sucesos elementales distintos: su intersección es vacía."
+  },
+  {
+  "q": "Si A y B son dos sucesos cualesquiera, ¿qué relación general existe entre |A∪B|, |A|, |B| y |A∩B|?",
+  "o": [
+  "|A∪B| = |A|+|B|-|A∩B|",
+  "|A∪B| = |A|+|B|",
+  "|A∪B| = |A|·|B|",
+  "|A∪B| = |A|-|B|"
+  ],
+  "c": 0,
+  "e": "Al sumar |A|+|B|, los elementos de A∩B se cuentan dos veces; por eso hay que restarlos una vez: |A∪B| = |A|+|B|−|A∩B| (principio de inclusión-exclusión)."
+  }
+  ];
 
 const BANCO_APLICACION = [
-  {q:"Se lanza una moneda y un dado a la vez. ¿Cuántos elementos tiene el espacio muestral?", o:["12", "6", "2", "8"], c:0},
-  {q:"Se lanza una moneda y un dado a la vez. ¿Cuántos elementos tiene el suceso 'sacar cara y un número par'?", o:["3", "6", "2", "1"], c:0},
-  {q:"En una baraja de 40 cartas se extraen 2 cartas SIN reposición, importando el orden. ¿Cuántos resultados posibles hay?", o:["40×39 = 1560", "40×40 = 1600", "40+39 = 79", "40²/2 = 800"], c:0},
-  {q:"En un instituto con 200 alumnos: 120 aprueban Matemáticas (A), 90 aprueban Física (B), 60 aprueban ambas. ¿Cuántos aprueban al menos una?", o:["150", "210", "60", "30"], c:0},
-  {q:"Con los mismos datos (200 alumnos, |A|=120, |B|=90, |A∩B|=60), ¿cuántos no aprueban ninguna de las dos?", o:["50", "150", "200", "30"], c:0},
-  {q:"En el mismo instituto de 200 alumnos (|A|=120 aprueban Matemáticas, |B|=90 aprueban Física, |A∩B|=60 aprueban ambas), ¿cuántos aprueban Matemáticas pero no Física?", o:["60", "120", "90", "30"], c:0},
-  {q:"Sean A y B con |A|=15, |B|=10, |A∩B|=4. ¿Cuántos elementos tiene A∪B?", o:["21", "25", "6", "19"], c:0},
-  {q:"A, B, C son sucesos con A∩B=∅, A∩C=∅, pero B∩C≠∅. Suponiendo A∪B∪C=E, ¿forman {A,B,C} un sistema completo de sucesos?", o:["No, porque B y C no son incompatibles entre sí", "Sí, porque su unión es E", "Sí, porque A es incompatible con los otros dos", "No se puede determinar"], c:0},
-  {q:"El suceso contrario de 'sacar al menos un 6' al lanzar dos dados es...", o:["No sacar ningún 6 en ninguno de los dos dados", "Sacar dos seises", "Sacar como mucho un 6", "Sacar un 6 en el primer dado"], c:0},
-  {q:"Se lanzan 3 monedas. ¿Cuál es el suceso 'obtener exactamente 2 caras'?", o:["{CCX,CXC,XCC}", "{CCC}", "{CCX,CXC,XCC,CCC}", "{XXX}"], c:0},
-  {q:"¿Cuántos elementos tiene el espacio muestral de lanzar 3 monedas?", o:["8", "6", "3", "9"], c:0},
-  {q:"Con E={1,...,12}, A='múltiplo de 2', B='múltiplo de 3'. Calcula A∩B.", o:["{6,12}", "{2,3,4,6,8,9,10,12}", "{1}", "{6}"], c:0},
-  {q:"Con los mismos datos (E={1..12}, A múltiplo de 2, B múltiplo de 3), calcula |A∪B|.", o:["8", "10", "6", "12"], c:0},
-  {q:"Con E={1,...,10}, A='par', B='múltiplo de 5'={5,10}. ¿Son A y B incompatibles?", o:["No, comparten el 10", "Sí, no comparten nada", "Sí, porque son de distinto tipo", "No se puede saber"], c:0},
-  {q:"En una clase de 30 alumnos, 18 estudian inglés, 12 francés y 6 ambos idiomas. ¿Cuántos no estudian ninguno de los dos?", o:["6", "24", "12", "0"], c:0},
-  {q:"En la misma clase de 30 alumnos (18 estudian inglés, 12 francés, 6 ambos idiomas), ¿cuántos estudian inglés pero no francés?", o:["12", "18", "6", "24"], c:0}
-];
+  {
+  "q": "Se lanza una moneda y un dado a la vez. ¿Cuántos elementos tiene el espacio muestral?",
+  "o": [
+  "12",
+  "6",
+  "2",
+  "8"
+  ],
+  "c": 0,
+  "e": "Cada uno de los 2 resultados de la moneda se combina con cada uno de los 6 del dado: 2·6 = 12 resultados."
+  },
+  {
+  "q": "Se lanza una moneda y un dado a la vez. ¿Cuántos elementos tiene el suceso 'sacar cara y un número par'?",
+  "o": [
+  "3",
+  "6",
+  "2",
+  "1"
+  ],
+  "c": 0,
+  "e": "Cara y par: (C,2), (C,4) y (C,6). Son 3 resultados."
+  },
+  {
+  "q": "En una baraja de 40 cartas se extraen 2 cartas SIN reposición, importando el orden. ¿Cuántos resultados posibles hay?",
+  "o": [
+  "40×39 = 1560",
+  "40×40 = 1600",
+  "40+39 = 79",
+  "40²/2 = 800"
+  ],
+  "c": 0,
+  "e": "Para la primera carta hay 40 posibilidades y, como no se devuelve, para la segunda quedan 39. Como importa el orden: 40·39 = 1560."
+  },
+  {
+  "q": "En un instituto con 200 alumnos: 120 aprueban Matemáticas (A), 90 aprueban Física (B), 60 aprueban ambas. ¿Cuántos aprueban al menos una?",
+  "o": [
+  "150",
+  "210",
+  "60",
+  "30"
+  ],
+  "c": 0,
+  "e": "Al menos una = A∪B. Por inclusión-exclusión: |A∪B| = 120 + 90 − 60 = 150."
+  },
+  {
+  "q": "Con los mismos datos (200 alumnos, |A|=120, |B|=90, |A∩B|=60), ¿cuántos no aprueban ninguna de las dos?",
+  "o": [
+  "50",
+  "150",
+  "200",
+  "30"
+  ],
+  "c": 0,
+  "e": "Ninguna es el contrario de «al menos una»: 200 − |A∪B| = 200 − 150 = 50."
+  },
+  {
+  "q": "En el mismo instituto de 200 alumnos (|A|=120 aprueban Matemáticas, |B|=90 aprueban Física, |A∩B|=60 aprueban ambas), ¿cuántos aprueban Matemáticas pero no Física?",
+  "o": [
+  "60",
+  "120",
+  "90",
+  "30"
+  ],
+  "c": 0,
+  "e": "Matemáticas pero no Física = A − B: |A| − |A∩B| = 120 − 60 = 60."
+  },
+  {
+  "q": "Sean A y B con |A|=15, |B|=10, |A∩B|=4. ¿Cuántos elementos tiene A∪B?",
+  "o": [
+  "21",
+  "25",
+  "6",
+  "19"
+  ],
+  "c": 0,
+  "e": "|A∪B| = |A| + |B| − |A∩B| = 15 + 10 − 4 = 21."
+  },
+  {
+  "q": "A, B, C son sucesos con A∩B=∅, A∩C=∅, pero B∩C≠∅. Suponiendo A∪B∪C=E, ¿forman {A,B,C} un sistema completo de sucesos?",
+  "o": [
+  "No, porque B y C no son incompatibles entre sí",
+  "Sí, porque su unión es E",
+  "Sí, porque A es incompatible con los otros dos",
+  "No se puede determinar"
+  ],
+  "c": 0,
+  "e": "Un sistema completo necesita que los sucesos sean incompatibles dos a dos. Aunque A no se solapa con los otros, B y C sí tienen elementos comunes, así que falla esa condición."
+  },
+  {
+  "q": "El suceso contrario de 'sacar al menos un 6' al lanzar dos dados es...",
+  "o": [
+  "No sacar ningún 6 en ninguno de los dos dados",
+  "Sacar dos seises",
+  "Sacar como mucho un 6",
+  "Sacar un 6 en el primer dado"
+  ],
+  "c": 0,
+  "e": "«Al menos un 6» incluye todos los casos con uno o dos seises. Su contrario es el único caso que queda: que no salga ningún 6 en ninguno de los dos dados."
+  },
+  {
+  "q": "Se lanzan 3 monedas. ¿Cuál es el suceso 'obtener exactamente 2 caras'?",
+  "o": [
+  "{CCX,CXC,XCC}",
+  "{CCC}",
+  "{CCX,CXC,XCC,CCC}",
+  "{XXX}"
+  ],
+  "c": 0,
+  "e": "Exactamente 2 caras y 1 cruz; la cruz puede estar en cualquiera de las tres posiciones: CCX, CXC y XCC."
+  },
+  {
+  "q": "¿Cuántos elementos tiene el espacio muestral de lanzar 3 monedas?",
+  "o": [
+  "8",
+  "6",
+  "3",
+  "9"
+  ],
+  "c": 0,
+  "e": "Cada moneda tiene 2 resultados posibles: 2·2·2 = 2³ = 8."
+  },
+  {
+  "q": "Con E={1,...,12}, A='múltiplo de 2', B='múltiplo de 3'. Calcula A∩B.",
+  "o": [
+  "{6,12}",
+  "{2,3,4,6,8,9,10,12}",
+  "{1}",
+  "{6}"
+  ],
+  "c": 0,
+  "e": "A∩B son los múltiplos de 2 y de 3 a la vez, es decir, los múltiplos de 6 que hay entre 1 y 12: {6, 12}."
+  },
+  {
+  "q": "Con los mismos datos (E={1..12}, A múltiplo de 2, B múltiplo de 3), calcula |A∪B|.",
+  "o": [
+  "8",
+  "10",
+  "6",
+  "12"
+  ],
+  "c": 0,
+  "e": "|A| = 6 (2,4,6,8,10,12), |B| = 4 (3,6,9,12) y |A∩B| = 2. Entonces |A∪B| = 6 + 4 − 2 = 8."
+  },
+  {
+  "q": "Con E={1,...,10}, A='par', B='múltiplo de 5'={5,10}. ¿Son A y B incompatibles?",
+  "o": [
+  "No, comparten el 10",
+  "Sí, no comparten nada",
+  "Sí, porque son de distinto tipo",
+  "No se puede saber"
+  ],
+  "c": 0,
+  "e": "Dos sucesos son incompatibles si no tienen ningún elemento en común. El 10 es par y múltiplo de 5, así que A∩B = {10} ≠ ∅."
+  },
+  {
+  "q": "En una clase de 30 alumnos, 18 estudian inglés, 12 francés y 6 ambos idiomas. ¿Cuántos no estudian ninguno de los dos?",
+  "o": [
+  "6",
+  "24",
+  "12",
+  "0"
+  ],
+  "c": 0,
+  "e": "Estudian algún idioma: 18 + 12 − 6 = 24. Ninguno: 30 − 24 = 6."
+  },
+  {
+  "q": "En la misma clase de 30 alumnos (18 estudian inglés, 12 francés, 6 ambos idiomas), ¿cuántos estudian inglés pero no francés?",
+  "o": [
+  "12",
+  "18",
+  "6",
+  "24"
+  ],
+  "c": 0,
+  "e": "Inglés pero no francés: 18 − 6 = 12 (a los de inglés se les quitan los que estudian los dos)."
+  }
+  ];
 
 let orden = [];
 let idx = 0;
@@ -229,15 +549,17 @@ function responder(btnPulsado, esCorrecta, opciones, cont){
   if(!esCorrecta) btnPulsado.classList.add('incorrecta');
 
   const fb = document.getElementById('feedback');
+  const exp = orden[idx] && orden[idx].e ? '<div style="margin-top:8px;font-weight:400">💡 ' + orden[idx].e + '</div>' : '';
   if(esCorrecta){
     ok++;
-    fb.textContent = '✓ Correcto.';
+    fb.innerHTML = '<b>✓ Correcto.</b>' + exp;
     fb.className = 'feedback show ok';
   } else {
     bad++;
-    fb.textContent = '✗ No es correcto. La respuesta correcta está marcada en verde.';
+    fb.innerHTML = '<b>✗ No es correcto. La respuesta correcta está marcada en verde.</b>' + exp;
     fb.className = 'feedback show bad';
   }
+  if(window.MathJax && MathJax.typesetPromise){ MathJax.typesetPromise([fb]).catch(()=>{}); }
   document.getElementById('okcount').textContent = ok;
   document.getElementById('badcount').textContent = bad;
   document.getElementById('btnSiguiente').disabled = false;
